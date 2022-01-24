@@ -6,7 +6,9 @@ from curses import wrapper
 
 
 def main(screen):
-    screen.addstr("Hello World")
+    for position in range(10):
+        screen.addstr(f"Hello World {position}")
+
     screen.getkey()
 
 
