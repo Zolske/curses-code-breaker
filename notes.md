@@ -1,2 +1,0 @@
- - pip freeze > requirements.txt
- - do not add windows-curses==xxx to requirements.txt, not working with Heroku
