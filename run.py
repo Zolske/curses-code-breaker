@@ -27,13 +27,14 @@ def main(screen):
     # prints the main game menu on the screen
     # for position in range(44):
     #     screen.addstr(f"{game_menu.line[position]}\n")
-    print(f"{game_menu.line[0]}")
-    print(f"{game_menu.line[1]}")
-    print(f"{game_menu.line[2]}")
-    print(f"{game_menu.line[3]}")
-    print(f"{game_menu.line[4]}")
-    print(f"{game_menu.line[5]}")
-    print(f"{game_menu.line[6]}")
+    screen.addstr(f"{game_menu.line[0]}\n")
+    screen.addstr(f"{game_menu.line[1]}\n")
+    screen.addstr(f"{game_menu.line[2]}\n")
+    screen.addstr(f"{game_menu.line[3]}\n")
+    screen.addstr(f"{game_menu.line[4]}\n")
+    screen.addstr(f"{game_menu.line[5]}\n")
+    screen.addstr(f"{game_menu.line[6]}\n")
+    screen.refresh()
 
     # create the 'pad' for the player code-marker (3 row, 10 columns)
     # marker = curses.newpad(3, 10)
