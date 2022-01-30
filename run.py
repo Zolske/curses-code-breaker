@@ -4,9 +4,7 @@
 import curses
 from curses import wrapper
 import menu
-# game_menu = menu.Game()
-# for position in range(44):
-#      print(f"{game_menu.line[position]}")
+
 
 def main(screen):
     # color pairs used by 'curses' and accessible over variable below, 1st text, 2nd background
@@ -26,53 +24,9 @@ def main(screen):
     # create the game_menu object which contains data for displaying elements on the screen
     game_menu = menu.Game()
     # screen.getkey()
-    # prints the main game menu on the screen
+    # prints the main game menu on the screen, add '\n' to the loop for terminal but remove it for heroku
     for position in range(44):
-        screen.addstr(f"{game_menu.line[position]}")
-    # screen.addstr(f"{game_menu.line[0]}")
-    # screen.addstr(f"{game_menu.line[1]}")
-    # screen.addstr(f"{game_menu.line[2]}")
-    # screen.addstr(f"{game_menu.line[3]}")
-    # screen.addstr(f"{game_menu.line[4]}")
-    # screen.addstr(f"{game_menu.line[5]}")
-    # screen.addstr(f"{game_menu.line[6]}")
-    # screen.addstr(f"{game_menu.line[7]}")
-    # screen.addstr(f"{game_menu.line[8]}")
-    # screen.addstr(f"{game_menu.line[9]}")
-    # screen.addstr(f"{game_menu.line[10]}")
-    # screen.addstr(f"{game_menu.line[11]}")
-    # screen.addstr(f"{game_menu.line[12]}")
-    # screen.addstr(f"{game_menu.line[13]}")
-    # screen.addstr(f"{game_menu.line[14]}")
-    # screen.addstr(f"{game_menu.line[15]}")
-    # screen.addstr(f"{game_menu.line[16]}")
-    # screen.addstr(f"{game_menu.line[17]}")
-    # screen.addstr(f"{game_menu.line[18]}")
-    # screen.addstr(f"{game_menu.line[19]}")
-    # screen.addstr(f"{game_menu.line[20]}")
-    # screen.addstr(f"{game_menu.line[21]}")
-    # screen.addstr(f"{game_menu.line[22]}")
-    # screen.addstr(f"{game_menu.line[23]}")
-    # screen.addstr(f"{game_menu.line[24]}")
-    # screen.addstr(f"{game_menu.line[25]}")
-    # screen.addstr(f"{game_menu.line[26]}")
-    # screen.addstr(f"{game_menu.line[27]}")
-    # screen.addstr(f"{game_menu.line[28]}")
-    # screen.addstr(f"{game_menu.line[29]}")
-    # screen.addstr(f"{game_menu.line[30]}")
-    # screen.addstr(f"{game_menu.line[31]}")
-    # screen.addstr(f"{game_menu.line[32]}")
-    # screen.addstr(f"{game_menu.line[33]}")
-    # screen.addstr(f"{game_menu.line[34]}")
-    # screen.addstr(f"{game_menu.line[35]}")
-    # screen.addstr(f"{game_menu.line[36]}")
-    # screen.addstr(f"{game_menu.line[37]}")
-    # screen.addstr(f"{game_menu.line[38]}")
-    # screen.addstr(f"{game_menu.line[39]}")
-    # screen.addstr(f"{game_menu.line[40]}")
-    # screen.addstr(f"{game_menu.line[41]}")
-    # screen.addstr(f"{game_menu.line[42]}")
-    # screen.addstr(f"{game_menu.line[43]}")
+        screen.addstr(f"{game_menu.line[position]}\n")
     screen.refresh()
 
     # create the 'pad' for the player code-marker (3 row, 10 columns)
