@@ -28,7 +28,7 @@ def main(screen):
     for position in range(44):
         screen.addstr(f"{game_menu.line[position]}\n")
 
-    # create the 'pad' for the player code-marker (1 row, 10 columns)
+    # create the 'pad' for the player code-marker (3 row, 10 columns)
     marker = curses.newpad(3, 10)
     # create the 'pad' for the feedback-marker, after turn (1 row, 3 columns)
     feedback = curses.newpad(1, 3)
