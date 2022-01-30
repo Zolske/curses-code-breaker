@@ -36,13 +36,13 @@ def main(screen):
     print(f"{game_menu.line[6]}")
 
     # create the 'pad' for the player code-marker (3 row, 10 columns)
-    marker = curses.newpad(3, 10)
+    # marker = curses.newpad(3, 10)
     # create the 'pad' for the feedback-marker, after turn (1 row, 3 columns)
-    feedback = curses.newpad(1, 3)
+    # feedback = curses.newpad(1, 3)
     # write first content into pad
-    marker.addstr(game_menu.content_marker, RED)
+    # marker.addstr(game_menu.content_marker, RED)
     # screen needs to be refreshed after writing content into pad
-    screen.refresh()
+    # screen.refresh()
     # refreshes the pad screen and sets pad to location
     # marker.refresh(*game_menu.position_enter[4][2])
     # if pad should be used for more
