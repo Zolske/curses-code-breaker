@@ -4,11 +4,12 @@
 import curses
 from curses import wrapper
 import menu
-
+import time
 # game_menu = menu.Game()
 # for position in range(44):
 #      print(f"{game_menu.line[position]}")
 
+time.sleep(2.4)
 def main(screen):
     # color pairs used by 'curses' and accessible over variable below, 1st text, 2nd background
     # curses.init_pair(1, curses.COLOR_MAGENTA, curses.COLOR_RED)
@@ -53,7 +54,7 @@ def main(screen):
     screen.addstr(f"{game_menu.line[20]}")
     screen.addstr(f"{game_menu.line[21]}")
     screen.addstr(f"{game_menu.line[22]}")
-    # screen.addstr(f"{game_menu.line[23]}")
+    screen.addstr(f"{game_menu.line[23]}")
     # screen.addstr(f"{game_menu.line[24]}")
     # screen.addstr(f"{game_menu.line[25]}")
     # screen.addstr(f"{game_menu.line[26]}")
