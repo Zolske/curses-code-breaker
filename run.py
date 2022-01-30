@@ -23,7 +23,7 @@ def main(screen):
 
     # create the game_menu object which contains data for displaying elements on the screen
     game_menu = menu.Game()
-
+    screen.getkey()
     # prints the main game menu on the screen
     # for position in range(44):
     #     screen.addstr(f"{game_menu.line[position]}\n")
