@@ -28,7 +28,7 @@ def main(screen):
     # screen.getkey()
     # prints the main game menu on the screen
     for position in range(44):
-        screen.addstr(f"{game_menu.line[position]}\n")
+        screen.addstr(f"{game_menu.line[position]}")
     # screen.addstr(f"{game_menu.line[0]}")
     # screen.addstr(f"{game_menu.line[1]}")
     # screen.addstr(f"{game_menu.line[2]}")
