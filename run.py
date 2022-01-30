@@ -5,11 +5,11 @@ import curses
 from curses import wrapper
 import menu
 
-game_menu = menu.Game()
-for position in range(44):
-     print(f"{game_menu.line[position]}")
+# game_menu = menu.Game()
+# for position in range(44):
+#      print(f"{game_menu.line[position]}")
 
-#def main(screen):
+def main(screen):
     # color pairs used by 'curses' and accessible over variable below, 1st text, 2nd background
     # curses.init_pair(1, curses.COLOR_MAGENTA, curses.COLOR_RED)
     # curses.init_pair(2, curses.COLOR_MAGENTA, curses.COLOR_GREEN)
@@ -25,35 +25,35 @@ for position in range(44):
     # FEEDB = curses.color_pair(6)  # for feedback-marker
 
     # create the game_menu object which contains data for displaying elements on the screen
-    # game_menu = menu.Game()
+    game_menu = menu.Game()
     # screen.getkey()
     # prints the main game menu on the screen
     # for position in range(44):
     #     screen.addstr(f"{game_menu.line[position]}\n")
-    # screen.addstr(f"{game_menu.line[0]}")
-    # screen.addstr(f"{game_menu.line[1]}")
-    # screen.addstr(f"{game_menu.line[2]}")
-    # screen.addstr(f"{game_menu.line[3]}")
-    # screen.addstr(f"{game_menu.line[4]}")
-    # screen.addstr(f"{game_menu.line[5]}")
-    # screen.addstr(f"{game_menu.line[6]}")
-    # screen.addstr(f"{game_menu.line[7]}")
-    # screen.addstr(f"{game_menu.line[8]}")
-    # screen.addstr(f"{game_menu.line[9]}")
-    # screen.addstr(f"{game_menu.line[10]}")
-    # screen.addstr(f"{game_menu.line[11]}")
-    # screen.addstr(f"{game_menu.line[12]}")
-    # screen.addstr(f"{game_menu.line[13]}")
-    # screen.addstr(f"{game_menu.line[14]}")
-    # screen.addstr(f"{game_menu.line[15]}")
-    # screen.addstr(f"{game_menu.line[16]}")
-    # screen.addstr(f"{game_menu.line[17]}")
-    # screen.addstr(f"{game_menu.line[18]}")
-    # screen.addstr(f"{game_menu.line[19]}")
-    # screen.addstr(f"{game_menu.line[20]}")
-    # screen.addstr(f"{game_menu.line[21]}")
-    # screen.addstr(f"{game_menu.line[22]}")
-    # screen.addstr(f"{game_menu.line[23]}")
+    screen.addstr(f"{game_menu.line[0]}")
+    screen.addstr(f"{game_menu.line[1]}")
+    screen.addstr(f"{game_menu.line[2]}")
+    screen.addstr(f"{game_menu.line[3]}")
+    screen.addstr(f"{game_menu.line[4]}")
+    screen.addstr(f"{game_menu.line[5]}")
+    screen.addstr(f"{game_menu.line[6]}")
+    screen.addstr(f"{game_menu.line[7]}")
+    screen.addstr(f"{game_menu.line[8]}")
+    screen.addstr(f"{game_menu.line[9]}")
+    screen.addstr(f"{game_menu.line[10]}")
+    screen.addstr(f"{game_menu.line[11]}")
+    screen.addstr(f"{game_menu.line[12]}")
+    screen.addstr(f"{game_menu.line[13]}")
+    screen.addstr(f"{game_menu.line[14]}")
+    screen.addstr(f"{game_menu.line[15]}")
+    screen.addstr(f"{game_menu.line[16]}")
+    screen.addstr(f"{game_menu.line[17]}")
+    screen.addstr(f"{game_menu.line[18]}")
+    screen.addstr(f"{game_menu.line[19]}")
+    screen.addstr(f"{game_menu.line[20]}")
+    screen.addstr(f"{game_menu.line[21]}")
+    screen.addstr(f"{game_menu.line[22]}")
+    screen.addstr(f"{game_menu.line[23]}")
     # screen.addstr(f"{game_menu.line[24]}")
     # screen.addstr(f"{game_menu.line[25]}")
     # screen.addstr(f"{game_menu.line[26]}")
@@ -74,7 +74,7 @@ for position in range(44):
     # screen.addstr(f"{game_menu.line[41]}")
     # screen.addstr(f"{game_menu.line[42]}")
     # screen.addstr(f"{game_menu.line[43]}")
-    #screen.refresh()
+    screen.refresh()
 
     # create the 'pad' for the player code-marker (3 row, 10 columns)
     # marker = curses.newpad(3, 10)
@@ -153,8 +153,7 @@ for position in range(44):
 #         screen.addstr(position, 0, f"Hello World {position}")
 #
 #     screen.refresh()
+    screen.getkey()
 
-    # screen.getkey()
 
-
-# wrapper(main)
+wrapper(main)
