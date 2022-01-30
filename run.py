@@ -25,8 +25,15 @@ def main(screen):
     game_menu = menu.Game()
 
     # prints the main game menu on the screen
-    for position in range(44):
-        screen.addstr(f"{game_menu.line[position]}\n")
+    # for position in range(44):
+    #     screen.addstr(f"{game_menu.line[position]}\n")
+    print(f"{game_menu.line[0]}")
+    print(f"{game_menu.line[1]}")
+    print(f"{game_menu.line[2]}")
+    print(f"{game_menu.line[3]}")
+    print(f"{game_menu.line[4]}")
+    print(f"{game_menu.line[5]}")
+    print(f"{game_menu.line[6]}")
 
     # create the 'pad' for the player code-marker (3 row, 10 columns)
     marker = curses.newpad(3, 10)
@@ -37,7 +44,7 @@ def main(screen):
     # screen needs to be refreshed after writing content into pad
     screen.refresh()
     # refreshes the pad screen and sets pad to location
-    marker.refresh(*game_menu.position_enter[4][2])
+    # marker.refresh(*game_menu.position_enter[4][2])
     # if pad should be used for more
 
     # while True:
