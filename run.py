@@ -53,7 +53,7 @@ def main(screen):
     screen.addstr(f"{game_menu.line[20]}")
     screen.addstr(f"{game_menu.line[21]}")
     screen.addstr(f"{game_menu.line[22]}")
-    screen.addstr(f"{game_menu.line[23]}")
+    # screen.addstr(f"{game_menu.line[23]}")
     # screen.addstr(f"{game_menu.line[24]}")
     # screen.addstr(f"{game_menu.line[25]}")
     # screen.addstr(f"{game_menu.line[26]}")
