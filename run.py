@@ -25,15 +25,15 @@ def main(screen):
     game_menu = menu.Game()
 
     # prints the main game menu on the screen
-    # for position in range(44):
-    #     screen.addstr(f"{game_menu.line[position]}\n")
-    screen.addstr(f"{game_menu.line[0]}")
-    screen.addstr(f"{game_menu.line[1]}")
-    screen.addstr(f"{game_menu.line[2]}")
-    screen.addstr(f"{game_menu.line[3]}")
-    screen.addstr(f"{game_menu.line[4]}")
-    screen.addstr(f"{game_menu.line[5]}")
-    screen.addstr(f"{game_menu.line[6]}")
+    for position in range(44):
+        screen.addstr(f"{game_menu.line[position]}")
+    # screen.addstr(f"{game_menu.line[0]}")
+    # screen.addstr(f"{game_menu.line[1]}")
+    # screen.addstr(f"{game_menu.line[2]}")
+    # screen.addstr(f"{game_menu.line[3]}")
+    # screen.addstr(f"{game_menu.line[4]}")
+    # screen.addstr(f"{game_menu.line[5]}")
+    # screen.addstr(f"{game_menu.line[6]}")
     screen.refresh()
 
     # create the 'pad' for the player code-marker (3 row, 10 columns)
