@@ -9,10 +9,10 @@ import player
 
 def main(screen):
     # color pairs used by 'curses' and accessible over variable below, 1st text, 2nd background
-    curses.init_pair(1, curses.COLOR_MAGENTA, curses.COLOR_RED)
-    curses.init_pair(2, curses.COLOR_MAGENTA, curses.COLOR_GREEN)
-    curses.init_pair(3, curses.COLOR_MAGENTA, curses.COLOR_BLUE)
-    curses.init_pair(4, curses.COLOR_MAGENTA, curses.COLOR_YELLOW)
+    curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_RED)
+    curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_GREEN)
+    curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_BLUE)
+    curses.init_pair(4, curses.COLOR_BLACK, curses.COLOR_YELLOW)
     curses.init_pair(5, curses.COLOR_BLACK, curses.COLOR_BLACK)
     curses.init_pair(6, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
     RED = curses.color_pair(1)
@@ -24,6 +24,7 @@ def main(screen):
     curses.curs_set(0)  # make cursor invisible
 
     def player_move():
+        # TODO comment code
         user_arrow_input = screen.getkey()
         if user_arrow_input == 'q':
             return 'q'

@@ -16,6 +16,7 @@ class PlayerObject:
                                 ['RED', 'BLACK', 'BLACK', 'BLACK']]  # turn / row 10 / index 9
 
     def arrow_input(self, arrow_key):
+        # TODO tidy up code
         """
         Changes the current position in self.current_position or
         the color of self.color_mark_map.
