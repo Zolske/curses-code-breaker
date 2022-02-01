@@ -26,6 +26,12 @@ def main(screen):
         user_arrow_input = screen.getkey()
         if user_arrow_input == 'q':
             return 'q'
+        current_color = player_object.color_mark_map[player_object.current_position[0]][player_object.current_position[1]]
+        current_color = player_object.color_order.index(current_color) + 1
+        marker.erase()
+        marker.addstr(game_menu.content_marker, curses.color_pair(current_color))
+        marker.refresh(*game_menu.position_marker[player_object.current_position[0]][player_object.current_position[1]])
+
         player_object.arrow_input(user_arrow_input)
         current_color = player_object.color_mark_map[player_object.current_position[0]][player_object.current_position[1]]
         current_color = player_object.color_order.index(current_color) + 1
