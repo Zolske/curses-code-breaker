@@ -30,23 +30,25 @@ class PlayerObject:
                 self.current_position[1] = 3  # then go position field outer right
             else:
                 self.current_position[1] -= 1  # change position field to the left
+            current_position_color = self.color_mark_map[self.current_position[0]][self.current_position[1]]
+            if current_position_color == 'BLACK':  # if color at current position is black
+                self.color_mark_map[self.current_position[0]][self.current_position[1]] = 'RED'  # then change to red
         elif arrow_key == 'KEY_RIGHT':
             if self.current_position[1] == 3:  # if position field is outer right
                 self.current_position[1] = 0  # then go position field outer left
             else:
                 self.current_position[1] += 1  # change position field to the right
-        # change color
-        elif arrow_key == 'KEY_UP':
+            current_position_color = self.color_mark_map[self.current_position[0]][self.current_position[1]]
             if current_position_color == 'BLACK':  # if color at current position is black
                 self.color_mark_map[self.current_position[0]][self.current_position[1]] = 'RED'  # then change to red
-            elif index_color_order == 0:  # if current color is at the color index 0
+        # change color
+        elif arrow_key == 'KEY_UP':
+            if index_color_order == 0:  # if current color is at the color index 0
                 self.color_mark_map[self.current_position[0]][self.current_position[1]] = 'YELLOW'  # then change to yellow
             else:
                 self.color_mark_map[self.current_position[0]][self.current_position[1]] = self.color_order[index_color_order -1]  # otherwise, change to left color
         elif arrow_key == 'KEY_DOWN':
-            if current_position_color == 'BLACK':  # if color at current position is black
-                self.color_mark_map[self.current_position[0]][self.current_position[1]] = 'Yellow'  # then change to yellow
-            elif index_color_order == 3:  # if current color is at the color index 3
+            if index_color_order == 3:  # if current color is at the color index 3
                 self.color_mark_map[self.current_position[0]][self.current_position[1]] = 'RED'  # then change to red
             else:
                 self.color_mark_map[self.current_position[0]][self.current_position[1]] = self.color_order[index_color_order +1]  # otherwise, change to right color
