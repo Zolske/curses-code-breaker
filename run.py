@@ -21,6 +21,7 @@ def main(screen):
     YELLOW = curses.color_pair(4)
     BLACK = curses.color_pair(5)  # can be used to return to the original background color
     FEEDB = curses.color_pair(6)  # for feedback-marker
+    curses.curs_set(0)  # make cursor invisible
 
     def player_move():
         user_arrow_input = screen.getkey()
