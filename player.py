@@ -53,4 +53,10 @@ class PlayerObject:
                 self.color_mark_map[self.current_position[0]][self.current_position[1]] = 'RED'  # then change to red
             else:
                 self.color_mark_map[self.current_position[0]][self.current_position[1]] = self.color_order[index_color_order +1]  # otherwise, change to right color
+        elif arrow_key == 'KEY_END':
+            if self.color_mark_map[self.current_position[0]].count('BLACK') == 0:  # only if there is no 'black' fields
+                if self.current_position[0] >= 0:  # stop at 0, otherwise it is going out of range
+                    self.current_position[0] -= 1  # reduce the row number, go up
+                    self.current_position[1] = 0  # go to left field
+                    self.color_mark_map[self.current_position[0]][0] = 'RED'  # set the new field in the new row to red
         return [self.current_position, self.color_mark_map[self.current_position[0]][self.current_position[1]]]  # [current-position-row, current-position-field]['color-at-current-position']

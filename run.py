@@ -24,21 +24,37 @@ def main(screen):
     curses.curs_set(0)  # make cursor invisible
 
     def player_move():
-        # TODO comment code
+        # waits for the user to press a key on the keyboard
         user_arrow_input = screen.getkey()
+        status_message.erase()
+        status_message.addstr(user_arrow_input)
+        status_message.refresh()
+        # if the user presses 'q' the function exits and returns 'q',
+        # this will exit the program because it will break the loop and there is nothing left to do for the program
         if user_arrow_input == 'q':
             return 'q'
+        # saves the color of the current location according to the color_mark_map in the player object
         current_color = player_object.color_mark_map[player_object.current_position[0]][player_object.current_position[1]]
+        # adds 1 to the index value of the color_order, can be used on the equivalent curses.color_pair()
         current_color = player_object.color_order.index(current_color) + 1
+        # is needed so the 'addstr' pad can be added
         marker.erase()
+        # creates the 'addstr' pad with the color according to the position
         marker.addstr(game_menu.content_marker, curses.color_pair(current_color))
+        # draws the pad at the current position according to the player object property 'current_position'
+        # uses the 'marker' pad, any 'select' or 'enter' pads at that position are removed
         marker.refresh(*game_menu.position_marker[player_object.current_position[0]][player_object.current_position[1]])
-
+        # processes the user key input and updates the values in the player object properties
         player_object.arrow_input(user_arrow_input)
+        # updates the current color according to the user input in the player object color_mark_map
         current_color = player_object.color_mark_map[player_object.current_position[0]][player_object.current_position[1]]
+        # adds 1, so it can be used for the equivalent curses.color_pair()
         current_color = player_object.color_order.index(current_color) + 1
+        # is needed so the 'addstr' pad can be added
         marker.erase()
+        # creates the marker pad with the updated color
         marker.addstr(game_menu.content_marker, curses.color_pair(current_color))
+        # positions the 'select' pad at the current position
         marker.refresh(*game_menu.position_select[player_object.current_position[0]][player_object.current_position[1]])
 
         # status_message.addstr('KEY_LEFT')
@@ -62,7 +78,7 @@ def main(screen):
         screen.addstr(f"{game_menu.line[position]}\n")
     screen.refresh()
 
-    status_message = curses.newwin(1, 10, 34, 22)
+    status_message = curses.newwin(2, 20, 34, 22)
     # create the 'pad' for the player code-marker (3 row, 10 columns)
     marker = curses.newpad(3, 10)
     # create the 'pad' for the feedback-marker, after turn (1 row, 3 columns)
