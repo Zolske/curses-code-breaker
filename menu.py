@@ -42,7 +42,7 @@ class Game:
                      "║ ┃ ║   ║   ║   ║   ║┃  left or right on the board                             ┃", #38
                      "╠═╪═╬═══╬═══╬═══╬═══╣┃> use the up ↑ & down ↓ arrow keys to change             ┃", #39
                      "║ ┃ ║10 ║   ║   ║   ║┃  the color of your code                                 ┃", #40
-                     "╟━╋━╢   ║   ║   ║   ║┃> press enter ↲ to confirm your turn                     ┃", #41
+                     "╟━╋━╢   ║   ║   ║   ║┃> press 'End' key to confirm your turn                   ┃", #41
          # alignment "123456789a123456789b123456789c123456789d123456789e123456789f123456789g123456789h"
                      "║ ┃ ║   ║   ║   ║   ║┃> press the marked number to get into the menu (3 help)  ┃", #42
                      "╚═╧═╩═══╩═══╩═══╩═══╝╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯"  #43
