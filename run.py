@@ -15,20 +15,26 @@ def main(screen):
     curses.init_pair(4, curses.COLOR_BLACK, curses.COLOR_YELLOW)
     curses.init_pair(5, curses.COLOR_BLACK, curses.COLOR_BLACK)
     curses.init_pair(6, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
+    curses.init_pair(7, curses.COLOR_BLUE, curses.COLOR_YELLOW)
+    curses.init_pair(8, curses.COLOR_WHITE, curses.COLOR_BLACK)
     RED = curses.color_pair(1)
     GREEN = curses.color_pair(2)
     BLUE = curses.color_pair(3)
     YELLOW = curses.color_pair(4)
     BLACK = curses.color_pair(5)  # can be used to return to the original background color
     FEEDB = curses.color_pair(6)  # for feedback-marker
+    HIGHLIGHT = curses.color_pair(7)
+    ORIGINAL = curses.color_pair(8)
     curses.curs_set(0)  # make cursor invisible
 
     def player_move():
         # waits for the user to press a key on the keyboard
         user_arrow_input = screen.getkey()
-        status_message.erase()
-        status_message.addstr(user_arrow_input)
-        status_message.refresh()
+
+        # status_message.erase()  # part of status_message
+        # status_message.addstr(user_arrow_input)  # show userinput key for testing
+        # status_message.refresh()  # refresh status_message pad
+
         # if the user presses 'q' the function exits and returns 'q',
         # this will exit the program because it will break the loop and there is nothing left to do for the program
         if user_arrow_input == 'q':
@@ -56,7 +62,14 @@ def main(screen):
         marker.addstr(game_menu.content_marker, curses.color_pair(current_color))
         # positions the 'select' pad at the current position
         marker.refresh(*game_menu.position_select[player_object.current_position[0]][player_object.current_position[1]])
-
+        if player_object.color_mark_map[player_object.current_position[0]].count('BLACK') == 0:
+            end_key_message.erase()
+            end_key_message.addstr("press 'End' key", HIGHLIGHT)
+            end_key_message.refresh()
+        else:
+            end_key_message.erase()
+            end_key_message.addstr("press 'End' key", ORIGINAL)
+            end_key_message.refresh()
         # status_message.addstr('KEY_LEFT')
         # if screen.getkey() == 'KEY_LEFT':
         #     # player_object.position[9][]
@@ -79,6 +92,7 @@ def main(screen):
     screen.refresh()
 
     status_message = curses.newwin(2, 20, 34, 22)
+    end_key_message = curses.newwin(1, 16, 41, 24)
     # create the 'pad' for the player code-marker (3 row, 10 columns)
     marker = curses.newpad(3, 10)
     # create the 'pad' for the feedback-marker, after turn (1 row, 3 columns)
