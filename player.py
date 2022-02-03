@@ -1,3 +1,5 @@
+import random
+
 class PlayerObject:
     def __init__(self):
         self.secret_code = [],
@@ -60,3 +62,12 @@ class PlayerObject:
                     self.current_position[1] = 0  # go to left field
                     self.color_mark_map[self.current_position[0]][0] = 'RED'  # set the new field in the new row to red
         return [self.current_position, self.color_mark_map[self.current_position[0]][self.current_position[1]]]  # [current-position-row, current-position-field]['color-at-current-position']
+
+    def generate_secret_random_number(self):
+        """
+        generate secret code from the elements "RED", "GREEN", "BLUE", "YELLOW" and saves it to self.secret_code
+        """
+        code_elements = ["RED", "GREEN", "BLUE", "YELLOW"]
+        self.secret_code = random.choices(code_elements, k=4)
+
+    def

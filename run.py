@@ -32,7 +32,7 @@ def main(screen):
         user_arrow_input = screen.getkey()
 
         # status_message.erase()  # part of status_message
-        # status_message.addstr(user_arrow_input)  # show userinput key for testing
+        # status_message.addstr(' '.join(player_object.secret_code))  # show userinput key for testing
         # status_message.refresh()  # refresh status_message pad
 
         # if the user presses 'q' the function exits and returns 'q',
@@ -86,12 +86,14 @@ def main(screen):
     game_menu = menu.Game()
     # create the player_object which contains data for current position, secret code, player code
     player_object = player.PlayerObject()
+    # generates the secret code
+    player_object.generate_secret_random_number()
     # prints the main game menu on the screen, add '\n' to the loop for terminal but remove it for heroku
     for position in range(44):
         screen.addstr(f"{game_menu.line[position]}\n")
     screen.refresh()
 
-    status_message = curses.newwin(2, 20, 34, 22)
+    status_message = curses.newwin(2, 40, 34, 22)
     end_key_message = curses.newwin(1, 16, 41, 24)
     # create the 'pad' for the player code-marker (3 row, 10 columns)
     marker = curses.newpad(3, 10)
