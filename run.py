@@ -5,6 +5,8 @@ import curses
 from curses import wrapper
 import menu
 import player
+from time import *
+import threading
 
 
 def main(screen):
@@ -92,6 +94,30 @@ def main(screen):
     for position in range(44):
         screen.addstr(f"{game_menu.line[position]}\n")
     screen.refresh()
+
+    def timer():
+        timer_window = curses.newwin(1, 6, 2, 6)
+        seconds_text = '00'
+        seconds_int = 0
+        minutes_text = '00'
+        minutes_int = 0
+
+        while True:
+            timer_window.erase()
+            timer_window.addstr(f"{minutes_text}:{seconds_text}")
+            timer_window.refresh()
+            sleep(1)
+            seconds_int += 1
+            if seconds_int == 60:
+                minutes_int += 1
+                seconds_int = 0
+            seconds_text = str(seconds_int)
+            seconds_text = seconds_text.zfill(2)
+            minutes_text = str(minutes_int)
+            minutes_text = minutes_text.zfill(2)
+
+    timer_thread = threading.Thread(target=timer)  # allows the timer to run in the background
+    timer_thread.start()  # starts the timer thread on the side
 
     status_message = curses.newwin(2, 40, 34, 22)
     # highlights the text 'press the 'End' key' when the user has selected 4 colors
