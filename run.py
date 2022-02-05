@@ -64,11 +64,11 @@ def main(screen):
         marker.refresh(*game_menu.position_select[player_object.current_position[0]][player_object.current_position[1]])
         if player_object.color_mark_map[player_object.current_position[0]].count('BLACK') == 0:
             end_key_message.erase()
-            end_key_message.addstr("press 'End' key", HIGHLIGHT)
+            end_key_message.addstr("press the 'End' key", HIGHLIGHT)
             end_key_message.refresh()
         else:
             end_key_message.erase()
-            end_key_message.addstr("press 'End' key", ORIGINAL)
+            end_key_message.addstr("press the 'End' key", ORIGINAL)
             end_key_message.refresh()
         # status_message.addstr('KEY_LEFT')
         # if screen.getkey() == 'KEY_LEFT':
@@ -94,7 +94,8 @@ def main(screen):
     screen.refresh()
 
     status_message = curses.newwin(2, 40, 34, 22)
-    end_key_message = curses.newwin(1, 16, 41, 24)
+    # highlights the text 'press the 'End' key' when the user has selected 4 colors
+    end_key_message = curses.newwin(1, 20, 41, 24)
     # create the 'pad' for the player code-marker (3 row, 10 columns)
     marker = curses.newpad(3, 10)
     # create the 'pad' for the feedback-marker, after turn (1 row, 3 columns)
