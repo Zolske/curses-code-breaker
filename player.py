@@ -116,22 +116,22 @@ class PlayerObject:
         """
         Compares the secret code and the player code and updates the values match_color_position and has_color.
         """
-        copy_secret_code = self.secret_code.copy()
+        copy_secret_code = self.secret_code.copy()  # create copy so the original is not altered
         match_color_position = 0
         has_color = 0
-        for position in range(4):
-            if self.secret_code[position] == self.player_code[position]:
-                match_color_position += 1
-        for position in range(4):
+        for position in range(4):  # loops 4 times because there are no more than 4 values
+            if self.secret_code[position] == self.player_code[position]:  # checks if the element match at the exact same index
+                match_color_position += 1  # only if they match exactly, the match_color_position variable gets updated
+        for position in range(4):  # loops 4 times because there are no more than 4 values
             try:
-                copy_secret_code.index(self.player_code[position])
-            except:
+                copy_secret_code.index(self.player_code[position])  # checks if on of the player element matches the secret_code
+            except:  # if there is no match, an error is raised which is 'passed'
                 pass
             else:
-                has_color += 1
-                copy_secret_code.remove(self.player_code[position])
+                has_color += 1  # increments the has_color variable because there was a match
+                copy_secret_code.remove(self.player_code[position])  # the already found element needs to be removed from the copied secred code list
 
-        self.has_color = has_color - match_color_position
+        self.has_color = has_color - match_color_position  # has_color is always bigger or the same as match_color_position
         self.match_color_position = match_color_position
 
     def update_code_feedback_message(self):
