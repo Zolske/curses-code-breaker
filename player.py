@@ -70,4 +70,22 @@ class PlayerObject:
         code_elements = ["RED", "GREEN", "BLUE", "YELLOW"]
         self.secret_code = random.choices(code_elements, k=4)
 
-    def
+    def check_secret_code(self):
+        copy_secret_code = self.secret_code.copy()
+        match_color_position = 0
+        has_color = 0
+        for position in range(4):
+            if self.secret_code[position] == self.player_code[position]:
+                match_color_position += 1
+        for position in range(4):
+            try:
+                copy_secret_code.index(self.player_code[position])
+            except:
+                pass
+            else:
+                has_color += 1
+                copy_secret_code.remove(self.player_code[position])
+
+        has_color = has_color - match_color_position
+
+    # TODO implement check for match color
