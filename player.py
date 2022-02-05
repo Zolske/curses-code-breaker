@@ -43,6 +43,7 @@ class PlayerObject:
                                   ]
         self.has_color = 0
         self.match_color_position = 0
+        self.player_code_matches_secret_code = False
 
     def arrow_input(self, arrow_key):
         # TODO tidy up code
@@ -87,14 +88,12 @@ class PlayerObject:
                 self.update_player_code()  # update before current position is changed
                 self.check_secret_code()  # need to update values before feedback message
                 self.update_code_feedback_message()  # updates the "code feedback" message
+                self.is_the_game_over()  # checks if the game is over
                 self.set_feedback_marker()  # sets the feedback marker on the board
                 if self.current_position[0] >= 0:  # stop at 0, otherwise it is going out of range
                     self.current_position[0] -= 1  # reduce the row number, go up
                     self.current_position[1] = 0  # go to left field
                     self.color_mark_map[self.current_position[0]][0] = 'RED'  # set the new field in the new row to red
-
-
-
 
         return [self.current_position, self.color_mark_map[self.current_position[0]][self.current_position[1]]]  # [current-position-row, current-position-field]['color-at-current-position']
 
@@ -169,4 +168,12 @@ class PlayerObject:
             color_count -= 1  # subtracts the match_count because it has already been printed once and to avoid endless loop
             field += 1  # increments the field so on the next loop the position changes (can not be over 3)
 
-
+    def is_the_game_over(self):
+        game_over_message = curses.newwin(3, 56, 32, 22)
+        game_over_message.erase()
+        if self.current_position[0] == 0 and self.match_color_position != 4:
+            game_over_message.addstr(f" Sorry, but you have not broken the code !!!\n The secret code was: \n {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}")
+            game_over_message.refresh()
+        elif self.match_color_position == 4:
+            game_over_message.addstr(f" Congratulations, you have broken the code !!!\n The secret code was: \n {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}")
+            game_over_message.refresh()
