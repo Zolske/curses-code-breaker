@@ -11,6 +11,17 @@ import time
 import os
 
 
+def clear_console():
+    command = 'clear'
+    command = 'tput civis'
+    if os.name in ('nt', 'dos'):  # If Machine is running on Windows, use cls
+        command = 'cls'
+    os.system(command)
+
+
+clear_console()
+
+
 def main(screen):
     # color pairs used by 'curses' and accessible over variable below, 1st text, 2nd background
     curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_RED)
@@ -29,7 +40,7 @@ def main(screen):
     FEEDB = curses.color_pair(6)  # for feedback-marker
     HIGHLIGHT = curses.color_pair(7)
     ORIGINAL = curses.color_pair(8)
-    curses.curs_set(0)  # make cursor invisible
+    #curses.curs_set(0)  # make cursor invisible
 
     def player_move():
         # waits for the user to press a key on the keyboard
@@ -127,21 +138,14 @@ def main(screen):
     while True:  # runs a loop till the user presses 'q' to get out
         if player_move() == 'KEY_SEND':
             player_object.stop_time = True
-            curses.nocbreak()
-            screen.keypad(False)
-            curses.echo()
-            curses.endwin()
+            # curses.nocbreak()
+            # screen.keypad(False)
+            # curses.echo()
+            # curses.endwin()
             break
 
 
 wrapper(main)
-
-
-def clear_console():
-    command = 'clear'
-    if os.name in ('nt', 'dos'):  # If Machine is running on Windows, use cls
-        command = 'cls'
-    os.system(command)
 
 
 clear_console()
