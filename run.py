@@ -24,11 +24,11 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('code_breaker_global_high_score')
 
-global_high_score = SHEET.worksheet('global_high_score')
+#global_high_score = SHEET.worksheet('global_high_score')
 
-data = global_high_score.get_all_values()
+#data = global_high_score.get_all_values()
 
-print(data)
+#print(data)
 
 
 
@@ -67,6 +67,10 @@ def restart_program():
     """Restarts the current program.
     Note: this function does not return. Any cleanup action (like
     saving data) must be done before calling this function."""
+    curses.nocbreak()
+    screen.keypad(False)
+    curses.echo()
+    curses.endwin()
     python = sys.executable
     os.execl(python, python, * sys.argv)
 
@@ -82,7 +86,7 @@ def player_move():
     if user_arrow_input == '1':  # ends the program if user presses '1'
         return True
     elif user_arrow_input == '2':  # restarts program if user presses '2'
-        restart_program()
+        # restart_program()
     # saves the color of the current location according to the color_mark_map in the player object
     current_color = player_object.color_mark_map[player_object.current_position[0]][player_object.current_position[1]]
     # adds 1 to the index value of the color_order, can be used on the equivalent curses.color_pair()
@@ -127,7 +131,7 @@ game_menu = menu.Game()
 player_object = player.PlayerObject()
 # generates the secret code
 # TODO nex line of code disabled for testing, player_object.generate_secret_random_number()
-# player_object.generate_secret_random_number()
+player_object.generate_secret_random_number()
 # prints the main game menu on the screen, add '\n' to the loop for terminal but remove it for heroku
 for position in range(44):
     screen.addstr(f"{game_menu.line[position]}")
