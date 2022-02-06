@@ -2,9 +2,13 @@ import random
 import curses
 import menu
 
+
 class PlayerObject:
     def __init__(self):
-        self.secret_code = [],
+        # TODO disabled for testing, self.secret_code = [],
+        # self.secret_code = [],
+        # TODO only enabled for testing, self.secret_code = ['RED', 'RED', 'RED', 'RED'],
+        self.secret_code = ['RED', 'RED', 'RED', 'RED']
         self.player_code = [],
         self.current_position = [9, 0]  # row 10, first left, current position of the marker
         self.color_order = ['RED', 'GREEN', 'BLUE', 'YELLOW', 'BLACK']  # is important to cycle true the colors
@@ -44,6 +48,10 @@ class PlayerObject:
         self.has_color = 0
         self.match_color_position = 0
         self.player_code_matches_secret_code = False
+        self.stop_time = False
+        self.player_time_seconds_total = 0
+        self.player_time_seconds = 0
+        self.player_time_minutes = 0
 
     def arrow_input(self, arrow_key):
         # TODO tidy up code
@@ -172,8 +180,10 @@ class PlayerObject:
         game_over_message = curses.newwin(3, 56, 32, 22)
         game_over_message.erase()
         if self.current_position[0] == 0 and self.match_color_position != 4:
-            game_over_message.addstr(f" Sorry, but you have not broken the code !!!\n The secret code was: \n {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}")
+            self.stop_time = True
+            game_over_message.addstr(f" Sorry, but you have not broken the code !!!\n You played {self.player_time_minutes} minute(s) and {self.player_time_seconds} second(s).\n The secret code was: {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}")
             game_over_message.refresh()
         elif self.match_color_position == 4:
-            game_over_message.addstr(f" Congratulations, you have broken the code !!!\n The secret code was: \n {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}")
+            self.stop_time = True
+            game_over_message.addstr(f" Congratulations, you have broken the code !!!\n It took you {self.player_time_minutes} minute(s) and {self.player_time_seconds} second(s).\n The secret code was: {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}")
             game_over_message.refresh()

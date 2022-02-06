@@ -30,7 +30,7 @@ def main(screen):
     HIGHLIGHT = curses.color_pair(7)
     ORIGINAL = curses.color_pair(8)
     curses.curs_set(0)  # make cursor invisible
-    exit_game = False  # is changed in the last loop to True and is needed to break the time thread loop
+    # stop_time = False  # is changed in the last loop to True and is needed to break the time-threaded-loop
 
     def player_move():
         # waits for the user to press a key on the keyboard
@@ -77,7 +77,8 @@ def main(screen):
     # create the player_object which contains data for current position, secret code, player code
     player_object = player.PlayerObject()
     # generates the secret code
-    player_object.generate_secret_random_number()
+    # TODO nex line of code disabled for testing, player_object.generate_secret_random_number()
+    # player_object.generate_secret_random_number()
     # prints the main game menu on the screen, add '\n' to the loop for terminal but remove it for heroku
     for position in range(44):
         screen.addstr(f"{game_menu.line[position]}\n")
@@ -90,7 +91,7 @@ def main(screen):
         minutes_int = 0
 
         while True:
-            if exit_game:
+            if player_object.stop_time:
                 break
             time.sleep(1)
             seconds_int += 1
@@ -105,6 +106,9 @@ def main(screen):
             timer_window.erase()
             timer_window.addstr(f"{minutes_text}:{seconds_text}")
             timer_window.refresh()
+            player_object.player_time_seconds_total = (minutes_int * 60) + seconds_int
+            player_object.player_time_seconds = seconds_int
+            player_object.player_time_minutes = minutes_int
 
     # highlights the text 'press the 'End' key' when the user has selected 4 colors
     end_key_message = curses.newwin(1, 20, 41, 24)
@@ -123,7 +127,7 @@ def main(screen):
 
     while True:  # runns a loop till the user presses 'q' to get out
         if player_move() == 'q':
-            exit_game = True
+            player_object.stop_time = True
             curses.nocbreak()
             screen.keypad(False)
             curses.echo()
