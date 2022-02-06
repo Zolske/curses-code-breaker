@@ -10,6 +10,26 @@ import threading
 import time
 import os
 import sys
+import gspread
+from google.oauth2.service_account import Credentials
+
+SCOPE = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/drive"
+    ]
+
+CREDS = Credentials.from_service_account_file('creds.json')
+SCOPED_CREDS = CREDS.with_scopes(SCOPE)
+GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
+SHEET = GSPREAD_CLIENT.open('code_breaker_global_high_score')
+
+global_high_score = SHEET.worksheet('global_high_score')
+
+data = global_high_score.get_all_values()
+
+print(data)
+
 
 
 #def main(screen):
@@ -52,6 +72,9 @@ def restart_program():
 
 
 def player_move():
+    """
+    Processes the user key input.
+    """
     # waits for the user to press a key on the keyboard
     user_arrow_input = screen.getkey()
     # if the user presses 'q' the function exits and returns 'q',
@@ -107,7 +130,7 @@ player_object = player.PlayerObject()
 # player_object.generate_secret_random_number()
 # prints the main game menu on the screen, add '\n' to the loop for terminal but remove it for heroku
 for position in range(44):
-    screen.addstr(f"{game_menu.line[position]}\n")
+    screen.addstr(f"{game_menu.line[position]}")
 screen.refresh()
 game_menu.set_colors()
 screen.refresh()
