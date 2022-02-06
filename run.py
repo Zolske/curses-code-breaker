@@ -43,15 +43,16 @@ ORIGINAL = curses.color_pair(8)
 
 def player_move():
     # waits for the user to press a key on the keyboard
-    user_arrow_input = screen.getch()  #getkey()
+    user_arrow_input = screen.getkey()
     # if the user presses 'q' the function exits and returns 'q',
     # this will exit the program because it will break the loop and there is nothing left to do for the program
-    if user_arrow_input == curses.KEY_SEND:
-        return '/'
+    if user_arrow_input == '1':
+        return True
     # saves the color of the current location according to the color_mark_map in the player object
     current_color = player_object.color_mark_map[player_object.current_position[0]][player_object.current_position[1]]
     # adds 1 to the index value of the color_order, can be used on the equivalent curses.color_pair()
     current_color = player_object.color_order.index(current_color) + 1
+    marker = curses.newpad(3, 10)
     # is needed so the 'addstr' pad can be added
     marker.erase()
     # creates the 'addstr' pad with the color according to the position
@@ -71,15 +72,17 @@ def player_move():
     marker.addstr(game_menu.content_marker, curses.color_pair(current_color))
     # positions the 'select' pad at the current position
     marker.refresh(*game_menu.position_select[player_object.current_position[0]][player_object.current_position[1]])
+    # highlights the text 'press the 'End' key' when the user has selected 4 colors
+    end_key_message = curses.newpad(1, 20)
     if player_object.color_mark_map[player_object.current_position[0]].count('BLACK') == 0:
         end_key_message.erase()
-        end_key_message.addstr("press the 'End' key", HIGHLIGHT)
-        end_key_message.refresh(0, 0, 41, 24, 41, 53)
+        end_key_message.addstr("press the '#' key", HIGHLIGHT)
+        end_key_message.refresh(0, 0, 41, 24, 41, 41)
         screen.refresh()
     else:
         end_key_message.erase()
-        end_key_message.addstr("press the 'End' key", ORIGINAL)
-        end_key_message.refresh(0, 0, 41, 24, 41, 53)
+        end_key_message.addstr("press the '#' key", ORIGINAL)
+        end_key_message.refresh(0, 0, 41, 24, 41, 41)
         screen.refresh()
 
 
@@ -92,7 +95,9 @@ player_object = player.PlayerObject()
 # player_object.generate_secret_random_number()
 # prints the main game menu on the screen, add '\n' to the loop for terminal but remove it for heroku
 for position in range(44):
-    screen.addstr(f"{game_menu.line[position]}")
+    screen.addstr(f"{game_menu.line[position]}\n")
+screen.refresh()
+game_menu.set_colors()
 screen.refresh()
 
 
@@ -123,27 +128,11 @@ def timer():
         player_object.player_time_minutes = minutes_int
 
 
-# highlights the text 'press the 'End' key' when the user has selected 4 colors
-end_key_message = curses.newpad(1, 20)
-# create the 'pad' for the player code-marker (3 row, 10 columns)
-marker = curses.newpad(3, 10)
-# create the 'pad' for the feedback-marker, after turn (1 row, 3 columns)
-feedback = curses.newpad(1, 3)
-# write first content into pad
-marker.addstr(game_menu.content_marker, RED)
-# screen needs to be refreshed after writing content into pad
-screen.refresh()
-# refreshes the pad screen and sets pad to location
-marker.refresh(*game_menu.position_select[9][0])
 timer_thread = threading.Thread(target=timer)  # allows the timer to run in the background
 timer_thread.start()  # starts the timer thread on the side
 while True:  # runs a loop till the user presses 'q' to get out
-    if player_move() == '/':
+    if player_move():
         player_object.stop_time = True
-        # curses.nocbreak()
-        # screen.keypad(False)
-        # curses.echo()
-        # curses.endwin()
         break
 
 

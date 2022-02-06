@@ -1,23 +1,26 @@
+import curses
+
+
 class Game:
     def __init__(self):
         #  alignment "0123456789a123456789b123456789c123456789d123456789e123456789f123456789g123456789h"
-        self.line = ["                      ╭┈┈┈┈┈┈┈┈┈╮     ╭┈┈┈┈┈┈┈┈┈┈╮     ╭┈┈┈┈┈┈╮     ╭┈┈┈┈┈┈┈┈┈╮ ", #00
-                     "    ╓━TIME━━╥━TIMER━╖ ╞1═RESTART╡     ╞2═SETTINGS╡     ╞3═HELP╡     ╞4═CONTACT╡ ", #01
-                     "    ║ 00:00 ║ 00:00 ║ ╰┈┈┈┈┈┈┈┈┈╯     ╰┈┈┈┈┈┈┈┈┈┈╯ __  ╰┈┈┈┈┈┈╯     ╰┈┈┈┈┈┈┈┈┈╯ ", #02
-                     "╔═╤═╬═══╦═══╬═══╦═══╣           _____  ____   ____/ / ___                       ", #03
-                     "║ ┃ ║1  ║   ║   ║   ║          / ___/ / __ \ / __  / / _ \                      ", #04
-                     "╟━╋━╢   ║   ║   ║   ║         / /__  / /_/ // /_/ / /  __/                      ", #05
-                     "║ ┃ ║   ║   ║   ║   ║         \___/  \____/ \__,_/  \___/                       ", #06
-                     "╠═╪═╬═══╬═══╬═══╬═══╣       __                          __                      ", #07
-                     "║ ┃ ║2  ║   ║   ║   ║      / /_    ____  ___   ____ _  / /__  ___    ____       ", #08
-                     "╟━╋━╢   ║   ║   ║   ║     / __ \  / __/ / _ \ / __ `/ / //_/ / _ \  / __/       ", #09
-                     "║ ┃ ║   ║   ║   ║   ║    / /_/ / / /   /  __// /_/ / / ,<   /  __/ / /          ", #10
-                     "╠═╪═╬═══╬═══╬═══╬═══╣   /_.___/ /_/    \___/ \__,_/ /_/|_|  \___/ /_/           ", #11
-                     "║ ┃ ║3  ║   ║   ║   ║                                                           ", #12
-                     "╟━╋━╢   ║   ║   ║   ║╭━━━━━━GLOBAL━HIGHSCORE━━━━━━┰━━━━━━LOCAL━━HIGHSCORE━━━━━━╮", #13
-                     "║ ┃ ║   ║   ║   ║   ║╞NAME══════════╤DATE══╤SCORE═╪NAME══════════╤DATE══╤SCORE═╡", #14
-                     "╠═╪═╬═══╬═══╬═══╬═══╣┠━━━━━━━━━━━━━━╂━━━━━━╂━━━━━━╫━━━━━━━━━━━━━━╂━━━━━━╂━━━━━━┤", #15
-                     "║ ┃ ║4  ║   ║   ║   ║┠JOHN DOE      ┠YYMMDD┠000000╟              ┠      ┠      ┃", #16
+        self.line = ["                                                                                ", #00
+                     "    ╓━TIME━━╥━TIMER━╖   ╭┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈╮  ", #01
+                     "    ║ 00:00 ║ 00:00 ║   ╞1═EXIT╡ ╞2═RESTART╡ ╞3═SETTINGS╡ ╞4═HELP╡ ╞5═CONTACT╡  ", #02
+                     "╔═╤═╬═══╦═══╬═══╦═══╣   ╰┈┈┈┈┈┈╯ ╰┈┈┈┈┈┈┈┈┈╯ ╰┈┈┈┈┈┈┈┈┈┈╯ ╰┈┈┈┈┈┈╯ ╰┈┈┈┈┈┈┈┈┈╯  ", #03
+                     "║ ┃ ║1  ║   ║   ║   ║                              __                           ", #04
+                     "╟━╋━╢   ║   ║   ║   ║           _____  ____   ____/ / ___                       ", #05
+                     "║ ┃ ║   ║   ║   ║   ║          / ___/ / __ \ / __  / / _ \                      ", #06
+                     "╠═╪═╬═══╬═══╬═══╬═══╣         / /__  / /_/ // /_/ / /  __/                      ", #07
+                     "║ ┃ ║2  ║   ║   ║   ║         \___/  \____/ \__,_/  \___/                       ", #08
+                     "╟━╋━╢   ║   ║   ║   ║       __                          __                      ", #09
+                     "║ ┃ ║   ║   ║   ║   ║      / /_    ____  ___   ____ _  / /__  ___    ____       ", #10
+                     "╠═╪═╬═══╬═══╬═══╬═══╣     / __ \  / __/ / _ \ / __ `/ / //_/ / _ \  / __/       ", #11
+                     "║ ┃ ║3  ║   ║   ║   ║    / /_/ / / /   /  __// /_/ / / ,<   /  __/ / /          ", #12
+                     "╟━╋━╢   ║   ║   ║   ║   /_.___/ /_/    \___/ \__,_/ /_/|_|  \___/ /_/           ", #13
+                     "║ ┃ ║   ║   ║   ║   ║                                                           ", #14
+                     "╠═╪═╬═══╬═══╬═══╬═══╣╭━━━━━━GLOBAL━HIGHSCORE━━━━━━┰━━━━━━LOCAL━━HIGHSCORE━━━━━━╮", #15
+                     "║ ┃ ║4  ║   ║   ║   ║╞NAME══════════╤DATE══╤SCORE═╪NAME══════════╤DATE══╤SCORE═╡", #16
                      "╟━╋━╢   ║   ║   ║   ║┠━━━━━━━━━━━━━━╂━━━━━━╂━━━━━━╫━━━━━━━━━━━━━━╂━━━━━━╂━━━━━━┤", #17
                      "║ ┃ ║   ║   ║   ║   ║┠JOHN DOE      ┠YYMMDD┠000000╟              ┠      ┠      ┃", #18
                      "╠═╪═╬═══╬═══╬═══╬═══╣┠━━━━━━━━━━━━━━╂━━━━━━╂━━━━━━╫━━━━━━━━━━━━━━╂━━━━━━╂━━━━━━┤", #19
@@ -42,9 +45,9 @@ class Game:
                      "║ ┃ ║   ║   ║   ║   ║┃  left or right on the board                             ┃", #38
                      "╠═╪═╬═══╬═══╬═══╬═══╣┃> use the up ↑ & down ↓ arrow keys to change             ┃", #39
                      "║ ┃ ║10 ║   ║   ║   ║┃  the color of your code                                 ┃", #40
-                     "╟━╋━╢   ║   ║   ║   ║┃> press the 'End' key to confirm your turn               ┃", #41
+                     "╟━╋━╢   ║   ║   ║   ║┃> press the '#' key to confirm your turn                 ┃", #41
          # alignment "123456789a123456789b123456789c123456789d123456789e123456789f123456789g123456789h"
-                     "║ ┃ ║   ║   ║   ║   ║┃> press the marked number to get into the menu (3 help)  ┃", #42
+                     "║ ┃ ║   ║   ║   ║   ║┃> press the marked number to get into the menu (4 help)  ┃", #42
                      "╚═╧═╩═══╩═══╩═══╩═══╝╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯"  #43
                      ]
         self.content_marker = "    ↑  ↑ \n   ← →←↲→\n    ↓  ↓ "  # content of the pad / player-marker
@@ -105,3 +108,68 @@ class Game:
                                   [[0, 1, 36, 1, 36, 1], [0, 1, 36, 3, 36, 3], [0, 1, 38, 1, 38, 1], [0, 1, 38, 3, 38, 3]],  # turn / row 9 / index 8
                                   [[0, 1, 40, 1, 40, 1], [0, 1, 40, 3, 40, 3], [0, 1, 42, 1, 42, 1], [0, 1, 42, 3, 42, 3]],  # turn / row 10 / index 9
                                   ]
+
+    def set_colors(self):
+        """
+        Highlights important text on the game screen
+        """
+        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_RED)
+        curses.init_pair(7, curses.COLOR_BLUE, curses.COLOR_YELLOW)
+        curses.init_pair(8, curses.COLOR_WHITE, curses.COLOR_BLACK)
+        RED = curses.color_pair(1)
+        HIGHLIGHT = curses.color_pair(7)
+        ORIGINAL = curses.color_pair(8)
+        text_highlight_pad = curses.newpad(1, 10)
+        # top navigation bar
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("1", HIGHLIGHT)
+        text_highlight_pad.refresh(0, 0, 2, 25, 2, 25)
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("EXIT", HIGHLIGHT | curses.A_REVERSE)
+        text_highlight_pad.refresh(0, 0, 2, 27, 2, 30)
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("2", HIGHLIGHT)
+        text_highlight_pad.refresh(0, 0, 2, 34, 2, 34)
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("RESTART", HIGHLIGHT | curses.A_REVERSE)
+        text_highlight_pad.refresh(0, 0, 2, 36, 2, 42)
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("3", HIGHLIGHT)
+        text_highlight_pad.refresh(0, 0, 2, 46, 2, 46)
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("SETTINGS", HIGHLIGHT | curses.A_REVERSE)
+        text_highlight_pad.refresh(0, 0, 2, 48, 2, 55)
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("4", HIGHLIGHT)
+        text_highlight_pad.refresh(0, 0, 2, 59, 2, 59)
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("HELP", HIGHLIGHT | curses.A_REVERSE)
+        text_highlight_pad.refresh(0, 0, 2, 61, 2, 64)
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("5", HIGHLIGHT)
+        text_highlight_pad.refresh(0, 0, 2, 68, 2, 68)
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("CONTACT", HIGHLIGHT | curses.A_REVERSE)
+        text_highlight_pad.refresh(0, 0, 2, 70, 2, 76)
+        # arrows in Instructions
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("←", HIGHLIGHT)
+        text_highlight_pad.refresh(0, 0, 37, 37, 37, 37)
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("→", HIGHLIGHT)
+        text_highlight_pad.refresh(0, 0, 37, 47, 37, 47)
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("↑", HIGHLIGHT)
+        text_highlight_pad.refresh(0, 0, 39, 35, 39, 35)
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("↓", HIGHLIGHT)
+        text_highlight_pad.refresh(0, 0, 39, 44, 39, 44)
+        # number marker for help menu example
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("4", HIGHLIGHT)
+        text_highlight_pad.refresh(0, 0, 42, 70, 42, 70)
+        # add initial marker
+        marker = curses.newpad(3, 10)
+        marker.erase()
+        marker.addstr(self.content_marker, RED)
+        marker.refresh(0, 3, 40, 5, 42, 7)

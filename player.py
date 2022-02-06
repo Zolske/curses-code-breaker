@@ -154,7 +154,6 @@ class PlayerObject:
         feedback_message.addstr(f" On line {self.current_position[0] + 1} your code matches:\n> in color and position   {self.match_color_position} times,\n> only in color but not in position   {self.has_color} times,\n> you have {self.current_position[0]} turns left to 'break' the code.")
         feedback_message.refresh()
 
-
     def set_feedback_marker(self):
         """
         Sets the code feedback markers on the board.
