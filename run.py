@@ -43,10 +43,10 @@ ORIGINAL = curses.color_pair(8)
 
 def player_move():
     # waits for the user to press a key on the keyboard
-    user_arrow_input = screen.getkey()
+    user_arrow_input = screen.getch()  #getkey()
     # if the user presses 'q' the function exits and returns 'q',
     # this will exit the program because it will break the loop and there is nothing left to do for the program
-    if user_arrow_input == '/':
+    if user_arrow_input == curses.KEY_SEND:
         return '/'
     # saves the color of the current location according to the color_mark_map in the player object
     current_color = player_object.color_mark_map[player_object.current_position[0]][player_object.current_position[1]]
