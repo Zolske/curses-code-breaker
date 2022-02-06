@@ -81,7 +81,7 @@ def main(screen):
     # player_object.generate_secret_random_number()
     # prints the main game menu on the screen, add '\n' to the loop for terminal but remove it for heroku
     for position in range(44):
-        screen.addstr(f"{game_menu.line[position]}\n")
+        screen.addstr(f"{game_menu.line[position]}")
     screen.refresh()
 
     def timer():
