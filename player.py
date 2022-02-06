@@ -10,6 +10,7 @@ class PlayerObject:
         # TODO only enabled for testing, self.secret_code = ['RED', 'RED', 'RED', 'RED'],
         self.secret_code = ['RED', 'RED', 'RED', 'RED']
         self.player_code = [],
+        self.player_score = 0
         self.current_position = [9, 0]  # row 10, first left, current position of the marker
         self.color_order = ['RED', 'GREEN', 'BLUE', 'YELLOW', 'BLACK']  # is important to cycle true the colors
         self.color_mark_map = [['BLACK', 'BLACK', 'BLACK', 'BLACK'],  # turn / row 1 / index 0
@@ -187,6 +188,9 @@ class PlayerObject:
         feedback_marker_pad.refresh(*self.position_feedback_half[10][0])  # adds a marker in the code feedback section
 
     def is_the_game_over(self):
+        """
+        Checks if the game is finished, and outputs a message accordingly to the feedback code section
+        """
         game_over_message = curses.newwin(4, 56, 31, 22)
         game_over_message.erase()
         if self.current_position[0] == 0 and self.match_color_position != 4:
@@ -195,5 +199,13 @@ class PlayerObject:
             game_over_message.refresh()
         elif self.match_color_position == 4:
             self.stop_time = True
-            game_over_message.addstr(f" Congratulations, you have broken the code !!!\n It took you {self.player_time_minutes} minute(s) and {self.player_time_seconds} second(s).\n The secret code was: {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}")
+            self.calculate_player_score()
+            game_over_message.addstr(f" Congratulations, you have broken the code !!!\n It took you {self.player_time_minutes} minute(s) and {self.player_time_seconds} second(s).\n The secret code was: {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}\n Your score is: {self.player_score} (lines left {self.current_position[0]} * 200 - time {self.player_time_seconds_total}s)")
             game_over_message.refresh()
+
+    def calculate_player_score(self):
+        """
+        Calculates the player score. lines_left * 200 - time_needed
+        """
+        self.player_score = (self.current_position[0] * 200) - self.player_time_seconds_total
+
