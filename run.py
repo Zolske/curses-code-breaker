@@ -76,10 +76,18 @@ def main(screen):
             end_key_message.erase()
             end_key_message.addstr("press the 'End' key", HIGHLIGHT)
             end_key_message.refresh(0, 0, 41, 24, 41, 53)
+            try:
+                curses.curs_set(0)  # make cursor invisible
+            except:
+                pass
         else:
             end_key_message.erase()
             end_key_message.addstr("press the 'End' key", ORIGINAL)
             end_key_message.refresh(0, 0, 41, 24, 41, 53)
+            try:
+                curses.curs_set(0)  # make cursor invisible
+            except:
+                pass
 
     # create the game_menu object which contains data for displaying elements on the screen
     game_menu = menu.Game()
@@ -92,7 +100,7 @@ def main(screen):
     for position in range(44):
         screen.addstr(f"{game_menu.line[position]}")
     screen.refresh()
-    curses.curs_set(0)  # make cursor invisible
+
 
     def timer():
         seconds_text = '00'
