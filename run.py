@@ -40,6 +40,7 @@ def main(screen):
     FEEDB = curses.color_pair(6)  # for feedback-marker
     HIGHLIGHT = curses.color_pair(7)
     ORIGINAL = curses.color_pair(8)
+    curses.curs_set(0)  # make cursor invisible
 
     def player_move():
         # waits for the user to press a key on the keyboard
@@ -76,18 +77,11 @@ def main(screen):
             end_key_message.erase()
             end_key_message.addstr("press the 'End' key", HIGHLIGHT)
             end_key_message.refresh(0, 0, 41, 24, 41, 53)
-            try:
-                curses.curs_set(0)  # make cursor invisible
-            except:
-                pass
         else:
             end_key_message.erase()
             end_key_message.addstr("press the 'End' key", ORIGINAL)
             end_key_message.refresh(0, 0, 41, 24, 41, 53)
-            try:
-                curses.curs_set(0)  # make cursor invisible
-            except:
-                pass
+
 
     # create the game_menu object which contains data for displaying elements on the screen
     game_menu = menu.Game()
@@ -120,10 +114,10 @@ def main(screen):
             seconds_text = seconds_text.zfill(2)
             minutes_text = str(minutes_int)
             minutes_text = minutes_text.zfill(2)
-            timer_window = curses.newwin(1, 6, 2, 6)
+            timer_window = curses.newpad(1, 6)
             timer_window.erase()
             timer_window.addstr(f"{minutes_text}:{seconds_text}")
-            timer_window.refresh()
+            timer_window.refresh(0, 0, 2, 6, 2, 11)
             player_object.player_time_seconds_total = (minutes_int * 60) + seconds_int
             player_object.player_time_seconds = seconds_int
             player_object.player_time_minutes = minutes_int
