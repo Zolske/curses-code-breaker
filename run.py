@@ -29,7 +29,7 @@ def main(screen):
     FEEDB = curses.color_pair(6)  # for feedback-marker
     HIGHLIGHT = curses.color_pair(7)
     ORIGINAL = curses.color_pair(8)
-    # curses.curs_set(0)  # make cursor invisible
+    curses.curs_set(0)  # make cursor invisible
 
     def player_move():
         # waits for the user to press a key on the keyboard
@@ -65,11 +65,11 @@ def main(screen):
         if player_object.color_mark_map[player_object.current_position[0]].count('BLACK') == 0:
             end_key_message.erase()
             end_key_message.addstr("press the 'End' key", HIGHLIGHT)
-            end_key_message.refresh()
+            end_key_message.refresh(0, 0, 41, 24, 41, 53)
         else:
             end_key_message.erase()
             end_key_message.addstr("press the 'End' key", ORIGINAL)
-            end_key_message.refresh()
+            end_key_message.refresh(0, 0, 41, 24, 41, 53)
 
     # create the game_menu object which contains data for displaying elements on the screen
     game_menu = menu.Game()
@@ -110,7 +110,7 @@ def main(screen):
             player_object.player_time_minutes = minutes_int
 
     # highlights the text 'press the 'End' key' when the user has selected 4 colors
-    end_key_message = curses.newwin(1, 20, 41, 24)
+    end_key_message = curses.newpad(1, 20)
     # create the 'pad' for the player code-marker (3 row, 10 columns)
     marker = curses.newpad(3, 10)
     # create the 'pad' for the feedback-marker, after turn (1 row, 3 columns)
@@ -124,7 +124,7 @@ def main(screen):
     timer_thread = threading.Thread(target=timer)  # allows the timer to run in the background
     timer_thread.start()  # starts the timer thread on the side
 
-    while True:  # runns a loop till the user presses 'q' to get out
+    while True:  # runs a loop till the user presses 'q' to get out
         if player_move() == 'KEY_SEND':
             player_object.stop_time = True
             curses.nocbreak()
