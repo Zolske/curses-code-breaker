@@ -40,7 +40,6 @@ def main(screen):
     FEEDB = curses.color_pair(6)  # for feedback-marker
     HIGHLIGHT = curses.color_pair(7)
     ORIGINAL = curses.color_pair(8)
-    curses.curs_set(0)  # make cursor invisible
 
     def player_move():
         # waits for the user to press a key on the keyboard
@@ -93,6 +92,7 @@ def main(screen):
     for position in range(44):
         screen.addstr(f"{game_menu.line[position]}")
     screen.refresh()
+    curses.curs_set(0)  # make cursor invisible
 
     def timer():
         seconds_text = '00'
