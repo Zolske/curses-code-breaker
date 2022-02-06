@@ -16,11 +16,10 @@ screen = curses.initscr()
 curses.noecho()
 curses.cbreak()
 screen.keypad(True)
-if screen.getkey():
-    try:
-        curses.curs_set(0)  # make cursor invisible
-    except:
-        pass
+try:
+    curses.curs_set(0)  # make cursor invisible
+except:
+    pass
 
 # color pairs used by 'curses' and accessible over variable below, 1st text, 2nd background
 curses.start_color()
@@ -47,8 +46,8 @@ def player_move():
     user_arrow_input = screen.getkey()
     # if the user presses 'q' the function exits and returns 'q',
     # this will exit the program because it will break the loop and there is nothing left to do for the program
-    if user_arrow_input == 'KEY_SEND':
-        return 'KEY_SEND'
+    if user_arrow_input == 'q':
+        return 'q'
     # saves the color of the current location according to the color_mark_map in the player object
     current_color = player_object.color_mark_map[player_object.current_position[0]][player_object.current_position[1]]
     # adds 1 to the index value of the color_order, can be used on the equivalent curses.color_pair()
@@ -138,7 +137,7 @@ marker.refresh(*game_menu.position_select[9][0])
 timer_thread = threading.Thread(target=timer)  # allows the timer to run in the background
 timer_thread.start()  # starts the timer thread on the side
 while True:  # runs a loop till the user presses 'q' to get out
-    if player_move() == 'KEY_SEND':
+    if player_move() == 'q':
         player_object.stop_time = True
         # curses.nocbreak()
         # screen.keypad(False)
