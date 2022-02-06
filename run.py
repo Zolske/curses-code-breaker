@@ -8,6 +8,8 @@ import player
 from time import *
 import threading
 import time
+import os
+import sys
 
 
 #def main(screen):
@@ -41,13 +43,23 @@ HIGHLIGHT = curses.color_pair(7)
 ORIGINAL = curses.color_pair(8)
 
 
+def restart_program():
+    """Restarts the current program.
+    Note: this function does not return. Any cleanup action (like
+    saving data) must be done before calling this function."""
+    python = sys.executable
+    os.execl(python, python, * sys.argv)
+
+
 def player_move():
     # waits for the user to press a key on the keyboard
     user_arrow_input = screen.getkey()
     # if the user presses 'q' the function exits and returns 'q',
     # this will exit the program because it will break the loop and there is nothing left to do for the program
-    if user_arrow_input == '1':
+    if user_arrow_input == '1':  # ends the program if user presses '1'
         return True
+    elif user_arrow_input == '2':  # restarts program if user presses '2'
+        restart_program()
     # saves the color of the current location according to the color_mark_map in the player object
     current_color = player_object.color_mark_map[player_object.current_position[0]][player_object.current_position[1]]
     # adds 1 to the index value of the color_order, can be used on the equivalent curses.color_pair()
