@@ -7,6 +7,8 @@ import menu
 import player
 from time import *
 import threading
+import time
+import os
 
 
 def main(screen):
@@ -28,14 +30,11 @@ def main(screen):
     HIGHLIGHT = curses.color_pair(7)
     ORIGINAL = curses.color_pair(8)
     curses.curs_set(0)  # make cursor invisible
+    exit_game = False  # is changed in the last loop to True and is needed to break the time thread loop
 
     def player_move():
         # waits for the user to press a key on the keyboard
         user_arrow_input = screen.getkey()
-
-        # status_message.erase()  # part of status_message
-        # status_message.addstr(' '.join(player_object.secret_code))  # show userinput key for testing
-        # status_message.refresh()  # refresh status_message pad
 
         # if the user presses 'q' the function exits and returns 'q',
         # this will exit the program because it will break the loop and there is nothing left to do for the program
@@ -72,18 +71,7 @@ def main(screen):
             end_key_message.erase()
             end_key_message.addstr("press the 'End' key", ORIGINAL)
             end_key_message.refresh()
-        # status_message.addstr('KEY_LEFT')
-        # if screen.getkey() == 'KEY_LEFT':
-        #     # player_object.position[9][]
-        #     status_message.addstr('KEY_LEFT')
-        #     status_message.refresh()
-        #     screen.refresh()
-        # elif screen.getkey() == 'KEY_RIGHT':
-        #     pass
-        # elif screen.getkey() == 'KEY_UP':
-        #     pass
-        # elif screen.getkey() == 'KEY_DOWN':
-        #     pass
+
     # create the game_menu object which contains data for displaying elements on the screen
     game_menu = menu.Game()
     # create the player_object which contains data for current position, secret code, player code
@@ -96,17 +84,15 @@ def main(screen):
     screen.refresh()
 
     def timer():
-        timer_window = curses.newwin(1, 6, 2, 6)
         seconds_text = '00'
         seconds_int = 0
         minutes_text = '00'
         minutes_int = 0
 
         while True:
-            timer_window.erase()
-            timer_window.addstr(f"{minutes_text}:{seconds_text}")
-            timer_window.refresh()
-            sleep(1)
+            if exit_game:
+                break
+            time.sleep(1)
             seconds_int += 1
             if seconds_int == 60:
                 minutes_int += 1
@@ -115,11 +101,11 @@ def main(screen):
             seconds_text = seconds_text.zfill(2)
             minutes_text = str(minutes_int)
             minutes_text = minutes_text.zfill(2)
+            timer_window = curses.newwin(1, 6, 2, 6)
+            timer_window.erase()
+            timer_window.addstr(f"{minutes_text}:{seconds_text}")
+            timer_window.refresh()
 
-    timer_thread = threading.Thread(target=timer)  # allows the timer to run in the background
-    timer_thread.start()  # starts the timer thread on the side
-
-    status_message = curses.newwin(2, 40, 34, 22)
     # highlights the text 'press the 'End' key' when the user has selected 4 colors
     end_key_message = curses.newwin(1, 20, 41, 24)
     # create the 'pad' for the player code-marker (3 row, 10 columns)
@@ -132,79 +118,27 @@ def main(screen):
     screen.refresh()
     # refreshes the pad screen and sets pad to location
     marker.refresh(*game_menu.position_select[9][0])
+    timer_thread = threading.Thread(target=timer)  # allows the timer to run in the background
+    timer_thread.start()  # starts the timer thread on the side
 
-    # status_message.addstr('KEY_LEFT')
-    # status_message.refresh()
-    # screen.refresh()
-    # if pad should be used for more
-
-    # while True:
-    #     if screen.getkey() == 'KEY_LEFT':
-
-
-    # feedback.addstr(game_menu.content_feedback, FEEDB)
-    # screen.refresh()
-    # feedback.refresh(*game_menu.position_feedback[0][3])
-    # feedback.clear()
-    # feedback.refresh(*game_menu.position_feedback_half[0][2])
-    # feedback.refresh(*game_menu.position_marker[0][0])
-
-
-
-    # marker_10_1.addstr(panel, curses.color_pair(2))
-    # def change():
-    #     marker_10_1.refresh(0, 0, 40, 5, 42, 7)
-    # change()
-    # marker_10_1.refresh(0, 6, 40, 5, 42, 7)
-    # marker_10_1.refresh(0, 0, 40, 5, 42, 7)
-
-
-    # select_10_1 = curses.newpad(1, 2)
-    # select_10_2 = curses.newpad(1, 2)
-    # select_10_1.addstr("↑", curses.color_pair(1))
-    # select_10_1.refresh(0, 0, 40, 6, 41, 6)
-    # select_10_2.addstr("↓", curses.color_pair(2))
-    # select_10_2.refresh(0, 0, 42, 6, 43, 6)
-    # marker_10_1.refresh(0, 0, 40, 5, 42, 7)
-#     zolsk_pad = curses.newwin(1, 5, 0, 0,)
-#     test_pad = curses.newpad(1, 2)
-#     # screen.refresh()
-#     # zolsk_win.clear()
-#     zolsk_pad.addstr("1234", )
-#     test_pad.addstr("▉", curses.color_pair(2))
-#     zolsk_pad.refresh()
-#     test_pad.refresh(0, 0, 0, 4, 1, 5)
-#     # del zolsk_pad
-#     screen.refresh()
-#
-#     # del test_pad
-#     # screen.touchwin()
-#     var_test = test_pad
-#     screen.refresh()
-#     zolsk_pad.clear()
-#     zolsk_pad.addstr("1235", curses.color_pair(1))
-#     zolsk_pad.refresh()
-#     zolsk_pad.refresh()
-#     # test_pad.refresh(0, 0, 0, 4, 1, 5)
-#     # test_pad.addstr("Z")
-#     test_pad.refresh(0, 0, 0, 4, 1, 5)
-#     zolsk_pad.clear()
-#     zolsk_pad.addstr("1238", curses.color_pair(1))
-#     zolsk_pad.refresh()
-#     var_test.refresh(0, 0, 0, 5, 1, 5)
-#     # zolsk_pad.clear()
-#     # zolsk_pad.addstr("MM")
-#     # zolsk_pad.refresh()
-#     # screen.refresh()
-# #     zolsk_pad.refresh(3,3,0,0,0,0)
-# #     screen.refresh()
-#     for position in range(20):
-#         screen.addstr(position, 0, f"Hello World {position}")
-#
-#     screen.refresh()
     while True:  # runns a loop till the user presses 'q' to get out
         if player_move() == 'q':
+            exit_game = True
+            curses.nocbreak()
+            screen.keypad(False)
+            curses.echo()
+            curses.endwin()
             break
 
 
 wrapper(main)
+
+
+def clear_console():
+    command = 'clear'
+    if os.name in ('nt', 'dos'):  # If Machine is running on Windows, use cls
+        command = 'cls'
+    os.system(command)
+
+
+clear_console()
