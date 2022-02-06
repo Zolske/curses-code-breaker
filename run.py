@@ -46,8 +46,8 @@ def player_move():
     user_arrow_input = screen.getkey()
     # if the user presses 'q' the function exits and returns 'q',
     # this will exit the program because it will break the loop and there is nothing left to do for the program
-    if user_arrow_input == 'q':
-        return 'q'
+    if user_arrow_input == '/':
+        return '/'
     # saves the color of the current location according to the color_mark_map in the player object
     current_color = player_object.color_mark_map[player_object.current_position[0]][player_object.current_position[1]]
     # adds 1 to the index value of the color_order, can be used on the equivalent curses.color_pair()
@@ -117,6 +117,7 @@ def timer():
         timer_window.erase()
         timer_window.addstr(f"{minutes_text}:{seconds_text}")
         timer_window.refresh(0, 0, 2, 6, 2, 11)
+        screen.refresh()
         player_object.player_time_seconds_total = (minutes_int * 60) + seconds_int
         player_object.player_time_seconds = seconds_int
         player_object.player_time_minutes = minutes_int
@@ -137,7 +138,7 @@ marker.refresh(*game_menu.position_select[9][0])
 timer_thread = threading.Thread(target=timer)  # allows the timer to run in the background
 timer_thread.start()  # starts the timer thread on the side
 while True:  # runs a loop till the user presses 'q' to get out
-    if player_move() == 'q':
+    if player_move() == '/':
         player_object.stop_time = True
         # curses.nocbreak()
         # screen.keypad(False)

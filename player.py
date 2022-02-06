@@ -94,7 +94,7 @@ class PlayerObject:
                 self.color_mark_map[self.current_position[0]][self.current_position[1]] = 'RED'  # then change to red
             else:
                 self.color_mark_map[self.current_position[0]][self.current_position[1]] = self.color_order[index_color_order +1]  # otherwise, change to right color
-        elif arrow_key == 'KEY_END':
+        elif arrow_key == '#':
             if self.color_mark_map[self.current_position[0]].count('BLACK') == 0:  # only if there is no 'black' fields
                 self.update_player_code()  # update before current position is changed
                 self.check_secret_code()  # need to update values before feedback message
