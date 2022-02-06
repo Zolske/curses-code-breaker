@@ -31,11 +31,11 @@ class Game:
                      "╠═╪═╬═══╬═══╬═══╬═══╣┠━━━━━━━━━━━━━━╂━━━━━━╂━━━━━━╫━━━━━━━━━━━━━━╂━━━━━━╂━━━━━━┤", #27
                      "║ ┃ ║7  ║   ║   ║   ║┠JOHN DOE      ┠YYMMDD┠000000╟              ┠      ┠      ┃", #28
                      "╟━╋━╢   ║   ║   ║   ║╰━━━━━━━━━━━━━━┷━━━━━━┷━━━━━━╨━━━━━━━━━━━━━━┷━━━━━━┷━━━━━━╯", #29
-                     "║ ┃ ║   ║   ║   ║   ║                                                           ", #30
-                     "╠═╪═╬═══╬═══╬═══╬═══╣╭━━━CODE FEEDBACK━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮", #31
-                     "║ ┃ ║8  ║   ║   ║   ║┃ After you have set 4 colors in one line, you can press  ┃", #32
-                     "╟━╋━╢   ║   ║   ║   ║┃ the 'End' key to confirm your code. Your code will be   ┃", #33
-                     "║ ┃ ║   ║   ║   ║   ║┃ compared to the secret code, the feedback appears here. ┃", #34
+                     "║ ┃ ║   ║   ║   ║   ║╭━━━CODE FEEDBACK━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮", #30
+                     "╠═╪═╬═══╬═══╬═══╬═══╣┃ After you have set 4 colors in one line, you can press  ┃", #31
+                     "║ ┃ ║8  ║   ║   ║   ║┃ the 'End' key to confirm your code. Your code will be   ┃", #32
+                     "╟━╋━╢   ║   ║   ║   ║┃ compared to the secret code, the feedback appears here. ┃", #33
+                     "║ ┃ ║   ║   ║   ║   ║┃                                                         ┃", #34
                      "╠═╪═╬═══╬═══╬═══╬═══╣╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯", #35
                      "║ ┃ ║9  ║   ║   ║   ║╭━━━INSTRUCTIONS━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮", #36
                      "╟━╋━╢   ║   ║   ║   ║┃> use the left ← & right → arrow keys to move            ┃", #37
@@ -92,6 +92,7 @@ class Game:
                                   [[0, 0, 32, 1, 32, 1], [0, 0, 32, 3, 32, 3], [0, 0, 34, 1, 34, 1], [0, 0, 34, 3, 34, 3]],  # turn / row 8 / index 7
                                   [[0, 0, 36, 1, 36, 1], [0, 0, 36, 3, 36, 3], [0, 0, 38, 1, 38, 1], [0, 0, 38, 3, 38, 3]],  # turn / row 9 / index 8
                                   [[0, 0, 40, 1, 40, 1], [0, 0, 40, 3, 40, 3], [0, 0, 42, 1, 42, 1], [0, 0, 42, 3, 42, 3]],  # turn / row 10 / index 9
+                                  [[0, 0, 32, 46, 32, 46]],  # position in code feedback text out put
                                   ]
         self.position_feedback_half = [[[0, 1, 4, 1, 4, 1], [0, 1, 4, 3, 4, 3], [0, 1, 6, 1, 6, 1], [0, 1, 6, 3, 6, 3]],  # turn / row 1 / index 0
                                   [[0, 1, 8, 1, 8, 1], [0, 1, 8, 3, 8, 3], [0, 1, 10, 1, 10, 1], [0, 1, 10, 3, 10, 3]],  # turn / row 2 / index 1

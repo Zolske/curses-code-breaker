@@ -33,6 +33,7 @@ class PlayerObject:
                                   [[0, 0, 32, 1, 32, 1], [0, 0, 32, 3, 32, 3], [0, 0, 34, 1, 34, 1], [0, 0, 34, 3, 34, 3]],  # turn / row 8 / index 7
                                   [[0, 0, 36, 1, 36, 1], [0, 0, 36, 3, 36, 3], [0, 0, 38, 1, 38, 1], [0, 0, 38, 3, 38, 3]],  # turn / row 9 / index 8
                                   [[0, 0, 40, 1, 40, 1], [0, 0, 40, 3, 40, 3], [0, 0, 42, 1, 42, 1], [0, 0, 42, 3, 42, 3]],  # turn / row 10 / index 9
+                                  [[0, 0, 32, 46, 32, 46]],  # position in code feedback text out put
                                   ]
         self.position_feedback_half = [[[0, 1, 4, 1, 4, 1], [0, 1, 4, 3, 4, 3], [0, 1, 6, 1, 6, 1], [0, 1, 6, 3, 6, 3]],  # turn / row 1 / index 0
                                   [[0, 1, 8, 1, 8, 1], [0, 1, 8, 3, 8, 3], [0, 1, 10, 1, 10, 1], [0, 1, 10, 3, 10, 3]],  # turn / row 2 / index 1
@@ -44,6 +45,7 @@ class PlayerObject:
                                   [[0, 1, 32, 1, 32, 1], [0, 1, 32, 3, 32, 3], [0, 1, 34, 1, 34, 1], [0, 1, 34, 3, 34, 3]],  # turn / row 8 / index 7
                                   [[0, 1, 36, 1, 36, 1], [0, 1, 36, 3, 36, 3], [0, 1, 38, 1, 38, 1], [0, 1, 38, 3, 38, 3]],  # turn / row 9 / index 8
                                   [[0, 1, 40, 1, 40, 1], [0, 1, 40, 3, 40, 3], [0, 1, 42, 1, 42, 1], [0, 1, 42, 3, 42, 3]],  # turn / row 10 / index 9
+                                  [[0, 1, 33, 58, 33, 58]],  # position in code feedback text out put
                                   ]
         self.has_color = 0
         self.match_color_position = 0
@@ -96,8 +98,8 @@ class PlayerObject:
                 self.update_player_code()  # update before current position is changed
                 self.check_secret_code()  # need to update values before feedback message
                 self.update_code_feedback_message()  # updates the "code feedback" message
-                self.is_the_game_over()  # checks if the game is over
                 self.set_feedback_marker()  # sets the feedback marker on the board
+                self.is_the_game_over()  # checks if the game is over
                 if self.current_position[0] >= 0:  # stop at 0, otherwise it is going out of range
                     self.current_position[0] -= 1  # reduce the row number, go up
                     self.current_position[1] = 0  # go to left field
@@ -146,9 +148,9 @@ class PlayerObject:
         Checks the values in match_color_position and has_color and updates the message with the line of the last
         submitted code and how many turns are left to play.
         """
-        feedback_message = curses.newwin(3, 56, 32, 22)
+        feedback_message = curses.newwin(4, 56, 31, 22)
         feedback_message.erase()
-        feedback_message.addstr(f" On line {self.current_position[0] + 1} your code matches in color and position {self.match_color_position}\n times and only in color but not in position {self.has_color} times,\n you have {self.current_position[0]} turns left to 'break' the code.")
+        feedback_message.addstr(f" On line {self.current_position[0] + 1} your code matches:\n> in color and position   {self.match_color_position} times,\n> only in color but not in position   {self.has_color} times,\n> you have {self.current_position[0]} turns left to 'break' the code.")
         feedback_message.refresh()
 
     def set_feedback_marker(self):
@@ -176,8 +178,16 @@ class PlayerObject:
             color_count -= 1  # subtracts the match_count because it has already been printed once and to avoid endless loop
             field += 1  # increments the field so on the next loop the position changes (can not be over 3)
 
+        # should be always set even if there are no matches, is for the feedback code box to make it more clrear but not esential
+        feedback_marker_pad.erase()  # is needed to avoid errors
+        feedback_marker_pad.addstr(self.content_feedback, FEEDB)  # uses the content from content_feedback property and color variable FEEDB
+        feedback_marker_pad.refresh(*self.position_feedback[10][0])  # adds a marker in the code feedback section
+        feedback_marker_pad.erase()  # is needed to avoid errors
+        feedback_marker_pad.addstr(self.content_feedback, FEEDB)  # uses the content from content_feedback property and color variable FEEDB
+        feedback_marker_pad.refresh(*self.position_feedback_half[10][0])  # adds a marker in the code feedback section
+
     def is_the_game_over(self):
-        game_over_message = curses.newwin(3, 56, 32, 22)
+        game_over_message = curses.newwin(4, 56, 31, 22)
         game_over_message.erase()
         if self.current_position[0] == 0 and self.match_color_position != 4:
             self.stop_time = True
