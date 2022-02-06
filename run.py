@@ -29,8 +29,7 @@ def main(screen):
     FEEDB = curses.color_pair(6)  # for feedback-marker
     HIGHLIGHT = curses.color_pair(7)
     ORIGINAL = curses.color_pair(8)
-    curses.curs_set(0)  # make cursor invisible
-    # stop_time = False  # is changed in the last loop to True and is needed to break the time-threaded-loop
+    # curses.curs_set(0)  # make cursor invisible
 
     def player_move():
         # waits for the user to press a key on the keyboard
