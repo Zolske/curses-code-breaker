@@ -154,6 +154,7 @@ class PlayerObject:
         feedback_message.addstr(f" On line {self.current_position[0] + 1} your code matches:\n> in color and position   {self.match_color_position} times,\n> only in color but not in position   {self.has_color} times,\n> you have {self.current_position[0]} turns left to 'break' the code.")
         feedback_message.refresh()
 
+
     def set_feedback_marker(self):
         """
         Sets the code feedback markers on the board.
@@ -169,6 +170,7 @@ class PlayerObject:
             feedback_marker_pad.erase()  # is needed to avoid errors
             feedback_marker_pad.addstr(self.content_feedback, FEEDB)  # uses the content from content_feedback property and color variable FEEDB
             feedback_marker_pad.refresh(*self.position_feedback[self.current_position[0]][field])  # sets the marker depending on the value of current position and the field (no more then 3)
+
             match_count -= 1  # subtracts the match_count because it has already been printed once and to avoid endless loop
             field += 1  # increments the field so on the next loop the position changes (can not be over 3)
 
@@ -176,6 +178,7 @@ class PlayerObject:
             feedback_marker_pad.erase()  # is needed to avoid errors
             feedback_marker_pad.addstr(self.content_feedback, FEEDB)  # uses the content from content_feedback property and color variable FEEDB
             feedback_marker_pad.refresh(*self.position_feedback_half[self.current_position[0]][field])  # sets the marker depending on the value of current position and the field (no more then 3)
+
             color_count -= 1  # subtracts the match_count because it has already been printed once and to avoid endless loop
             field += 1  # increments the field so on the next loop the position changes (can not be over 3)
 
@@ -183,9 +186,11 @@ class PlayerObject:
         feedback_marker_pad.erase()  # is needed to avoid errors
         feedback_marker_pad.addstr(self.content_feedback, FEEDB)  # uses the content from content_feedback property and color variable FEEDB
         feedback_marker_pad.refresh(*self.position_feedback[10][0])  # adds a marker in the code feedback section
+
         feedback_marker_pad.erase()  # is needed to avoid errors
         feedback_marker_pad.addstr(self.content_feedback, FEEDB)  # uses the content from content_feedback property and color variable FEEDB
         feedback_marker_pad.refresh(*self.position_feedback_half[10][0])  # adds a marker in the code feedback section
+
 
     def is_the_game_over(self):
         """
@@ -197,11 +202,13 @@ class PlayerObject:
             self.stop_time = True
             game_over_message.addstr(f" Sorry, but you have not broken the code !!!\n You played {self.player_time_minutes} minute(s) and {self.player_time_seconds} second(s).\n The secret code was: {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}")
             game_over_message.refresh()
+
         elif self.match_color_position == 4:
             self.stop_time = True
             self.calculate_player_score()
             game_over_message.addstr(f" Congratulations, you have broken the code !!!\n It took you {self.player_time_minutes} minute(s) and {self.player_time_seconds} second(s).\n The secret code was: {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}\n Your score is: {self.player_score} (lines left {self.current_position[0]} * 200 - time {self.player_time_seconds_total}s)")
             game_over_message.refresh()
+
 
     def calculate_player_score(self):
         """

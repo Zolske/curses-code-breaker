@@ -76,10 +76,12 @@ def player_move():
         end_key_message.erase()
         end_key_message.addstr("press the 'End' key", HIGHLIGHT)
         end_key_message.refresh(0, 0, 41, 24, 41, 53)
+        screen.refresh()
     else:
         end_key_message.erase()
         end_key_message.addstr("press the 'End' key", ORIGINAL)
         end_key_message.refresh(0, 0, 41, 24, 41, 53)
+        screen.refresh()
 
 
 # create the game_menu object which contains data for displaying elements on the screen
