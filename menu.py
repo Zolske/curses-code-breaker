@@ -176,6 +176,12 @@ class Game:
         marker.refresh(0, 3, 40, 5, 42, 7)
 
     def start_game(self, screen):
+        """
+        Prints the background on the screen and sets the color.
+        :param screen:  needs the curses window object
+        """
+        screen.clear()
+        # prints the main game menu on the screen, add '\n' to the loop for terminal but remove it for heroku
         if self.new_line_character:
             for position in range(44):
                 screen.addstr(f"{self.line[position]}\n")

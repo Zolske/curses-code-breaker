@@ -1,5 +1,6 @@
 import random
 import curses
+import time
 import menu
 
 
@@ -52,6 +53,7 @@ class PlayerObject:
         self.match_color_position = 0
         self.player_code_matches_secret_code = False
         self.stop_time = False
+        self.reset_time = False
         self.player_time_seconds_total = 0
         self.player_time_seconds = 0
         self.player_time_minutes = 0
@@ -214,4 +216,34 @@ class PlayerObject:
         Calculates the player score. lines_left * 200 - time_needed
         """
         self.player_score = (self.current_position[0] * 200) - self.player_time_seconds_total
+
+
+    def reset_player(self):
+        """
+        Restarts the player attributes in the player Object, restarts the timer, generates a new secret code,
+        clears the board from the marker and set it back to the beginning.
+        :param screen: needs the curses window object
+        """
+        self.player_code = []
+        self.player_score = 0
+        self.current_position = [9, 0]  # row 10, first left, current position of the marker
+        self.color_mark_map = [['BLACK', 'BLACK', 'BLACK', 'BLACK'],  # turn / row 1 / index 0
+                                ['BLACK', 'BLACK', 'BLACK', 'BLACK'],  # turn / row 2 / index 1
+                                ['BLACK', 'BLACK', 'BLACK', 'BLACK'],  # turn / row 3 / index 2
+                                ['BLACK', 'BLACK', 'BLACK', 'BLACK'],  # turn / row 4 / index 3
+                                ['BLACK', 'BLACK', 'BLACK', 'BLACK'],  # turn / row 5 / index 4
+                                ['BLACK', 'BLACK', 'BLACK', 'BLACK'],  # turn / row 6 / index 5
+                                ['BLACK', 'BLACK', 'BLACK', 'BLACK'],  # turn / row 7 / index 6
+                                ['BLACK', 'BLACK', 'BLACK', 'BLACK'],  # turn / row 8 / index 7
+                                ['BLACK', 'BLACK', 'BLACK', 'BLACK'],  # turn / row 9 / index 8
+                                ['RED', 'BLACK', 'BLACK', 'BLACK']]  # turn / row 10 / index 9 / do not set ',' on the end!
+        self.has_color = 0
+        self.match_color_position = 0
+        self.player_code_matches_secret_code = False
+        self.reset_time = True
+        self.player_time_seconds_total = 0
+        self.player_time_seconds = 0
+        self.player_time_minutes = 0
+        self.generate_secret_random_number()
+
 

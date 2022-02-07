@@ -60,18 +60,6 @@ HIGHLIGHT = curses.color_pair(7)
 ORIGINAL = curses.color_pair(8)
 
 
-def restart_program():
-    """Restarts the current program.
-    Note: this function does not return. Any cleanup action (like
-    saving data) must be done before calling this function."""
-    curses.nocbreak()
-    screen.keypad(False)
-    curses.echo()
-    curses.endwin()
-    python = sys.executable
-    os.execl(python, python, * sys.argv)
-
-
 def player_move():
     """
     Processes the user key input.
@@ -82,8 +70,9 @@ def player_move():
     # this will exit the program because it will break the loop and there is nothing left to do for the program
     if user_arrow_input == '1':  # ends the program if user presses '1'
         return True
-    # elif user_arrow_input == '2':  # restarts program if user presses '2'
-        # restart_program()
+    elif user_arrow_input == '2':  # resets the game if the user presses '2'
+        game_menu.start_game(screen)
+        player_object.reset_player()
     # saves the color of the current location according to the color_mark_map in the player object
     current_color = player_object.color_mark_map[player_object.current_position[0]][player_object.current_position[1]]
     # adds 1 to the index value of the color_order, can be used on the equivalent curses.color_pair()
@@ -122,27 +111,6 @@ def player_move():
         screen.refresh()
 
 
-# create the game_menu object which contains data for displaying elements on the screen
-game_menu = menu.Game()
-try:
-    curses.curs_set(0)  # make cursor invisible
-except:
-    game_menu.new_line_character = False
-# create the player_object which contains data for current position, secret code, player code
-player_object = player.PlayerObject()
-# generates the secret code
-# TODO nex line of code disabled for testing, player_object.generate_secret_random_number()
-player_object.generate_secret_random_number()
-# prints the main game menu on the screen, add '\n' to the loop for terminal but remove it for heroku
-
-game_menu.start_game(screen)
-#for position in range(44):
-#    screen.addstr(f"{game_menu.line[position]}")
-#screen.refresh()
-#game_menu.set_colors()
-#screen.refresh()
-
-
 def timer():
     seconds_text = '00'
     seconds_int = 0
@@ -160,6 +128,12 @@ def timer():
         seconds_text = seconds_text.zfill(2)
         minutes_text = str(minutes_int)
         minutes_text = minutes_text.zfill(2)
+        if player_object.reset_time:
+            player_object.reset_time = False
+            seconds_int = 0
+            seconds_text = '00'
+            minutes_int = 0
+            minutes_text = '00'
         timer_window = curses.newpad(1, 6)
         timer_window.erase()
         timer_window.addstr(f"{minutes_text}:{seconds_text}")
@@ -169,6 +143,15 @@ def timer():
         player_object.player_time_seconds = seconds_int
         player_object.player_time_minutes = minutes_int
 
+
+# create the game_menu object which contains data for displaying elements on the screen
+game_menu = menu.Game()
+# create the player_object which contains data for current position, secret code, player code
+player_object = player.PlayerObject()
+# generates the secret code
+player_object.generate_secret_random_number()
+# prints the background to the screen and sets the colors
+game_menu.start_game(screen)
 
 timer_thread = threading.Thread(target=timer)  # allows the timer to run in the background
 timer_thread.start()  # starts the timer thread on the side
