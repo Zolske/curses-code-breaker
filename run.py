@@ -38,6 +38,7 @@ screen = curses.initscr()
 curses.noecho()
 curses.cbreak()
 screen.keypad(True)
+curses.curs_set(False)
 
 
 # color pairs used by 'curses' and accessible over variable below, 1st text, 2nd background
@@ -146,6 +147,13 @@ def timer():
 
 # create the game_menu object which contains data for displaying elements on the screen
 game_menu = menu.Game()
+# code instituteds browser terminal will raise an error which will switch the new_line_character in the Game object to False,
+# the start_game() method in the Game object will print the background without the \n character which otherwise would raise an error
+try:
+    curses.curs_set(0)
+except:
+    game_menu.new_line_character = False
+
 # create the player_object which contains data for current position, secret code, player code
 player_object = player.PlayerObject()
 # generates the secret code
