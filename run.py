@@ -38,10 +38,7 @@ screen = curses.initscr()
 curses.noecho()
 curses.cbreak()
 screen.keypad(True)
-try:
-    curses.curs_set(0)  # make cursor invisible
-except:
-    pass
+
 
 # color pairs used by 'curses' and accessible over variable below, 1st text, 2nd background
 curses.start_color()
@@ -127,17 +124,23 @@ def player_move():
 
 # create the game_menu object which contains data for displaying elements on the screen
 game_menu = menu.Game()
+try:
+    curses.curs_set(0)  # make cursor invisible
+except:
+    game_menu.new_line_character = False
 # create the player_object which contains data for current position, secret code, player code
 player_object = player.PlayerObject()
 # generates the secret code
 # TODO nex line of code disabled for testing, player_object.generate_secret_random_number()
 player_object.generate_secret_random_number()
 # prints the main game menu on the screen, add '\n' to the loop for terminal but remove it for heroku
-for position in range(44):
-    screen.addstr(f"{game_menu.line[position]}")
-screen.refresh()
-game_menu.set_colors()
-screen.refresh()
+
+game_menu.start_game(screen)
+#for position in range(44):
+#    screen.addstr(f"{game_menu.line[position]}")
+#screen.refresh()
+#game_menu.set_colors()
+#screen.refresh()
 
 
 def timer():

@@ -108,6 +108,7 @@ class Game:
                                   [[0, 1, 36, 1, 36, 1], [0, 1, 36, 3, 36, 3], [0, 1, 38, 1, 38, 1], [0, 1, 38, 3, 38, 3]],  # turn / row 9 / index 8
                                   [[0, 1, 40, 1, 40, 1], [0, 1, 40, 3, 40, 3], [0, 1, 42, 1, 42, 1], [0, 1, 42, 3, 42, 3]],  # turn / row 10 / index 9
                                   ]
+        self.new_line_character = True
 
     def set_colors(self):
         """
@@ -173,3 +174,15 @@ class Game:
         marker.erase()
         marker.addstr(self.content_marker, RED)
         marker.refresh(0, 3, 40, 5, 42, 7)
+
+    def start_game(self, screen):
+        if self.new_line_character:
+            for position in range(44):
+                screen.addstr(f"{self.line[position]}\n")
+        else:
+            for position in range(44):
+                screen.addstr(f"{self.line[position]}")
+
+        screen.refresh()
+        self.set_colors()
+        screen.refresh()
