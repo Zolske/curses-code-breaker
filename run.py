@@ -38,8 +38,6 @@ screen = curses.initscr()
 curses.noecho()
 curses.cbreak()
 screen.keypad(True)
-curses.curs_set(False)
-
 
 # color pairs used by 'curses' and accessible over variable below, 1st text, 2nd background
 curses.start_color()
