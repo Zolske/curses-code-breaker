@@ -122,9 +122,9 @@ def timer():
             minutes_int += 1
             seconds_int = 0
         seconds_text = str(seconds_int)
-        seconds_text = seconds_text.zfill(2)
+        seconds_text = seconds_text.zfill(2)  # .zfill(2) fills the space with 0 if less than 2 digits
         minutes_text = str(minutes_int)
-        minutes_text = minutes_text.zfill(2)
+        minutes_text = minutes_text.zfill(2)  # .zfill(2) fills the space with 0 if less than 2 digits
         if player_object.reset_time:
             player_object.reset_time = False
             seconds_int = 0
@@ -149,13 +149,14 @@ try:
     curses.curs_set(0)
 except:
     game_menu.new_line_character = False
-
+# prints the background to the screen and sets the colors
+game_menu.get_this_month_high_score()
+game_menu.get_all_time_high_score()
+game_menu.start_game(screen)
 # create the player_object which contains data for current position, secret code, player code
 player_object = player.PlayerObject()
 # generates the secret code
 player_object.generate_secret_random_number()
-# prints the background to the screen and sets the colors
-game_menu.start_game(screen)
 
 timer_thread = threading.Thread(target=timer)  # allows the timer to run in the background
 timer_thread.start()  # starts the timer thread on the side

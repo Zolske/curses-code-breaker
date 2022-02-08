@@ -40,8 +40,11 @@ class Spreadsheet:
             pass
         data = this_month_high_score_worksheet.get_all_values()  # converts the date in a list of list row [[cell], [cell], [cell]]
         for index in range(len(data)):  # convert the score and date string type into integer
+            # data[index][2] == score must be an int!
+            if isinstance(data[index][2], str):
+                data[index][2] = 0
             data[index][2] = int(data[index][2])  # only the 3th column of each row
-            data[index][1] = int(data[index][1])  # only the 2nd column of each row
+            # data[index][1] = int(data[index][1])  # only the 2nd column of each row
         data.sort(key=lambda x: x[2], reverse=True)  # sort the highest score to the beginning
         self.this_month_high_score = data[:19]  # only the first 20, should not be more any nway
         self.top_6_this_month_high_score = data[:5]  # only the first 6
@@ -50,8 +53,11 @@ class Spreadsheet:
         all_time_high_score_worksheet = SHEET.worksheet('all_time_high_score')  # saves the date of the worksheet
         data = all_time_high_score_worksheet.get_all_values()   # converts the date in a list of list row [[cell], [cell], [cell]]
         for index in range(len(data)):  # convert the score and date string type into integer
+            # data[index][2] == score must be an int!
+            if isinstance(data[index][2], str):
+                data[index][2] = 0
             data[index][2] = int(data[index][2])  # only the 3th column of each row
-            data[index][1] = int(data[index][1])  # only the 2nd column of each row
+            # data[index][1] = int(data[index][1])  # only the 2nd column of each row
         data.sort(key=lambda x: x[2], reverse=True)  # sort the highest score to the beginning
         self.all_time_high_score = data[:19]  # only the first 20, should not be more any nway
         self.top_6_all_time_high_score = data[:5]  # only the first 6
@@ -63,4 +69,5 @@ spreadsheet.get_this_month_high_score()
 #print(f'this is month {spreadsheet.this_month_high_score}')
 print(f"{spreadsheet.this_month_year_data[0]} and {spreadsheet.this_month_year_data[1]}")
 spreadsheet.get_all_time_high_score()
-#print(f'this is all time {spreadsheet.all_time_high_score}')
+print(f'this is all time {spreadsheet.all_time_high_score}')
+

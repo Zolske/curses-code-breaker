@@ -192,7 +192,6 @@ class PlayerObject:
         feedback_marker_pad.addstr(self.content_feedback, FEEDB)  # uses the content from content_feedback property and color variable FEEDB
         feedback_marker_pad.refresh(*self.position_feedback_half[10][0])  # adds a marker in the code feedback section
 
-
     def is_the_game_over(self):
         """
         Checks if the game is finished, and outputs a message accordingly to the feedback code section
@@ -207,16 +206,14 @@ class PlayerObject:
         elif self.match_color_position == 4:
             self.stop_time = True
             self.calculate_player_score()
-            game_over_message.addstr(f" Congratulations, you have broken the code !!!\n It took you {self.player_time_minutes} minute(s) and {self.player_time_seconds} second(s).\n The secret code was: {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}\n Your score is: {self.player_score} (lines left {self.current_position[0]} * 200 - time {self.player_time_seconds_total}s)")
+            game_over_message.addstr(f" Congratulations, you have broken the code !!!\n It took you {self.player_time_minutes} minute(s) and {self.player_time_seconds} second(s).\n The secret code was: {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}\n Your score is: {self.player_score} (lines left {self.current_position[0]} x 200 - time {self.player_time_seconds_total}s)")
             game_over_message.refresh()
-
 
     def calculate_player_score(self):
         """
         Calculates the player score. lines_left * 200 - time_needed
         """
         self.player_score = (self.current_position[0] * 200) - self.player_time_seconds_total
-
 
     def reset_player(self):
         """

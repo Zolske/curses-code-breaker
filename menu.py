@@ -1,5 +1,17 @@
 import curses
+import datetime
+import gspread
+from google.oauth2.service_account import Credentials
+SCOPE = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/drive"
+    ]
 
+CREDS = Credentials.from_service_account_file('creds.json')
+SCOPED_CREDS = CREDS.with_scopes(SCOPE)
+GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
+SHEET = GSPREAD_CLIENT.open('code_breaker_global_high_score')
 
 class Game:
     def __init__(self):
@@ -108,8 +120,23 @@ class Game:
                                   [[0, 1, 36, 1, 36, 1], [0, 1, 36, 3, 36, 3], [0, 1, 38, 1, 38, 1], [0, 1, 38, 3, 38, 3]],  # turn / row 9 / index 8
                                   [[0, 1, 40, 1, 40, 1], [0, 1, 40, 3, 40, 3], [0, 1, 42, 1, 42, 1], [0, 1, 42, 3, 42, 3]],  # turn / row 10 / index 9
                                   ]
-        self.position_all_time_high_score = [[[0, 0, 18, 22, 18, 34], [0, 0, 18, 36, 18, 43], [0, 0, 18, 45, 18, 49]]]  # [max 13], [max 8], [max 5]
+        self.position_all_time_high_score = [[[0, 0, 18, 22, 18, 34], [0, 0, 18, 36, 18, 43], [0, 0, 18, 45, 18, 49]], # [max 13], [max 8], [max 5]
+                                             [[0, 0, 20, 22, 20, 34], [0, 0, 20, 36, 20, 43], [0, 0, 20, 45, 20, 49]],
+                                             [[0, 0, 22, 22, 22, 34], [0, 0, 22, 36, 22, 43], [0, 0, 22, 45, 22, 49]],
+                                             [[0, 0, 24, 22, 24, 34], [0, 0, 24, 36, 24, 43], [0, 0, 24, 45, 24, 49]],
+                                             [[0, 0, 26, 22, 26, 34], [0, 0, 26, 36, 26, 43], [0, 0, 26, 45, 26, 49]],
+                                             [[0, 0, 28, 22, 28, 34], [0, 0, 28, 36, 28, 43], [0, 0, 28, 45, 28, 49]], ]
+        self.position_this_month_high_score = [[[0, 0, 18, 51, 18, 63], [0, 0, 18, 65, 18, 72], [0, 0, 18, 74, 18, 78]],   # [max 13], [max 8], [max 5]
+                                               [[0, 0, 20, 51, 20, 63], [0, 0, 20, 65, 20, 72], [0, 0, 20, 74, 20, 78]],
+                                               [[0, 0, 22, 51, 22, 63], [0, 0, 22, 65, 22, 72], [0, 0, 22, 74, 22, 78]],
+                                               [[0, 0, 24, 51, 24, 63], [0, 0, 24, 65, 24, 72], [0, 0, 24, 74, 24, 78]],
+                                               [[0, 0, 26, 51, 26, 63], [0, 0, 26, 65, 26, 72], [0, 0, 26, 74, 26, 78]],
+                                               [[0, 0, 28, 51, 28, 63], [0, 0, 28, 65, 28, 72], [0, 0, 28, 74, 28, 78]], ]
         self.new_line_character = True
+        # spreadsheet
+        self.all_time_high_score = []
+        self.this_month_high_score = []
+        self.this_month_year_data = ['', '']  # [0]year [1]Month
 
     def set_colors(self):
         """
@@ -177,17 +204,35 @@ class Game:
         marker.refresh(0, 3, 40, 5, 42, 7)
 
     def set_score(self):
-        text_score_pad = curses.newpad(1, 15)
+        this_month_str = f"{self.this_month_year_data[1].upper()}━{self.this_month_year_data[0]}━HIGHSCORE"
+        text_score_pad = curses.newpad(1, 30)
         text_score_pad.erase()
-        text_score_pad.addstr('0123456789ABC')
-        text_score_pad.refresh(*self.position_all_time_high_score[0][0])
-        text_score_pad.erase()
-        text_score_pad.addstr('01.23.45')
-        text_score_pad.refresh(*self.position_all_time_high_score[0][1])
-        text_score_pad.erase()
-        text_score_pad.addstr('01234')
-        text_score_pad.refresh(*self.position_all_time_high_score[0][2])
-
+        text_score_pad.addstr(this_month_str)
+        text_score_pad.refresh(0, 0, 15, 52, 15, 51+len(this_month_str))
+        # set score for "top 6 all time"
+        for score_entry in range(6):
+            for score_values in range(3):
+                text_score_pad.erase()
+                # check if it is an int, should be only score, name and date should not pass
+                if isinstance(self.all_time_high_score[score_entry][score_values], int):
+                    # fills up empty space if less than 5 characters, moves content to the right
+                    text_score_pad.addstr(str(self.all_time_high_score[score_entry][score_values]).rjust(5))
+                else:
+                    # should be only name and date
+                    text_score_pad.addstr(str(self.all_time_high_score[score_entry][score_values]))
+                text_score_pad.refresh(*self.position_all_time_high_score[score_entry][score_values])
+        # set score for "top 6 this month"
+        for score_entry in range(6):
+            for score_values in range(3):
+                text_score_pad.erase()
+                # check if it is an int, should be only score, name and date should not pass
+                if isinstance(self.this_month_high_score[score_entry][score_values], int):
+                    # fills up empty space if less than 5 characters, moves content to the right
+                    text_score_pad.addstr(str(self.this_month_high_score[score_entry][score_values]).rjust(5))
+                else:
+                    # should be only name and date
+                    text_score_pad.addstr(str(self.this_month_high_score[score_entry][score_values]))
+                text_score_pad.refresh(*self.position_this_month_high_score[score_entry][score_values])
 
     def start_game(self, screen):
         """
@@ -208,3 +253,34 @@ class Game:
         screen.refresh()
         self.set_score()
         screen.refresh()
+
+    def get_this_month_high_score(self):
+        date_today = datetime.datetime.now()  # '2022-02-07 19:42:22.815959'
+        year_today = date_today.strftime("%Y")  # '2022'
+        self.this_month_year_data[0] = year_today
+        month_word_today = date_today.strftime("%B")  # 'February'
+        self.this_month_year_data[1] = month_word_today
+        month_today = date_today.strftime("%m")  # '02'
+        date_today = f"{year_today}_{month_today}"  # '2022_02'
+        try:
+            this_month_high_score_worksheet = SHEET.worksheet(date_today)  # saves the date of the worksheet if it exists
+        except:
+            this_month_high_score_worksheet = SHEET.add_worksheet(title=date_today, rows="20", cols="3")  # if not exist, then it is created
+            # the column for the score (3th from left, column C) must have an integer, assigns 0 to all 20 columns
+            for index in range(1, 21):
+                cell = f"C{index}"
+                this_month_high_score_worksheet.update(cell, 0)
+            pass
+        data = this_month_high_score_worksheet.get_all_values()  # converts the date in a list of list row [[cell], [cell], [cell]]
+        for index in range(len(data)):  # convert the score and date string type into integer
+            data[index][2] = int(data[index][2])  # only the 3th column of each row
+        data.sort(key=lambda x: x[2], reverse=True)  # sort the highest score to the beginning
+        self.this_month_high_score = data[:19]  # only the first 20, should not be more any nway
+
+    def get_all_time_high_score(self):
+        all_time_high_score_worksheet = SHEET.worksheet('all_time_high_score')  # saves the date of the worksheet
+        data = all_time_high_score_worksheet.get_all_values()   # converts the date in a list of list row [[cell], [cell], [cell]]
+        for index in range(len(data)):  # convert the score and date string type into integer
+            data[index][2] = int(data[index][2])  # only the 3th column of each row
+        data.sort(key=lambda x: x[2], reverse=True)  # sort the highest score to the beginning
+        self.all_time_high_score = data[:19]  # only the first 20, should not be more any nway
