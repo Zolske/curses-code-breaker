@@ -48,7 +48,7 @@ class Game:
                      "╟━╋━╢   ║   ║   ║   ║╰━━━━━━━━━━━━━┷━━━━━━━━┷━━━━━╨━━━━━━━━━━━━━┷━━━━━━━━┷━━━━━╯", #29
                      "║ ┃ ║   ║   ║   ║   ║╭━━━CODE FEEDBACK━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮", #30
                      "╠═╪═╬═══╬═══╬═══╬═══╣┃ After you have set 4 colors in one line, you can press  ┃", #31
-                     "║ ┃ ║8  ║   ║   ║   ║┃ the 'End' key to confirm your code. Your code will be   ┃", #32
+                     "║ ┃ ║8  ║   ║   ║   ║┃ the '#' key to confirm your code. Your code will be     ┃", #32
                      "╟━╋━╢   ║   ║   ║   ║┃ compared to the secret code, the feedback appears here. ┃", #33
                      "║ ┃ ║   ║   ║   ║   ║┃                                                         ┃", #34
                      "╠═╪═╬═══╬═══╬═══╬═══╣╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯", #35

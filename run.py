@@ -107,7 +107,8 @@ def player_move():
         end_key_message.refresh(0, 0, 41, 24, 41, 41)
         screen.refresh()
 
-
+# TODO fix timer bug, after game is won or lost the timer dose not start again when game is reset,
+# may be do not really stop timer, just make it look as if
 def timer():
     seconds_text = '00'
     seconds_int = 0
@@ -156,7 +157,7 @@ game_menu.start_game(screen)
 # create the player_object which contains data for current position, secret code, player code
 player_object = player.PlayerObject()
 # generates the secret code
-player_object.generate_secret_random_number()
+# player_object.generate_secret_random_number()
 
 timer_thread = threading.Thread(target=timer)  # allows the timer to run in the background
 timer_thread.start()  # starts the timer thread on the side

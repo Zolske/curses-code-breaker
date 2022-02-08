@@ -238,6 +238,7 @@ class PlayerObject:
         self.match_color_position = 0
         self.player_code_matches_secret_code = False
         self.reset_time = True
+        self.stop_time = False
         self.player_time_seconds_total = 0
         self.player_time_seconds = 0
         self.player_time_minutes = 0
