@@ -232,7 +232,7 @@ class PlayerObject:
         BORDER = curses.color_pair(9)
         HIGHLIGHT = curses.color_pair(7)
         new_score_background = curses.newpad(8, 60)
-        new_score_background.erase()
+        new_score_background.clear()
         # if self.new_line_character:
         #     new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮"
         #                                 f"┃ Congratulations, you have set a new high score!!!       ┃"
@@ -245,7 +245,7 @@ class PlayerObject:
         # else:
         new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n┃ Congratulations, you have set a new high score!!!       ┃\n┃                                                         ┃\n┃ > Please, enter your name:   123456789a123              ┃\n┃                                                         ┃\n┃ > Confirm your entry with Ctrl + G                      ┃\n┃                                                         ┃\n╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
 
-        new_score_background.refresh(0, 0, 36, 21, 43, 80)
+        new_score_background.refresh(0, 0, 36, 21, 43, 79)
         highlight_text = curses.newpad(1, 10)
         highlight_text.erase()
         highlight_text.addstr(f"Ctrl", HIGHLIGHT)
