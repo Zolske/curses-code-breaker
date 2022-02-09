@@ -132,14 +132,15 @@ def timer():
             seconds_text = '00'
             minutes_int = 0
             minutes_text = '00'
-        timer_window = curses.newpad(1, 6)
-        timer_window.erase()
-        timer_window.addstr(f"{minutes_text}:{seconds_text}")
-        timer_window.refresh(0, 0, 2, 6, 2, 11)
-        screen.refresh()
-        player_object.player_time_seconds_total = (minutes_int * 60) + seconds_int
-        player_object.player_time_seconds = seconds_int
-        player_object.player_time_minutes = minutes_int
+        if player_object.update_timer:
+            timer_window = curses.newpad(1, 6)
+            timer_window.erase()
+            timer_window.addstr(f"{minutes_text}:{seconds_text}")
+            timer_window.refresh(0, 0, 2, 6, 2, 11)
+            screen.refresh()
+            player_object.player_time_seconds_total = (minutes_int * 60) + seconds_int
+            player_object.player_time_seconds = seconds_int
+            player_object.player_time_minutes = minutes_int
 
 
 # create the game_menu object which contains data for displaying elements on the screen

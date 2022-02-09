@@ -52,8 +52,9 @@ class PlayerObject:
         self.has_color = 0
         self.match_color_position = 0
         self.player_code_matches_secret_code = False
-        self.stop_time = False
-        self.reset_time = False
+        self.stop_time = False  # use to end the timer, loop breaks
+        self.reset_time = False  # use to reset the in game display and its values
+        self.update_timer = True  # use to pause the in game display update and the value update
         self.player_time_seconds_total = 0
         self.player_time_seconds = 0
         self.player_time_minutes = 0
@@ -199,12 +200,12 @@ class PlayerObject:
         game_over_message = curses.newwin(4, 56, 31, 22)
         game_over_message.erase()
         if self.current_position[0] == 0 and self.match_color_position != 4:
-            self.stop_time = True
+            self.update_timer = False
             game_over_message.addstr(f" Sorry, but you have not broken the code !!!\n You played {self.player_time_minutes} minute(s) and {self.player_time_seconds} second(s).\n The secret code was: {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}")
             game_over_message.refresh()
 
         elif self.match_color_position == 4:
-            self.stop_time = True
+            self.update_timer = False
             self.calculate_player_score()
             game_over_message.addstr(f" Congratulations, you have broken the code !!!\n It took you {self.player_time_minutes} minute(s) and {self.player_time_seconds} second(s).\n The secret code was: {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}\n Your score is: {self.player_score} (lines left {self.current_position[0]} x 200 - time {self.player_time_seconds_total}s)")
             game_over_message.refresh()
@@ -238,7 +239,7 @@ class PlayerObject:
         self.match_color_position = 0
         self.player_code_matches_secret_code = False
         self.reset_time = True
-        self.stop_time = False
+        self.update_timer = True
         self.player_time_seconds_total = 0
         self.player_time_seconds = 0
         self.player_time_minutes = 0
