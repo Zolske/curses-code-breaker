@@ -1,14 +1,15 @@
 import random
 import curses
+from curses.textpad import Textbox, rectangle
+import spreadsheet
 import time
 import menu
 
 
 class PlayerObject:
-    def __init__(self):
-        # TODO disabled for testing, self.secret_code = [],
-        # self.secret_code = [],
-        # TODO only enabled for testing, self.secret_code = ['RED', 'RED', 'RED', 'RED'],
+    def __init__(self, score_date, file_name_date):
+        # gets overwritten when secret_code is generated, secret_code generator can be commented out for testing
+        self.player_name = False
         self.secret_code = ['RED', 'RED', 'RED', 'RED']
         self.player_code = [],
         self.player_score = 0
@@ -58,6 +59,10 @@ class PlayerObject:
         self.player_time_seconds_total = 0
         self.player_time_seconds = 0
         self.player_time_minutes = 0
+        self.all_time_high_score = []
+        self.score_date = score_date
+        self.file_name_date = file_name_date
+        self.number_option = True  # turn on the number options on the keyboard
 
     def arrow_input(self, arrow_key):
         # TODO tidy up code
@@ -209,12 +214,62 @@ class PlayerObject:
             self.calculate_player_score()
             game_over_message.addstr(f" Congratulations, you have broken the code !!!\n It took you {self.player_time_minutes} minute(s) and {self.player_time_seconds} second(s).\n The secret code was: {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}\n Your score is: {self.player_score} (lines left {self.current_position[0]} x 200 - time {self.player_time_seconds_total}s)")
             game_over_message.refresh()
+            self.new_high_score()
 
     def calculate_player_score(self):
         """
         Calculates the player score. lines_left * 200 - time_needed
         """
         self.player_score = (self.current_position[0] * 200) - self.player_time_seconds_total
+
+    def new_high_score(self):
+        """
+        Checks if the player score is higher than any other score in the all_time_high_score or this_month_high_score.
+        """
+        curses.init_pair(9, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+        curses.init_pair(7, curses.COLOR_BLUE, curses.COLOR_YELLOW)
+        BORDER = curses.color_pair(9)
+        HIGHLIGHT = curses.color_pair(7)
+        new_score_background = curses.newpad(8, 60)
+        new_score_background.erase()
+        new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
+                                    f"┃ Congratulations, you have set a new high score!!!       ┃\n"
+                                    f"┃                                                         ┃\n"
+                                    f"┃ > Please, enter your name:   123456789a123              ┃\n"
+                                    f"┃                                                         ┃\n"
+                                    f"┃ > Confirm your entry with Ctrl + G                      ┃\n"
+                                    f"┃                                                         ┃\n"
+                                    f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
+        new_score_background.refresh(0, 0, 36, 21, 43, 80)
+        highlight_text = curses.newpad(1, 10)
+        highlight_text.erase()
+        highlight_text.addstr(f"Ctrl", HIGHLIGHT)
+        highlight_text.refresh(0, 0, 41, 49, 41, 53)
+        highlight_text.erase()
+        highlight_text.addstr(f"G", HIGHLIGHT)
+        highlight_text.refresh(0, 0, 41, 56, 41, 57)
+        highlight_name = curses.newpad(3, 20)
+        highlight_name.erase()
+        highlight_name.addstr(f"╭━━━━━━━━━━━━━╮\n┃             ┃\n╰━━━━━━━━━━━━━╯", BORDER)
+        highlight_name.refresh(0, 0, 38, 51, 40, 65)
+        player_text_input = curses.newwin(1, 13, 39, 52)
+        curses.curs_set(2)
+        box = Textbox(player_text_input)
+        box.edit()
+        self.player_name = box.gather()
+        curses.curs_set(0)
+        self.all_time_high_score = spreadsheet.get_all_time_high_score()
+        for index in range(len(self.all_time_high_score)):
+            if self.player_score > self.all_time_high_score[index][2]:
+                if not self.player_name:
+                    pass  # ask player for name
+                new_high_score_message = curses.newwin(4, 56, 31, 22)
+                new_high_score_message.erase()
+                new_high_score_message.addstr(f" Your score is ({self.player_score})\n higher then the highest heigh score ({self.all_time_high_score[index][2]} {self.player_name})")
+                new_high_score_message.refresh()
+                break
+
+
 
     def reset_player(self):
         """

@@ -1,5 +1,5 @@
 import curses
-import datetime
+import spreadsheet
 import gspread
 from google.oauth2.service_account import Credentials
 SCOPE = [
@@ -14,7 +14,7 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('code_breaker_global_high_score')
 
 class Game:
-    def __init__(self):
+    def __init__(self, today_year, today_month, file_name_date):
         #  alignment "0123456789a123456789b123456789c123456789d123456789e123456789f123456789g123456789h"
         self.line = ["                                                                                ", #00
                      "    ╓━TIME━━╥━TIMER━╖   ╭┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈╮  ", #01
@@ -136,7 +136,9 @@ class Game:
         # spreadsheet
         self.all_time_high_score = []
         self.this_month_high_score = []
-        self.this_month_year_data = ['', '']  # [0]year [1]Month
+        self.today_year = today_year
+        self.today_month = today_month
+        self.file_name_date = file_name_date
 
     def set_colors(self):
         """
@@ -204,7 +206,7 @@ class Game:
         marker.refresh(0, 3, 40, 5, 42, 7)
 
     def set_score(self):
-        this_month_str = f"{self.this_month_year_data[1].upper()}━{self.this_month_year_data[0]}━HIGHSCORE"
+        this_month_str = f"{self.today_month.upper()}━{self.today_year}━HIGHSCORE"
         text_score_pad = curses.newpad(1, 30)
         text_score_pad.erase()
         text_score_pad.addstr(this_month_str)
@@ -236,7 +238,7 @@ class Game:
 
     def start_game(self, screen):
         """
-        Prints the background on the screen and sets the color.
+        Prints the background on the screen and sets the color. Gets the google spreadsheet data.
         :param screen:  needs the curses window object
         """
         screen.clear()
@@ -248,39 +250,11 @@ class Game:
             for position in range(44):
                 screen.addstr(f"{self.line[position]}")
 
+        self.all_time_high_score = spreadsheet.get_all_time_high_score()
+        self.this_month_high_score = spreadsheet.get_this_month_high_score(self.file_name_date)
         screen.refresh()
         self.set_colors()
         screen.refresh()
         self.set_score()
         screen.refresh()
 
-    def get_this_month_high_score(self):
-        date_today = datetime.datetime.now()  # '2022-02-07 19:42:22.815959'
-        year_today = date_today.strftime("%Y")  # '2022'
-        self.this_month_year_data[0] = year_today
-        month_word_today = date_today.strftime("%B")  # 'February'
-        self.this_month_year_data[1] = month_word_today
-        month_today = date_today.strftime("%m")  # '02'
-        date_today = f"{year_today}_{month_today}"  # '2022_02'
-        try:
-            this_month_high_score_worksheet = SHEET.worksheet(date_today)  # saves the date of the worksheet if it exists
-        except:
-            this_month_high_score_worksheet = SHEET.add_worksheet(title=date_today, rows="20", cols="3")  # if not exist, then it is created
-            # the column for the score (3th from left, column C) must have an integer, assigns 0 to all 20 columns
-            for index in range(1, 21):
-                cell = f"C{index}"
-                this_month_high_score_worksheet.update(cell, 0)
-            pass
-        data = this_month_high_score_worksheet.get_all_values()  # converts the date in a list of list row [[cell], [cell], [cell]]
-        for index in range(len(data)):  # convert the score and date string type into integer
-            data[index][2] = int(data[index][2])  # only the 3th column of each row
-        data.sort(key=lambda x: x[2], reverse=True)  # sort the highest score to the beginning
-        self.this_month_high_score = data[:19]  # only the first 20, should not be more any nway
-
-    def get_all_time_high_score(self):
-        all_time_high_score_worksheet = SHEET.worksheet('all_time_high_score')  # saves the date of the worksheet
-        data = all_time_high_score_worksheet.get_all_values()   # converts the date in a list of list row [[cell], [cell], [cell]]
-        for index in range(len(data)):  # convert the score and date string type into integer
-            data[index][2] = int(data[index][2])  # only the 3th column of each row
-        data.sort(key=lambda x: x[2], reverse=True)  # sort the highest score to the beginning
-        self.all_time_high_score = data[:19]  # only the first 20, should not be more any nway

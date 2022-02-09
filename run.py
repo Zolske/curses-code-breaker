@@ -5,6 +5,7 @@ import curses
 from curses import wrapper
 import menu
 import player
+import spreadsheet
 from time import *
 import threading
 import time
@@ -56,6 +57,13 @@ FEEDB = curses.color_pair(6)  # for feedback-marker
 HIGHLIGHT = curses.color_pair(7)
 ORIGINAL = curses.color_pair(8)
 
+today_date = spreadsheet.get_today_month_year()
+temp_date_text = ''
+today_year = temp_date_text.join(today_date[0])
+today_month = temp_date_text.join(today_date[1])
+score_date = temp_date_text.join(today_date[2])
+file_name_date = temp_date_text.join(today_date[3])
+
 
 def player_move():
     """
@@ -65,9 +73,9 @@ def player_move():
     user_arrow_input = screen.getkey()
     # if the user presses 'q' the function exits and returns 'q',
     # this will exit the program because it will break the loop and there is nothing left to do for the program
-    if user_arrow_input == '1':  # ends the program if user presses '1'
+    if user_arrow_input == '1' and player_object.number_option:  # ends the program if user presses '1'
         return True
-    elif user_arrow_input == '2':  # resets the game if the user presses '2'
+    elif user_arrow_input == '2' and player_object.number_option:  # resets the game if the user presses '2'
         game_menu.start_game(screen)
         player_object.reset_player()
     # saves the color of the current location according to the color_mark_map in the player object
@@ -107,8 +115,7 @@ def player_move():
         end_key_message.refresh(0, 0, 41, 24, 41, 41)
         screen.refresh()
 
-# TODO fix timer bug, after game is won or lost the timer dose not start again when game is reset,
-# may be do not really stop timer, just make it look as if
+
 def timer():
     seconds_text = '00'
     seconds_int = 0
@@ -144,7 +151,7 @@ def timer():
 
 
 # create the game_menu object which contains data for displaying elements on the screen
-game_menu = menu.Game()
+game_menu = menu.Game(today_year, today_month, file_name_date)
 # code instituteds browser terminal will raise an error which will switch the new_line_character in the Game object to False,
 # the start_game() method in the Game object will print the background without the \n character which otherwise would raise an error
 try:
@@ -152,11 +159,13 @@ try:
 except:
     game_menu.new_line_character = False
 # prints the background to the screen and sets the colors
-game_menu.get_this_month_high_score()
-game_menu.get_all_time_high_score()
+#game_menu.this_month_high_score = spreadsheet.get_this_month_high_score()
+#game_menu.all_time_high_score = spreadsheet.get_all_time_high_score()
+
+
 game_menu.start_game(screen)
 # create the player_object which contains data for current position, secret code, player code
-player_object = player.PlayerObject()
+player_object = player.PlayerObject(score_date, file_name_date)
 # generates the secret code
 # player_object.generate_secret_random_number()
 
