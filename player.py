@@ -234,13 +234,13 @@ class PlayerObject:
         new_score_background = curses.newpad(8, 60)
         new_score_background.erase()
         if self.new_line_character:
-            new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
-                                        f"┃ Congratulations, you have set a new high score!!!       ┃\n"
-                                        f"┃                                                         ┃\n"
-                                        f"┃ > Please, enter your name:   123456789a123              ┃\n"
-                                        f"┃                                                         ┃\n"
-                                        f"┃ > Confirm your entry with Ctrl + G                      ┃\n"
-                                        f"┃                                                         ┃\n"
+            new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮"
+                                        f"┃ Congratulations, you have set a new high score!!!       ┃"
+                                        f"┃                                                         ┃"
+                                        f"┃ > Please, enter your name:   123456789a123              ┃"
+                                        f"┃                                                         ┃"
+                                        f"┃ > Confirm your entry with Ctrl + G                      ┃"
+                                        f"┃                                                         ┃"
                                         f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
         else:
             new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮"
