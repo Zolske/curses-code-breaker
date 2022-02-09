@@ -234,18 +234,18 @@ class PlayerObject:
         new_score_background = curses.newpad(8, 60)
         new_score_background.clear()
         # if self.new_line_character:
-        #     new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮"
-        #                                 f"┃ Congratulations, you have set a new high score!!!       ┃"
-        #                                 f"┃                                                         ┃"
-        #                                 f"┃ > Please, enter your name:   123456789a123              ┃"
-        #                                 f"┃                                                         ┃"
-        #                                 f"┃ > Confirm your entry with Ctrl + G                      ┃"
-        #                                 f"┃                                                         ┃"
-        #                                 f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
+        new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
+                                    f"┃ Congratulations, you have set a new high score!!!       ┃\n"
+                                    f"┃                                                         ┃\n"
+                                    f"┃ > Please, enter your name:   123456789a123              ┃\n"
+                                    f"┃                                                         ┃\n"
+                                    f"┃ > Confirm your entry with Ctrl + G                      ┃\n"
+                                    f"┃                                                         ┃\n"
+                                    f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
         # else:
-        new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n┃ Congratulations, you have set a new high score!!!       ┃\n┃                                                         ┃\n┃ > Please, enter your name:   123456789a123              ┃\n┃                                                         ┃\n┃ > Confirm your entry with Ctrl + G                      ┃\n┃                                                         ┃\n╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
+        #new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n┃ Congratulations, you have set a new high score!!!       ┃\n┃                                                         ┃\n┃ > Please, enter your name:   123456789a123              ┃\n┃                                                         ┃\n┃ > Confirm your entry with Ctrl + G                      ┃\n┃                                                         ┃\n╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
 
-        new_score_background.refresh(0, 0, 36, 21, 43, 80)
+        new_score_background.refresh(0, 0, 36, 21, 43, 79)
         highlight_text = curses.newpad(1, 10)
         highlight_text.erase()
         highlight_text.addstr(f"Ctrl", HIGHLIGHT)
