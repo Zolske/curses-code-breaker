@@ -243,14 +243,8 @@ class PlayerObject:
         #                                 f"┃                                                         ┃"
         #                                 f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
         # else:
-        new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮"
-                                    f"┃ Congratulations, you have set a new high score!!!       ┃"
-                                    f"┃                                                         ┃"
-                                    f"┃ > Please, enter your name:   123456789a123              ┃"
-                                    f"┃                                                         ┃"
-                                    f"┃ > Confirm your entry with Ctrl + G                      ┃"
-                                    f"┃                                                         ┃"
-                                    f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
+        new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n┃ Congratulations, you have set a new high score!!!       ┃\n┃                                                         ┃\n┃ > Please, enter your name:   123456789a123              ┃\n┃                                                         ┃\n┃ > Confirm your entry with Ctrl + G                      ┃\n┃                                                         ┃\n╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
+
         new_score_background.refresh(0, 0, 36, 21, 43, 80)
         highlight_text = curses.newpad(1, 10)
         highlight_text.erase()
