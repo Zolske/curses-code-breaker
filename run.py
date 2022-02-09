@@ -57,6 +57,7 @@ FEEDB = curses.color_pair(6)  # for feedback-marker
 HIGHLIGHT = curses.color_pair(7)
 ORIGINAL = curses.color_pair(8)
 
+new_line_character = True
 today_date = spreadsheet.get_today_month_year()
 temp_date_text = ''
 today_year = temp_date_text.join(today_date[0])
@@ -158,6 +159,7 @@ try:
     curses.curs_set(0)
 except:
     game_menu.new_line_character = False
+    new_line_character = False
 # prints the background to the screen and sets the colors
 #game_menu.this_month_high_score = spreadsheet.get_this_month_high_score()
 #game_menu.all_time_high_score = spreadsheet.get_all_time_high_score()
@@ -165,7 +167,7 @@ except:
 
 game_menu.start_game(screen)
 # create the player_object which contains data for current position, secret code, player code
-player_object = player.PlayerObject(score_date, file_name_date)
+player_object = player.PlayerObject(score_date, file_name_date, new_line_character)
 # generates the secret code
 # player_object.generate_secret_random_number()
 

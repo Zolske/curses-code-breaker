@@ -7,7 +7,7 @@ import menu
 
 
 class PlayerObject:
-    def __init__(self, score_date, file_name_date):
+    def __init__(self, score_date, file_name_date, new_line_character):
         # gets overwritten when secret_code is generated, secret_code generator can be commented out for testing
         self.player_name = False
         self.secret_code = ['RED', 'RED', 'RED', 'RED']
@@ -63,6 +63,7 @@ class PlayerObject:
         self.score_date = score_date
         self.file_name_date = file_name_date
         self.number_option = True  # turn on the number options on the keyboard
+        self.new_line_character = new_line_character
 
     def arrow_input(self, arrow_key):
         # TODO tidy up code
@@ -214,7 +215,7 @@ class PlayerObject:
             self.calculate_player_score()
             game_over_message.addstr(f" Congratulations, you have broken the code !!!\n It took you {self.player_time_minutes} minute(s) and {self.player_time_seconds} second(s).\n The secret code was: {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}\n Your score is: {self.player_score} (lines left {self.current_position[0]} x 200 - time {self.player_time_seconds_total}s)")
             game_over_message.refresh()
-            self.new_high_score()
+            #self.new_high_score()
 
     def calculate_player_score(self):
         """
