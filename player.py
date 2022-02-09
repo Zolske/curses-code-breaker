@@ -264,11 +264,11 @@ class PlayerObject:
         highlight_name.addstr(f"╭━━━━━━━━━━━━━╮\n┃             ┃\n╰━━━━━━━━━━━━━╯", BORDER)
         highlight_name.refresh(0, 0, 38, 51, 40, 65)
         player_text_input = curses.newwin(1, 13, 39, 52)
-        curses.curs_set(2)
+        #curses.curs_set(2)
         box = Textbox(player_text_input)
         box.edit()
         self.player_name = box.gather()
-        curses.curs_set(0)
+        #curses.curs_set(0)
         self.all_time_high_score = spreadsheet.get_all_time_high_score()
         for index in range(len(self.all_time_high_score)):
             if self.player_score > self.all_time_high_score[index][2]:
