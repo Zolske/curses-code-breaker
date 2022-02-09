@@ -215,7 +215,7 @@ class PlayerObject:
             self.calculate_player_score()
             game_over_message.addstr(f" Congratulations, you have broken the code !!!\n It took you {self.player_time_minutes} minute(s) and {self.player_time_seconds} second(s).\n The secret code was: {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}\n Your score is: {self.player_score} (lines left {self.current_position[0]} x 200 - time {self.player_time_seconds_total}s)")
             game_over_message.refresh()
-            #self.new_high_score()
+            self.new_high_score()
 
     def calculate_player_score(self):
         """
@@ -254,11 +254,11 @@ class PlayerObject:
         highlight_name.addstr(f"╭━━━━━━━━━━━━━╮\n┃             ┃\n╰━━━━━━━━━━━━━╯", BORDER)
         highlight_name.refresh(0, 0, 38, 51, 40, 65)
         player_text_input = curses.newwin(1, 13, 39, 52)
-        curses.curs_set(2)
+        #curses.curs_set(2)
         box = Textbox(player_text_input)
         box.edit()
         self.player_name = box.gather()
-        curses.curs_set(0)
+        #curses.curs_set(0)
         self.all_time_high_score = spreadsheet.get_all_time_high_score()
         for index in range(len(self.all_time_high_score)):
             if self.player_score > self.all_time_high_score[index][2]:
