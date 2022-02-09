@@ -231,27 +231,27 @@ class PlayerObject:
         curses.init_pair(7, curses.COLOR_BLUE, curses.COLOR_YELLOW)
         BORDER = curses.color_pair(9)
         HIGHLIGHT = curses.color_pair(7)
-        new_score_background = curses.newpad(8, 60)
-        new_score_background.erase()
-        if self.new_line_character:
-            new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮"
-                                        f"┃ Congratulations, you have set a new high score!!!       ┃"
-                                        f"┃                                                         ┃"
-                                        f"┃ > Please, enter your name:   123456789a123              ┃"
-                                        f"┃                                                         ┃"
-                                        f"┃ > Confirm your entry with Ctrl + G                      ┃"
-                                        f"┃                                                         ┃"
-                                        f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
-        else:
-            new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮"
-                                        f"┃ Congratulations, you have set a new high score!!!       ┃"
-                                        f"┃                                                         ┃"
-                                        f"┃ > Please, enter your name:   123456789a123              ┃"
-                                        f"┃                                                         ┃"
-                                        f"┃ > Confirm your entry with Ctrl + G                      ┃"
-                                        f"┃                                                         ┃"
-                                        f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
-        new_score_background.refresh(0, 0, 36, 21, 43, 80)
+        # new_score_background = curses.newpad(8, 60)
+        # new_score_background.erase()
+        # if self.new_line_character:
+        #     new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮"
+        #                                 f"┃ Congratulations, you have set a new high score!!!       ┃"
+        #                                 f"┃                                                         ┃"
+        #                                 f"┃ > Please, enter your name:   123456789a123              ┃"
+        #                                 f"┃                                                         ┃"
+        #                                 f"┃ > Confirm your entry with Ctrl + G                      ┃"
+        #                                 f"┃                                                         ┃"
+        #                                 f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
+        # else:
+        #     new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮"
+        #                                 f"┃ Congratulations, you have set a new high score!!!       ┃"
+        #                                 f"┃                                                         ┃"
+        #                                 f"┃ > Please, enter your name:   123456789a123              ┃"
+        #                                 f"┃                                                         ┃"
+        #                                 f"┃ > Confirm your entry with Ctrl + G                      ┃"
+        #                                 f"┃                                                         ┃"
+        #                                 f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
+        # new_score_background.refresh(0, 0, 36, 21, 43, 80)
         highlight_text = curses.newpad(1, 10)
         highlight_text.erase()
         highlight_text.addstr(f"Ctrl", HIGHLIGHT)
