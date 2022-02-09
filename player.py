@@ -233,7 +233,6 @@ class PlayerObject:
         HIGHLIGHT = curses.color_pair(7)
         new_score_background = curses.newpad(8, 60)
         new_score_background.clear()
-        # if self.new_line_character:
         new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
                                     f"┃ Congratulations, you have set a new high score!!!       ┃\n"
                                     f"┃                                                         ┃\n"
@@ -242,9 +241,6 @@ class PlayerObject:
                                     f"┃ > Confirm your entry with Ctrl + G                      ┃\n"
                                     f"┃                                                         ┃\n"
                                     f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
-        # else:
-        #new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n┃ Congratulations, you have set a new high score!!!       ┃\n┃                                                         ┃\n┃ > Please, enter your name:   123456789a123              ┃\n┃                                                         ┃\n┃ > Confirm your entry with Ctrl + G                      ┃\n┃                                                         ┃\n╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
-
         new_score_background.refresh(0, 0, 36, 21, 43, 79)
         highlight_text = curses.newpad(1, 10)
         highlight_text.erase()
@@ -258,11 +254,11 @@ class PlayerObject:
         highlight_name.addstr(f"╭━━━━━━━━━━━━━╮\n┃             ┃\n╰━━━━━━━━━━━━━╯", BORDER)
         highlight_name.refresh(0, 0, 38, 51, 40, 65)
         player_text_input = curses.newwin(1, 13, 39, 52)
-        #curses.curs_set(2)
+        curses.curs_set(2)
         box = Textbox(player_text_input)
         box.edit()
         self.player_name = box.gather()
-        #curses.curs_set(0)
+        curses.curs_set(0)
         self.all_time_high_score = spreadsheet.get_all_time_high_score()
         for index in range(len(self.all_time_high_score)):
             if self.player_score > self.all_time_high_score[index][2]:
