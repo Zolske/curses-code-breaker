@@ -18,7 +18,7 @@ class Game:
         #  alignment "0123456789a123456789b123456789c123456789d123456789e123456789f123456789g123456789h"
         self.line = ["                                                                                ", #00
                      "    ╓━TIME━━╥━TIMER━╖   ╭┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈╮  ", #01
-                     "    ║ 00:00 ║ 00:00 ║   ╞1═EXIT╡ ╞2═RESTART╡ ╞3═SETTINGS╡ ╞4═HELP╡ ╞5═CONTACT╡  ", #02
+                     "    ║ 00:00 ║ 00:00 ║   ╞1═EXIT╡ ╞2═RESTART╡ ╞3═SETTINGS╡ ╞4═HELP╡ ╞5═ARCHIVE╡  ", #02
                      "╔═╤═╬═══╦═══╬═══╦═══╣   ╰┈┈┈┈┈┈╯ ╰┈┈┈┈┈┈┈┈┈╯ ╰┈┈┈┈┈┈┈┈┈┈╯ ╰┈┈┈┈┈┈╯ ╰┈┈┈┈┈┈┈┈┈╯  ", #03
                      "║ ┃ ║1  ║   ║   ║   ║                              __                           ", #04
                      "╟━╋━╢   ║   ║   ║   ║           _____  ____   ____/ / ___                       ", #05
@@ -180,7 +180,7 @@ class Game:
         text_highlight_pad.addstr("5", HIGHLIGHT)
         text_highlight_pad.refresh(0, 0, 2, 68, 2, 68)
         text_highlight_pad.erase()
-        text_highlight_pad.addstr("CONTACT", HIGHLIGHT | curses.A_REVERSE)
+        text_highlight_pad.addstr("ARCHIVE", HIGHLIGHT | curses.A_REVERSE)
         text_highlight_pad.refresh(0, 0, 2, 70, 2, 76)
         # arrows in Instructions
         text_highlight_pad.erase()

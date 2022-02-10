@@ -9,7 +9,7 @@ import menu
 class PlayerObject:
     def __init__(self, score_date, file_name_date, new_line_character):
         # gets overwritten when secret_code is generated, secret_code generator can be commented out for testing
-        self.player_name = False
+        self.player_name = ''
         self.secret_code = ['RED', 'RED', 'RED', 'RED']
         self.player_code = [],
         self.player_score = 0
@@ -62,8 +62,9 @@ class PlayerObject:
         self.all_time_high_score = []
         self.score_date = score_date
         self.file_name_date = file_name_date
-        self.number_option = True  # turn on the number options on the keyboard
+        self.play_game = True  # turn on the number options on the keyboard
         self.new_line_character = new_line_character
+        self.set_new_high_score = False
 
     def arrow_input(self, arrow_key):
         # TODO tidy up code
@@ -76,7 +77,7 @@ class PlayerObject:
         current_position_color = self.color_mark_map[self.current_position[0]][self.current_position[1]]
         index_color_order = self.color_order.index(current_position_color)
         # change current position
-        if arrow_key == 'KEY_LEFT':
+        if arrow_key == 'KEY_LEFT' and self.play_game:
             if self.current_position[1] == 0:  # if position field is outer left
                 self.current_position[1] = 3  # then go position field outer right
             else:
@@ -84,7 +85,7 @@ class PlayerObject:
             current_position_color = self.color_mark_map[self.current_position[0]][self.current_position[1]]
             if current_position_color == 'BLACK':  # if color at current position is black
                 self.color_mark_map[self.current_position[0]][self.current_position[1]] = 'RED'  # then change to red
-        elif arrow_key == 'KEY_RIGHT':
+        elif arrow_key == 'KEY_RIGHT' and self.play_game:
             if self.current_position[1] == 3:  # if position field is outer right
                 self.current_position[1] = 0  # then go position field outer left
             else:
@@ -93,17 +94,17 @@ class PlayerObject:
             if current_position_color == 'BLACK':  # if color at current position is black
                 self.color_mark_map[self.current_position[0]][self.current_position[1]] = 'RED'  # then change to red
         # change color
-        elif arrow_key == 'KEY_UP':
+        elif arrow_key == 'KEY_UP' and self.play_game:
             if index_color_order == 0:  # if current color is at the color index 0
                 self.color_mark_map[self.current_position[0]][self.current_position[1]] = 'YELLOW'  # then change to yellow
             else:
                 self.color_mark_map[self.current_position[0]][self.current_position[1]] = self.color_order[index_color_order -1]  # otherwise, change to left color
-        elif arrow_key == 'KEY_DOWN':
+        elif arrow_key == 'KEY_DOWN' and self.play_game:
             if index_color_order == 3:  # if current color is at the color index 3
                 self.color_mark_map[self.current_position[0]][self.current_position[1]] = 'RED'  # then change to red
             else:
                 self.color_mark_map[self.current_position[0]][self.current_position[1]] = self.color_order[index_color_order +1]  # otherwise, change to right color
-        elif arrow_key == '#':
+        elif arrow_key == '#' and self.play_game:
             if self.color_mark_map[self.current_position[0]].count('BLACK') == 0:  # only if there is no 'black' fields
                 self.update_player_code()  # update before current position is changed
                 self.check_secret_code()  # need to update values before feedback message
@@ -115,7 +116,8 @@ class PlayerObject:
                     self.current_position[1] = 0  # go to left field
                     self.color_mark_map[self.current_position[0]][0] = 'RED'  # set the new field in the new row to red
 
-        return [self.current_position, self.color_mark_map[self.current_position[0]][self.current_position[1]]]  # [current-position-row, current-position-field]['color-at-current-position']
+        return self.set_new_high_score
+        #return [self.current_position, self.color_mark_map[self.current_position[0]][self.current_position[1]]]  # [current-position-row, current-position-field]['color-at-current-position']
 
     def generate_secret_random_number(self):
         """
@@ -205,16 +207,20 @@ class PlayerObject:
         """
         game_over_message = curses.newwin(4, 56, 31, 22)
         game_over_message.erase()
+        # game is over, player has played last line and there are no 4 perfect matching colors
         if self.current_position[0] == 0 and self.match_color_position != 4:
             self.update_timer = False
             game_over_message.addstr(f" Sorry, but you have not broken the code !!!\n You played {self.player_time_minutes} minute(s) and {self.player_time_seconds} second(s).\n The secret code was: {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}")
             game_over_message.refresh()
+            self.play_game = False
 
+        # position and color match, player has won the game
         elif self.match_color_position == 4:
             self.update_timer = False
             self.calculate_player_score()
             game_over_message.addstr(f" Congratulations, you have broken the code !!!\n It took you {self.player_time_minutes} minute(s) and {self.player_time_seconds} second(s).\n The secret code was: {self.secret_code[0]}, {self.secret_code[1]}, {self.secret_code[2]}, {self.secret_code[3]}\n Your score is: {self.player_score} (lines left {self.current_position[0]} x 200 - time {self.player_time_seconds_total}s)")
             game_over_message.refresh()
+            self.play_game = False
             self.new_high_score()
 
     def calculate_player_score(self):
@@ -227,52 +233,121 @@ class PlayerObject:
         """
         Checks if the player score is higher than any other score in the all_time_high_score or this_month_high_score.
         """
+        self.all_time_high_score = spreadsheet.get_all_time_high_score()
+        for index in range(len(self.all_time_high_score)):
+            if self.player_score > self.all_time_high_score[index][2]:
+                new_high_score_message = curses.newwin(4, 56, 31, 22)
+                new_high_score_message.erase()
+                place = ''
+                if index == 0:
+                    place = 'st'
+                elif index == 1:
+                    place = 'nd'
+                elif index == 2:
+                    place = 'rd'
+                else:
+                    place = 'th'
+                new_high_score_message.addstr(f" Your score is ({self.player_score}) {self.player_score - self.all_time_high_score[index][2]} points higher,\n than {self.all_time_high_score[index][0]}'s score at the {index + 1}{place} place\n from the high score list. Well done {self.player_name}!\n You made it into the high score list.")
+                new_high_score_message.refresh()
+                break
+        self.set_new_high_score = True
+
+    def ask_player_name(self, screen):
+        """
+        Ask player for his name and saves it to self.player_name.
+        """
         curses.init_pair(9, curses.COLOR_YELLOW, curses.COLOR_BLACK)
         curses.init_pair(7, curses.COLOR_BLUE, curses.COLOR_YELLOW)
         BORDER = curses.color_pair(9)
         HIGHLIGHT = curses.color_pair(7)
-        new_score_background = curses.newpad(8, 60)
-        new_score_background.clear()
-        new_score_background.addstr(f"╭━━━NEW HIGH SCORE ENTRY━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
-                                    f"┃ Congratulations, you have set a new high score!!!       ┃\n"
-                                    f"┃                                                         ┃\n"
-                                    f"┃ > Please, enter your name:   123456789a123              ┃\n"
-                                    f"┃                                                         ┃\n"
-                                    f"┃ > Confirm your entry with Ctrl + G                      ┃\n"
-                                    f"┃                                                         ┃\n"
-                                    f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
-        new_score_background.refresh(0, 0, 36, 21, 43, 79)
-        highlight_text = curses.newpad(1, 10)
-        highlight_text.erase()
-        highlight_text.addstr(f"Ctrl", HIGHLIGHT)
-        highlight_text.refresh(0, 0, 41, 49, 41, 53)
-        highlight_text.erase()
-        highlight_text.addstr(f"G", HIGHLIGHT)
-        highlight_text.refresh(0, 0, 41, 56, 41, 57)
-        highlight_name = curses.newpad(3, 20)
-        highlight_name.erase()
-        highlight_name.addstr(f"╭━━━━━━━━━━━━━╮\n┃             ┃\n╰━━━━━━━━━━━━━╯", BORDER)
-        highlight_name.refresh(0, 0, 38, 51, 40, 65)
-        player_text_input = curses.newwin(1, 13, 39, 52)
-        if self.new_line_character:
-            curses.curs_set(2)
-        box = Textbox(player_text_input)
-        box.edit()
-        self.player_name = box.gather()
-        if self.new_line_character:
-            curses.curs_set(0)
-        self.all_time_high_score = spreadsheet.get_all_time_high_score()
-        for index in range(len(self.all_time_high_score)):
-            if self.player_score > self.all_time_high_score[index][2]:
-                if not self.player_name:
-                    pass  # ask player for name
-                new_high_score_message = curses.newwin(4, 56, 31, 22)
-                new_high_score_message.erase()
-                new_high_score_message.addstr(f" Your score is ({self.player_score})\n higher then the highest heigh score ({self.all_time_high_score[index][2]} {self.player_name})")
-                new_high_score_message.refresh()
-                break
+        if self.player_name:
+            new_score_has_name = curses.newpad(8, 60)
+            new_score_has_name.clear()
+            new_score_has_name.addstr(f"╭━━━INSTRUCTIONS━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
+                                      f"┃ We found the name                                       ┃\n"
+                                      f"┃ Is it your name or would you like to change it?         ┃\n"
+                                      f"┃ > Press 'y' for yes, if you want to change it.          ┃\n"
+                                      f"┃   or                                                    ┃\n"
+                                      f"┃ > Press any other key, if you want to keep it.          ┃\n"
+                                      f"┃                                                         ┃\n"
+                                      f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
+            new_score_has_name.refresh(0, 0, 36, 21, 43, 79)
+            database_name = curses.newpad(1, 40)
+            database_name.erase()
+            database_name.addstr(f"{self.player_name}", HIGHLIGHT)
+            database_name.refresh(0, 0, 37, 41, 37, 54)
+            database_name_ending = curses.newpad(1, 40)
+            database_name_ending.erase()
+            database_name_ending.addstr(f"in our database.")
+            database_name_ending.refresh(0, 0, 37, 42+len(self.player_name), 37, 57+len(self.player_name))
+            text_highlight = curses.newpad(1, 14)
+            text_highlight.erase()
+            text_highlight.addstr(f"y", HIGHLIGHT)
+            text_highlight.refresh(0, 0, 39, 32, 39, 32)
+            text_highlight.erase()
+            text_highlight.addstr(f"any other key", HIGHLIGHT)
+            text_highlight.refresh(0, 0, 41, 31, 41, 43)
+            user_key = screen.getkey()
+            if user_key.upper() == 'Y':
+                self.player_name = False
+            elif user_key.upper() == 'N':
+                pass
 
+        if not self.player_name:
+            new_score_background = curses.newpad(8, 60)
+            new_score_background.clear()
+            new_score_background.addstr(f"╭━━━INSTRUCTIONS━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
+                                        f"┃ We need your name for the high score entry.             ┃\n"
+                                        f"┃                                                         ┃\n"
+                                        f"┃ > Please, enter your name:   123456789a123              ┃\n"
+                                        f"┃                                                         ┃\n"
+                                        f'┃ > Confirm your entry with "ENTER".                      ┃\n'
+                                        f"┃                                                         ┃\n"
+                                        f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
+            new_score_background.refresh(0, 0, 36, 21, 43, 79)
+            highlight_text = curses.newpad(1, 10)
+            highlight_text.erase()
+            highlight_text.addstr(f"ENTER", HIGHLIGHT)
+            highlight_text.refresh(0, 0, 41, 49, 41, 56)
+            #highlight_text.erase()
+            #highlight_text.addstr(f"G", HIGHLIGHT)
+            #highlight_text.refresh(0, 0, 41, 56, 41, 57)
+            highlight_name = curses.newpad(3, 20)
+            highlight_name.erase()
+            highlight_name.addstr(f"╭━━━━━━━━━━━━━━╮\n┃              ┃\n╰━━━━━━━━━━━━━━╯", BORDER)
+            highlight_name.refresh(0, 0, 38, 51, 40, 66)
+            player_text_input = curses.newwin(1, 14, 39, 52)
+            if self.new_line_character:
+                curses.curs_set(1)
+            box = Textbox(player_text_input)
+            box.edit()
+            self.player_name = box.gather()
+            if self.new_line_character:
+                curses.curs_set(0)
 
+        new_score_confirmation = curses.newpad(8, 60)
+        new_score_confirmation.clear()
+        new_score_confirmation.addstr(f"╭━━━INSTRUCTIONS━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
+                                      f"┃ Thank you {self.player_name}                            ┃\n"
+                                      f"┃ Your score has been saved.                              ┃\n"
+                                      f"┃ Note, that only the first 6 scores are shown above.     ┃\n"
+                                      f"┃ > Press 5 (ARCHIVE) to see all scores.                  ┃\n"
+                                      f'┃ > Press 2 (RESTART) to start a new game.                ┃\n'
+                                      f"┃ > Or any of the other numbers for the other options.    ┃\n"
+                                      f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
+        new_score_confirmation.refresh(0, 0, 36, 21, 43, 79)
+        after_player_name = curses.newpad(1, 58)
+        after_player_name.erase()
+        after_player_name.addstr(f"for playing 'Code Breaker' !")
+        after_player_name.refresh(0, 0, 37, 34 + len(self.player_name), 37, 61 + len(self.player_name))
+        highlight_text_1 = curses.newpad(1, 2)
+        highlight_text_1.erase()
+        highlight_text_1.addstr(f"5", HIGHLIGHT)
+        highlight_text_1.refresh(0, 0, 40, 31, 40, 31)
+        highlight_text_2 = curses.newpad(1, 2)
+        highlight_text_2.erase()
+        highlight_text_2.addstr(f"2", HIGHLIGHT)
+        highlight_text_2.refresh(0, 0, 41, 31, 41, 31)
 
     def reset_player(self):
         """
@@ -301,6 +376,8 @@ class PlayerObject:
         self.player_time_seconds_total = 0
         self.player_time_seconds = 0
         self.player_time_minutes = 0
-        self.generate_secret_random_number()
+        self.play_game = True
+        # TODO comment out if no random secret code to be generated, the default for testing is 'RED' for times
+        # self.generate_secret_random_number()
 
 

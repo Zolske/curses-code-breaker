@@ -66,6 +66,10 @@ score_date = temp_date_text.join(today_date[2])
 file_name_date = temp_date_text.join(today_date[3])
 
 
+def user_input():
+    user_key = screen.getkey()
+    return user_key
+
 def player_move():
     """
     Processes the user key input.
@@ -74,9 +78,9 @@ def player_move():
     user_arrow_input = screen.getkey()
     # if the user presses 'q' the function exits and returns 'q',
     # this will exit the program because it will break the loop and there is nothing left to do for the program
-    if user_arrow_input == '1' and player_object.number_option:  # ends the program if user presses '1'
+    if user_arrow_input == '1':  # ends the program if user presses '1'
         return True
-    elif user_arrow_input == '2' and player_object.number_option:  # resets the game if the user presses '2'
+    elif user_arrow_input == '2':  # resets the game if the user presses '2'
         game_menu.start_game(screen)
         player_object.reset_player()
     # saves the color of the current location according to the color_mark_map in the player object
@@ -92,7 +96,9 @@ def player_move():
     # uses the 'marker' pad, any 'select' or 'enter' pads at that position are removed
     marker.refresh(*game_menu.position_marker[player_object.current_position[0]][player_object.current_position[1]])
     # processes the user key input and updates the values in the player object properties
-    player_object.arrow_input(user_arrow_input)
+    if player_object.arrow_input(user_arrow_input):
+        player_object.ask_player_name(screen)
+        player_object.set_new_high_score = False
     # updates the current color according to the user input in the player object color_mark_map
     current_color = player_object.color_mark_map[player_object.current_position[0]][player_object.current_position[1]]
     # adds 1, so it can be used for the equivalent curses.color_pair()
@@ -105,16 +111,17 @@ def player_move():
     marker.refresh(*game_menu.position_select[player_object.current_position[0]][player_object.current_position[1]])
     # highlights the text 'press the 'End' key' when the user has selected 4 colors
     end_key_message = curses.newpad(1, 20)
-    if player_object.color_mark_map[player_object.current_position[0]].count('BLACK') == 0:
-        end_key_message.erase()
-        end_key_message.addstr("press the '#' key", HIGHLIGHT)
-        end_key_message.refresh(0, 0, 41, 24, 41, 41)
-        screen.refresh()
-    else:
-        end_key_message.erase()
-        end_key_message.addstr("press the '#' key", ORIGINAL)
-        end_key_message.refresh(0, 0, 41, 24, 41, 41)
-        screen.refresh()
+    if player_object.play_game:
+        if player_object.color_mark_map[player_object.current_position[0]].count('BLACK') == 0:
+            end_key_message.erase()
+            end_key_message.addstr("press the '#' key", HIGHLIGHT)
+            end_key_message.refresh(0, 0, 41, 24, 41, 41)
+            screen.refresh()
+        else:
+            end_key_message.erase()
+            end_key_message.addstr("press the '#' key", ORIGINAL)
+            end_key_message.refresh(0, 0, 41, 24, 41, 41)
+            screen.refresh()
 
 
 def timer():
@@ -168,6 +175,7 @@ except:
 game_menu.start_game(screen)
 # create the player_object which contains data for current position, secret code, player code
 player_object = player.PlayerObject(score_date, file_name_date, new_line_character)
+#TODO comment out if no random secret code to be generated, the default for testing is 'RED' for times
 # generates the secret code
 # player_object.generate_secret_random_number()
 
