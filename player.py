@@ -361,7 +361,7 @@ class PlayerObject:
                 all_title_score_message = curses.newpad(1, 60)
                 all_title_score_message.erase()
                 all_title_score_message.addstr(f"┠╌╌╌NEW ALL TIME HIGH SCORE╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┨")
-                all_title_score_message.refresh(0, 0, 30, 21, 30, 80)
+                all_title_score_message.refresh(0, 0, 30, 21, 30, 79)
                 all_score_message = curses.newpad(6, 55)
                 all_score_message.erase()
                 all_score_message.addstr(f"Your score is {self.player_score - all_points} points higher than\n"
