@@ -1,13 +1,13 @@
 import random
 import curses
-from curses.textpad import Textbox, rectangle
+from curses.textpad import Textbox
 import spreadsheet
 import time
 import menu
 
 
 class PlayerObject:
-    def __init__(self, score_date, file_name_date, new_line_character):
+    def __init__(self, score_date, file_name_date, new_line_character, today_month, today_year):
         # gets overwritten when secret_code is generated, secret_code generator can be commented out for testing
         self.player_name = ''
         self.secret_code = ['RED', 'RED', 'RED', 'RED']
@@ -60,8 +60,11 @@ class PlayerObject:
         self.player_time_seconds = 0
         self.player_time_minutes = 0
         self.all_time_high_score = []
+        self.this_month_high_score = []
         self.score_date = score_date
         self.file_name_date = file_name_date
+        self.today_month = today_month
+        self.today_year = today_year
         self.play_game = True  # turn on the number options on the keyboard
         self.new_line_character = new_line_character
         self.set_new_high_score = False
@@ -231,26 +234,140 @@ class PlayerObject:
 
     def new_high_score(self):
         """
-        Checks if the player score is higher than any other score in the all_time_high_score or this_month_high_score.
+        Checks if the player score is higher than any other score in the all_time_high_score or this_month_high_score
+        list. Handles the 'code feedback' message.
         """
+        # all_ is for all_time_high_score list
+        all_place = 0  # is the position of the score which is lower than the player score
+        all_place_ending = ''  # puts the right wording after the number (e.g. 1st, 2nd , ...)
+        all_points = 0  # points from the lower score than the players
+        all_date = ''  # is the date when the score was created which is lower than the player score
+        all_name = ''  # name of the player whose score is pushed down
+        # month_ is for this_month_high_score list
+        month_place = 0  # is the position of the score which is lower than the player score
+        month_place_ending = ''  # puts the right wording after the number (e.g. 1st, 2nd , ...)
+        month_points = 0  # points from the lower score than the players
+        month_date = ''  # is the date when the score was created which is lower than the player score
+        month_name = ''  # name of the player whose score is pushed down
+
+        # calls the function from 'spreadsheet.py' which gets the google sheet data for the all_time_high_score list
+        # (starting from the top of the list (is sorted by highest score first)
         self.all_time_high_score = spreadsheet.get_all_time_high_score()
+        # loops through the google spread sheet list and compares the score with the player score
         for index in range(len(self.all_time_high_score)):
+            # if the player score is higher the google sheet list, than the loop stops
             if self.player_score > self.all_time_high_score[index][2]:
-                new_high_score_message = curses.newwin(4, 56, 31, 22)
-                new_high_score_message.erase()
-                place = ''
-                if index == 0:
-                    place = 'st'
-                elif index == 1:
-                    place = 'nd'
-                elif index == 2:
-                    place = 'rd'
-                else:
-                    place = 'th'
-                new_high_score_message.addstr(f" Your score is ({self.player_score}) {self.player_score - self.all_time_high_score[index][2]} points higher,\n than {self.all_time_high_score[index][0]}'s score at the {index + 1}{place} place\n from the high score list. Well done {self.player_name}!\n You made it into the high score list.")
-                new_high_score_message.refresh()
+                all_place = index + 1
+                all_points = self.all_time_high_score[index][2]
+                all_date = self.all_time_high_score[index][1]
+                all_name = self.all_time_high_score[index][0]
+                self.set_new_high_score = True  # becomes only true if the loop breaks
+                if all_place == 1:
+                    all_place_ending = 'st'
+                elif all_place == 2:
+                    all_place_ending = 'nd'
+                elif all_place == 3:
+                    all_place_ending = 'rd'
+                elif all_place > 3:
+                    all_place_ending = 'th'
                 break
-        self.set_new_high_score = True
+
+        # calls the function from 'spreadsheet.py' which gets the google sheet data for this_month_time_high_score list
+        # (starting from the top of the list (is sorted by highest score first)
+        self.this_month_high_score = spreadsheet.get_this_month_high_score(self.file_name_date)
+        # loops through the google spread sheet list and compares the score with the player score
+        for index in range(len(self.this_month_high_score)):
+            # if the player score is higher the google sheet list, than the loop stops
+            if self.player_score > self.this_month_high_score[index][2]:
+                month_place = index + 1
+                month_points = self.this_month_high_score[index][2]
+                month_date = self.this_month_high_score[index][1]
+                month_name = self.this_month_high_score[index][0]
+                self.set_new_high_score = True  # becomes only true if the loop breaks
+                if month_place == 1:
+                    month_place_ending = 'st'
+                elif month_place == 2:
+                    month_place_ending = 'nd'
+                elif month_place == 3:
+                    month_place_ending = 'rd'
+                elif month_place > 3:
+                    month_place_ending = 'th'
+                break
+
+        if self.set_new_high_score:
+            new_high_score_window = curses.newwin(21, 60, 15, 21)
+            new_high_score_window.erase()
+            new_high_score_window.addstr(f"╭━━━CODE FEEDBACK━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┠╌╌╌YOUR SCORE IS ╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┨\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┠╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┨\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┃                                                         ┃\n"
+                                         f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
+            new_high_score_window.refresh()
+            one_or_two = 'two new high scores!!!' if all_place and month_place else 'one new high score!'
+            congratulation_message = curses.newpad(2, 60)
+            congratulation_message.erase()
+            player_name = ''
+            if self.player_name:
+                player_name = f" {self.player_name}"
+            congratulation_message.addstr(f"Congratulations, well done{player_name}!\nYou have set {one_or_two}")
+            congratulation_message.refresh(0, 0, 16, 23, 17, 77)
+            score_title_message = curses.newpad(1, 10)
+            score_title_message.erase()
+            score_title_message.addstr(f"{self.player_score}")
+            score_title_message.refresh(0, 0, 19, 39, 19, 39+len(str(self.player_score))-1)
+            score_message = curses.newpad(4, 60)
+            score_message.erase()
+            score_message.addstr(f"Your score calculation:\n{self.current_position[0]} (lines left) x 200 = {self.current_position[0]*200},\n"
+                                 f"{self.current_position[0]*200} - {self.player_time_seconds_total}s (total time) "
+                                 f"= {self.current_position[0]*200 - self.player_time_seconds_total} (your score)")
+            score_message.refresh(0, 0, 20, 23, 23, 77)
+
+            if month_place:
+                last_entry = ''
+                if self.this_month_high_score[19][2]:
+                    last_entry = f"Unfortunate for {self.this_month_high_score[19][0]}'s score from 20{self.this_month_high_score[19][1]},\nhis\her score has fallen out of the list."
+                month_title = f"NEW {self.today_month.upper()} {self.today_year} HIGH SCORE"
+                month_title_score_message = curses.newpad(1, 60)
+                month_title_score_message.erase()
+                month_title_score_message.addstr(month_title)
+                month_title_score_message.refresh(0, 0, 24, 25, 24, 25+len(month_title)-1)
+                month_score_message = curses.newpad(6, 55)
+                month_score_message.erase()
+                month_score_message.addstr(f"Your score is {self.player_score - month_points} points higher than\n"
+                                           f"{month_name}'s score at {month_place}{month_place_ending} place from "
+                                           f"20{month_date}.\n{last_entry}")
+                month_score_message.refresh(0, 0, 25, 23, 28, 77)
+
+            if all_place:
+                last_entry = ''
+                if self.all_time_high_score[19][2]:
+                    last_entry = f"Unfortunate for {self.all_time_high_score[19][0]}'s score from 20{self.all_time_high_score[19][1]},\nhis\her score has fallen out of the list."
+                all_title_score_message = curses.newpad(1, 60)
+                all_title_score_message.erase()
+                all_title_score_message.addstr(f"┠╌╌╌NEW ALL TIME HIGH SCORE╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┨")
+                all_title_score_message.refresh(0, 0, 30, 21, 30, 80)
+                all_score_message = curses.newpad(6, 55)
+                all_score_message.erase()
+                all_score_message.addstr(f"Your score is {self.player_score - all_points} points higher than\n"
+                                           f"{all_name}'s score at {all_place}{all_place_ending} place from "
+                                           f"20{all_date}.\n{last_entry}")
+                all_score_message.refresh(0, 0, 31, 23, 34, 77)
 
     def ask_player_name(self, screen):
         """
@@ -321,7 +438,7 @@ class PlayerObject:
                 curses.curs_set(1)
             box = Textbox(player_text_input)
             box.edit()
-            self.player_name = box.gather()
+            self.player_name = (box.gather()).rstrip(" ")
             if self.new_line_character:
                 curses.curs_set(0)
 
@@ -335,7 +452,7 @@ class PlayerObject:
                                       f'┃ > Press 2 (RESTART) to start a new game.                ┃\n'
                                       f"┃ > Or any of the other numbers for the other options.    ┃\n"
                                       f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
-        new_score_confirmation.refresh(0, 0, 36, 21, 43, 79)
+        new_score_confirmation.refresh(0, 0, 36, 21, 43, 78)
         after_player_name = curses.newpad(1, 58)
         after_player_name.erase()
         after_player_name.addstr(f"for playing 'Code Breaker' !")
@@ -353,7 +470,6 @@ class PlayerObject:
         """
         Restarts the player attributes in the player Object, restarts the timer, generates a new secret code,
         clears the board from the marker and set it back to the beginning.
-        :param screen: needs the curses window object
         """
         self.player_code = []
         self.player_score = 0
@@ -377,6 +493,7 @@ class PlayerObject:
         self.player_time_seconds = 0
         self.player_time_minutes = 0
         self.play_game = True
+        self.set_new_high_score = False
         # TODO comment out if no random secret code to be generated, the default for testing is 'RED' for times
         # self.generate_secret_random_number()
 

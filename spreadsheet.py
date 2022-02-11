@@ -41,7 +41,7 @@ def get_this_month_high_score(file_name_date):
     for index in range(len(data)):
         data[index][2] = int(data[index][2])  # only the 3th column of each row
     data.sort(key=lambda x: x[2], reverse=True)  # sort the highest score to the beginning
-    return data[:19]  # returns only the first 20 entries, should be only 20 any way
+    return data[:20]  # returns only the first 20 entries, should be only 20 any way
 
 
 def get_all_time_high_score():
@@ -58,7 +58,7 @@ def get_all_time_high_score():
     for index in range(len(data)):
         data[index][2] = int(data[index][2])  # only the 3th column of each row
     data.sort(key=lambda x: x[2], reverse=True)  # sort the highest score to the beginning
-    return data[:19]  # returns only the first 20 entries, should be only 20 any way
+    return data[:20]  # returns only the first 20 entries, should be only 20 any way
 
 
 def get_today_month_year():
@@ -76,4 +76,5 @@ def get_today_month_year():
     file_name_date = f"{year_today}_{month_today}"  # 2022_02
     date_list = [[year_today], [month_word_today], [score_date], [file_name_date]]
     return date_list
+
 

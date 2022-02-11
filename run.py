@@ -174,7 +174,7 @@ except:
 
 game_menu.start_game(screen)
 # create the player_object which contains data for current position, secret code, player code
-player_object = player.PlayerObject(score_date, file_name_date, new_line_character)
+player_object = player.PlayerObject(score_date, file_name_date, new_line_character, today_month, today_year)
 #TODO comment out if no random secret code to be generated, the default for testing is 'RED' for times
 # generates the secret code
 # player_object.generate_secret_random_number()
