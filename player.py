@@ -297,11 +297,12 @@ class PlayerObject:
         if self.set_new_high_score:
             new_high_score_window = curses.newwin(21, 60, 15, 21)
             new_high_score_window.erase()
-            new_high_score_window.addstr(f"╭━━━CODE FEEDBACK━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
+            new_high_score_window.addstr(f"╭━━━YOUR SCORE IS━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
                                          f"┃                                                         ┃\n"
                                          f"┃                                                         ┃\n"
                                          f"┃                                                         ┃\n"
-                                         f"┠╌╌╌YOUR SCORE IS ╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┨\n"
+                                         f"┃                                                         ┃\n"
+                                         f"┠╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┨\n"
                                          f"┃                                                         ┃\n"
                                          f"┃                                                         ┃\n"
                                          f"┃                                                         ┃\n"
@@ -316,27 +317,26 @@ class PlayerObject:
                                          f"┃                                                         ┃\n"
                                          f"┃                                                         ┃\n"
                                          f"┃                                                         ┃\n"
-                                         f"┃                                                         ┃\n"
                                          f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
             new_high_score_window.refresh()
-            one_or_two = 'two new high scores!!!' if all_place and month_place else 'one new high score!'
-            congratulation_message = curses.newpad(2, 60)
-            congratulation_message.erase()
-            player_name = ''
-            if self.player_name:
-                player_name = f" {self.player_name}"
-            congratulation_message.addstr(f"Congratulations, well done{player_name}!\nYou have set {one_or_two}")
-            congratulation_message.refresh(0, 0, 16, 23, 17, 77)
-            score_title_message = curses.newpad(1, 10)
-            score_title_message.erase()
-            score_title_message.addstr(f"{self.player_score}")
-            score_title_message.refresh(0, 0, 19, 39, 19, 39+len(str(self.player_score))-1)
-            score_message = curses.newpad(4, 60)
+            # one_or_two = 'two new high scores!!!' if all_place and month_place else 'one new high score!'
+            # congratulation_message = curses.newpad(2, 60)
+            # congratulation_message.erase()
+            # player_name = ''
+            # if self.player_name:
+            #     player_name = f" {self.player_name}"
+            # congratulation_message.addstr(f"Congratulations, well done{player_name}!\nYou have set {one_or_two}")
+            # congratulation_message.refresh(0, 0, 16, 23, 17, 77)
+            # score_title_message = curses.newpad(1, 10)
+            # score_title_message.erase()
+            # score_title_message.addstr(f"{self.player_score}")
+            # score_title_message.refresh(0, 0, 19, 39, 19, 39+len(str(self.player_score))-1)
+            score_message = curses.newpad(3, 60)
             score_message.erase()
             score_message.addstr(f"Your score calculation:\n{self.current_position[0]} (lines left) x 200 = {self.current_position[0]*200},\n"
                                  f"{self.current_position[0]*200} - {self.player_time_seconds_total}s (total time) "
                                  f"= {self.current_position[0]*200 - self.player_time_seconds_total} (your score)")
-            score_message.refresh(0, 0, 20, 23, 23, 77)
+            score_message.refresh(0, 0, 17, 23, 20, 77)
 
             if month_place:
                 last_entry = ''
@@ -346,13 +346,13 @@ class PlayerObject:
                 month_title_score_message = curses.newpad(1, 60)
                 month_title_score_message.erase()
                 month_title_score_message.addstr(month_title)
-                month_title_score_message.refresh(0, 0, 24, 25, 24, 25+len(month_title)-1)
+                month_title_score_message.refresh(0, 0, 25, 25, 25, 25+len(month_title)-1)
                 month_score_message = curses.newpad(6, 55)
                 month_score_message.erase()
                 month_score_message.addstr(f"Your score is {self.player_score - month_points} points higher than\n"
                                            f"{month_name}'s score at {month_place}{month_place_ending} place from "
                                            f"20{month_date}.\n{last_entry}")
-                month_score_message.refresh(0, 0, 25, 23, 28, 77)
+                month_score_message.refresh(0, 0, 26, 23, 29, 77)
 
             if all_place:
                 last_entry = ''
