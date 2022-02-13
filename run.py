@@ -133,6 +133,7 @@ def timer():
     seconds_int = 0
     minutes_text = '00'
     minutes_int = 0
+    player_score = 1800
     while True:
         if player_object.stop_time:
             break
@@ -145,21 +146,32 @@ def timer():
         seconds_text = seconds_text.zfill(2)  # .zfill(2) fills the space with 0 if less than 2 digits
         minutes_text = str(minutes_int)
         minutes_text = minutes_text.zfill(2)  # .zfill(2) fills the space with 0 if less than 2 digits
+        if player_score > 0:
+            player_score = player_object.current_position[0] * 200 - (minutes_int * 60 + seconds_int)
+        else:
+            player_score = 0
+       # player_score = player_score.zfill(5)
         if player_object.reset_time:
             player_object.reset_time = False
             seconds_int = 0
             seconds_text = '00'
             minutes_int = 0
             minutes_text = '00'
+            player_score = 1800
         if player_object.update_timer:
             timer_window = curses.newpad(1, 6)
             timer_window.erase()
             timer_window.addstr(f"{minutes_text}:{seconds_text}")
             timer_window.refresh(0, 0, 2, 6, 2, 11)
-            screen.refresh()
+            #screen.refresh()
             player_object.player_time_seconds_total = (minutes_int * 60) + seconds_int
             player_object.player_time_seconds = seconds_int
             player_object.player_time_minutes = minutes_int
+            score_window = curses.newpad(1, 6)
+            score_window.erase()
+            score_window.addstr(f"{str(player_score).rjust(5)}")
+            score_window.refresh(0, 0, 2, 14, 2, 19)
+            screen.refresh()
 
 
 # create the game_menu object which contains data for displaying elements on the screen
