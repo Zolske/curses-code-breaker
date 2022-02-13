@@ -14,7 +14,7 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('code_breaker_global_high_score')
 
 class Game:
-    def __init__(self, today_year, today_month, file_name_date):
+    def __init__(self, today_year, today_month, file_name_date, today_day_name, today_date_num, file_name_day_date):
         #  alignment "0123456789a123456789b123456789c123456789d123456789e123456789f123456789g123456789h"
         self.line = ["                                                                                ", #00
                      "    ╓━TIME━━╥━TIMER━╖   ╭┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈╮  ", #01
@@ -31,7 +31,7 @@ class Game:
                      "║ ┃ ║3  ║   ║   ║   ║    / /_/ / / /   /  __// /_/ / / ,<   /  __/ / /          ", #12
                      "╟━╋━╢   ║   ║   ║   ║   /_.___/ /_/    \___/ \__,_/ /_/|_|  \___/ /_/           ", #13
                      "║ ┃ ║   ║   ║   ║   ║                                                           ", #14
-                     "╠═╪═╬═══╬═══╬═══╬═══╣╭━ALL━TIME━HIGHSCORE━━━━━━━━━┰━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮", #15
+                     "╠═╪═╬═══╬═══╬═══╬═══╣╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━┰━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮", #15
                      "║ ┃ ║4  ║   ║   ║   ║╞═NAME════════╤═DATE═══╤SCORE╪═NAME════════╤═DATE═══╤SCORE╡", #16
                      "╟━╋━╢   ║   ║   ║   ║┠━━━━━━━━━━━━━╂━━━━━━━━╂━━━━━╫━━━━━━━━━━━━━╂━━━━━━━━╂━━━━━┤", #17
                      "║ ┃ ║   ║   ║   ║   ║┠JOHN DOE     ┠YY.MM.DD┠00000╟             ┠        ┠     ┃", #18
@@ -120,7 +120,7 @@ class Game:
                                   [[0, 1, 36, 1, 36, 1], [0, 1, 36, 3, 36, 3], [0, 1, 38, 1, 38, 1], [0, 1, 38, 3, 38, 3]],  # turn / row 9 / index 8
                                   [[0, 1, 40, 1, 40, 1], [0, 1, 40, 3, 40, 3], [0, 1, 42, 1, 42, 1], [0, 1, 42, 3, 42, 3]],  # turn / row 10 / index 9
                                   ]
-        self.position_all_time_high_score = [[[0, 0, 18, 22, 18, 34], [0, 0, 18, 36, 18, 43], [0, 0, 18, 45, 18, 49]], # [max 13], [max 8], [max 5]
+        self.position_today_high_score = [[[0, 0, 18, 22, 18, 34], [0, 0, 18, 36, 18, 43], [0, 0, 18, 45, 18, 49]], # [max 13], [max 8], [max 5]
                                              [[0, 0, 20, 22, 20, 34], [0, 0, 20, 36, 20, 43], [0, 0, 20, 45, 20, 49]],
                                              [[0, 0, 22, 22, 22, 34], [0, 0, 22, 36, 22, 43], [0, 0, 22, 45, 22, 49]],
                                              [[0, 0, 24, 22, 24, 34], [0, 0, 24, 36, 24, 43], [0, 0, 24, 45, 24, 49]],
@@ -136,9 +136,13 @@ class Game:
         # spreadsheet
         self.all_time_high_score = []
         self.this_month_high_score = []
+        self.today_high_score = []
         self.today_year = today_year
         self.today_month = today_month
         self.file_name_date = file_name_date
+        self.file_name_day_date = file_name_day_date
+        self.today_day_name = today_day_name
+        self.today_date_num = today_date_num
 
     def set_colors(self):
         """
@@ -206,23 +210,30 @@ class Game:
         marker.refresh(0, 3, 40, 5, 42, 7)
 
     def set_score(self):
+        # for this month's high score
         this_month_str = f"{self.today_month.upper()}━{self.today_year}━HIGHSCORE"
         text_score_pad = curses.newpad(1, 30)
         text_score_pad.erase()
         text_score_pad.addstr(this_month_str)
         text_score_pad.refresh(0, 0, 15, 52, 15, 51+len(this_month_str))
+        # for today's high score
+        today_str = f"{self.today_day_name.upper()}━HIGHSCORE"
+        text_score_pad = curses.newpad(1, 30)
+        text_score_pad.erase()
+        text_score_pad.addstr(today_str)
+        text_score_pad.refresh(0, 0, 15, 23, 15, 22+len(today_str))
         # set score for "top 6 all time"
         for score_entry in range(6):
             for score_values in range(3):
                 text_score_pad.erase()
                 # check if it is an int, should be only score, name and date should not pass
-                if isinstance(self.all_time_high_score[score_entry][score_values], int):
+                if isinstance(self.today_high_score[score_entry][score_values], int):
                     # fills up empty space if less than 5 characters, moves content to the right
-                    text_score_pad.addstr(str(self.all_time_high_score[score_entry][score_values]).rjust(5))
+                    text_score_pad.addstr(str(self.today_high_score[score_entry][score_values]).rjust(5))
                 else:
                     # should be only name and date
-                    text_score_pad.addstr(str(self.all_time_high_score[score_entry][score_values]))
-                text_score_pad.refresh(*self.position_all_time_high_score[score_entry][score_values])
+                    text_score_pad.addstr(str(self.today_high_score[score_entry][score_values]))
+                text_score_pad.refresh(*self.position_today_high_score[score_entry][score_values])
         # set score for "top 6 this month"
         for score_entry in range(6):
             for score_values in range(3):
@@ -235,6 +246,7 @@ class Game:
                     # should be only name and date
                     text_score_pad.addstr(str(self.this_month_high_score[score_entry][score_values]))
                 text_score_pad.refresh(*self.position_this_month_high_score[score_entry][score_values])
+
 
     def start_game(self, screen):
         """
@@ -252,6 +264,7 @@ class Game:
 
         self.all_time_high_score = spreadsheet.get_all_time_high_score()
         self.this_month_high_score = spreadsheet.get_this_month_high_score(self.file_name_date)
+        self.today_high_score = spreadsheet.get_today_high_score(self.file_name_day_date)
         screen.refresh()
         self.set_colors()
         screen.refresh()

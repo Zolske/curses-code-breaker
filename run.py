@@ -64,11 +64,15 @@ today_year = temp_date_text.join(today_date[0])
 today_month = temp_date_text.join(today_date[1])
 score_date = temp_date_text.join(today_date[2])
 file_name_date = temp_date_text.join(today_date[3])
+today_day_name = temp_date_text.join(today_date[4])
+today_date_num = temp_date_text.join(today_date[5])
+file_name_day_date = temp_date_text.join(today_date[6])
 
 
 def user_input():
     user_key = screen.getkey()
     return user_key
+
 
 def player_move():
     """
@@ -159,7 +163,7 @@ def timer():
 
 
 # create the game_menu object which contains data for displaying elements on the screen
-game_menu = menu.Game(today_year, today_month, file_name_date)
+game_menu = menu.Game(today_year, today_month, file_name_date, today_day_name, today_date_num, file_name_day_date)
 # code instituteds browser terminal will raise an error which will switch the new_line_character in the Game object to False,
 # the start_game() method in the Game object will print the background without the \n character which otherwise would raise an error
 try:
@@ -174,7 +178,7 @@ except:
 
 game_menu.start_game(screen)
 # create the player_object which contains data for current position, secret code, player code
-player_object = player.PlayerObject(score_date, file_name_date, new_line_character, today_month, today_year)
+player_object = player.PlayerObject(score_date, file_name_date, new_line_character, today_month, today_year, today_day_name, file_name_day_date)
 #TODO comment out if no random secret code to be generated, the default for testing is 'RED' for times
 # generates the secret code
 # player_object.generate_secret_random_number()

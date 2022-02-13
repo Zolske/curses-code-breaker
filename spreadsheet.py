@@ -70,32 +70,38 @@ def get_all_time_high_score():
 def get_today_month_year():
     """
     Checks today date.
-    :return: [[year_today 2022], [month_word_today February], [score_date 22.02.07], [file_name_date 2022_02]]
+    :return: [[year_today 2022], [month_word_today February], [score_date 22.02.07], [file_name_date 2022_02],
+    [today_day_name Wednesday], [today_date_num 12/31/18]]
     """
     date_today = datetime.datetime.now()  # '2022-02-07 19:42:22.815959'
     month_word_today = date_today.strftime("%B")  # 'February'
     day_today = date_today.strftime("%d")  # 07
+    day_number_today = date_today.strftime("%j")  # Day number of year 001-366
+    today_day_name = date_today.strftime("%A")  # Weekday, full version, Wednesday
+    today_date_num = date_today.strftime("%x")  # Local version of date	12/31/18
     month_today = date_today.strftime("%m")  # '02'
     year_today = date_today.strftime("%Y")  # '2022'
-    year_today_short = date_today.strftime("%y")  # '22'
+    year_today_short = date_today.strftime("%y")  # '22' year without century
     score_date = f"{year_today_short}.{month_today}.{day_today}"  # 22.02.07
     file_name_date = f"{year_today}_{month_today}"  # 2022_02
-    date_list = [[year_today], [month_word_today], [score_date], [file_name_date]]
+    file_name_day_date = f"({year_today_short}{day_number_today})"  # (YYDDD) E.g 22044, year 2022, day of the year 044,
+    # (2022.02.13)
+    date_list = [[year_today], [month_word_today], [score_date], [file_name_date], [today_day_name], [today_date_num], [file_name_day_date]]
     return date_list
 
 
-def get_today_year_day_num():
-    """
-    Gets todays date in the (YYDDD) format which is needed for the google_sheet access of the today's
-    high score. YY = year without century, DDD = day of the year 001-366. E.g 22044, year 2022, day of the year 044,
-    (2022.02.13)
-    :return: (YYDDD)
-    """
-    date_today = datetime.datetime.now()  # '2022-02-07 19:42:22.815959'
-    year_today_short = date_today.strftime("%y")  # '22' year without century
-    day_number_today = date_today.strftime("%j")  # Day number of year 001-366
-    file_name_day_date = f"({year_today_short}{day_number_today})"
-    return file_name_day_date
+# def get_today_year_day_num():
+#     """
+#     Gets todays date in the (YYDDD) format which is needed for the google_sheet access of the today's
+#     high score. YY = year without century, DDD = day of the year 001-366. E.g 22044, year 2022, day of the year 044,
+#     (2022.02.13)
+#     :return: (YYDDD)
+#     """
+#     date_today = datetime.datetime.now()  # '2022-02-07 19:42:22.815959'
+#     year_today_short = date_today.strftime("%y")  # '22' year without century
+#     day_number_today = date_today.strftime("%j")  # Day number of year 001-366
+#     file_name_day_date = f"({year_today_short}{day_number_today})"
+#     return file_name_day_date
 
 
 def get_today_high_score(file_name_day_date):
@@ -159,6 +165,11 @@ def get_google_sheet_titles_day_oldest():
     # which are in (). Lowest first
 
 
+def update_high_score_list(score_list, new_high_score):
+    print(f">Update high score list <{score_list}>")
+    old_google_sheet = SHEET.worksheet(score_list)
+    old_google_sheet.update('A1:C20', new_high_score)
+
 #print(f"Oldest google sheet date title {type(get_google_sheet_titles_day_oldest())}")
 #print(f"todays date {type(get_today_year_day_num())}")
-print(get_today_high_score(get_today_year_day_num()))
+#print(get_today_high_score(get_today_year_day_num()))

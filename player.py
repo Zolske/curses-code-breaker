@@ -7,7 +7,7 @@ import menu
 
 
 class PlayerObject:
-    def __init__(self, score_date, file_name_date, new_line_character, today_month, today_year):
+    def __init__(self, score_date, file_name_date, new_line_character, today_month, today_year, today_day_name, file_name_day_date):
         # gets overwritten when secret_code is generated, secret_code generator can be commented out for testing
         self.player_name = ''
         self.secret_code = ['RED', 'RED', 'RED', 'RED']
@@ -60,11 +60,17 @@ class PlayerObject:
         self.player_time_seconds = 0
         self.player_time_minutes = 0
         self.all_time_high_score = []
+        self.all_time_high_score_new_entry = False
         self.this_month_high_score = []
+        self.this_month_high_score_new_entry = False
+        self.today_high_score = []
+        self.today_high_score_new_entry = False
         self.score_date = score_date
         self.file_name_date = file_name_date
         self.today_month = today_month
         self.today_year = today_year
+        self.today_day_name = today_day_name
+        self.file_name_day_date = file_name_day_date
         self.play_game = True  # turn on the number options on the keyboard
         self.new_line_character = new_line_character
         self.set_new_high_score = False
@@ -249,6 +255,12 @@ class PlayerObject:
         month_points = 0  # points from the lower score than the players
         month_date = ''  # is the date when the score was created which is lower than the player score
         month_name = ''  # name of the player whose score is pushed down
+        # today_ is for today_high_score list
+        today_place = 0  # is the position of the score which is lower than the player score
+        today_place_ending = ''  # puts the right wording after the number (e.g. 1st, 2nd , ...)
+        today_points = 0  # points from the lower score than the players
+        today_date = ''  # is the date when the score was created which is lower than the player score
+        today_name = ''  # name of the player whose score is pushed down
 
         # calls the function from 'spreadsheet.py' which gets the google sheet data for the all_time_high_score list
         # (starting from the top of the list (is sorted by highest score first)
@@ -262,6 +274,7 @@ class PlayerObject:
                 all_date = self.all_time_high_score[index][1]
                 all_name = self.all_time_high_score[index][0]
                 self.set_new_high_score = True  # becomes only true if the loop breaks
+                self.all_time_high_score_new_entry = True
                 if all_place == 1:
                     all_place_ending = 'st'
                 elif all_place == 2:
@@ -284,6 +297,7 @@ class PlayerObject:
                 month_date = self.this_month_high_score[index][1]
                 month_name = self.this_month_high_score[index][0]
                 self.set_new_high_score = True  # becomes only true if the loop breaks
+                self.this_month_high_score_new_entry = True
                 if month_place == 1:
                     month_place_ending = 'st'
                 elif month_place == 2:
@@ -292,6 +306,29 @@ class PlayerObject:
                     month_place_ending = 'rd'
                 elif month_place > 3:
                     month_place_ending = 'th'
+                break
+
+        # calls the function from 'spreadsheet.py' which gets the google sheet data for today_high_score list
+        # (starting from the top of the list (is sorted by highest score first)
+        self.today_high_score = spreadsheet.get_today_high_score(self.file_name_day_date)
+        # loops through the google spread sheet list and compares the score with the player score
+        for index in range(len(self.today_high_score)):
+            # if the player score is higher the google sheet list, than the loop stops
+            if self.player_score > self.today_high_score[index][2]:
+                today_place = index + 1
+                today_points = self.today_high_score[index][2]
+                today_date = self.today_high_score[index][1]
+                today_name = self.today_high_score[index][0]
+                self.set_new_high_score = True  # becomes only true if the loop breaks
+                self.today_high_score_new_entry = True
+                if today_place == 1:
+                    today_place_ending = 'st'
+                elif today_place == 2:
+                    today_place_ending = 'nd'
+                elif today_place == 3:
+                    today_place_ending = 'rd'
+                elif today_place > 3:
+                    today_place_ending = 'th'
                 break
 
         if self.set_new_high_score:
@@ -338,6 +375,25 @@ class PlayerObject:
                                  f"= {self.current_position[0]*200 - self.player_time_seconds_total} (your score)")
             score_message.refresh(0, 0, 17, 23, 20, 77)
 
+            if today_place:
+                last_entry = ''
+                if self.today_high_score[19][2]:
+                    last_entry = f"Unfortunate for {self.today_high_score[19][0]}'s score from 20{self.today_high_score[19][1]},\nhis\her score has fallen out of the list."
+                today_title = f"NEW {self.today_month.upper()} HIGH SCORE"
+                today_title_score_message = curses.newpad(1, 60)
+                today_title_score_message.erase()
+                today_title_score_message.addstr(today_title)
+                today_title_score_message.refresh(0, 0, 20, 25, 20, 25+len(today_title)-1)
+                today_score_message = curses.newpad(6, 55)
+                today_score_message.erase()
+                if today_name:
+                    today_score_message.addstr(f"Your score is {self.player_score - today_points} points higher than\n"
+                                               f"{today_name}'s score at {today_place}{today_place_ending} place from "
+                                               f"20{today_date}.\n{last_entry}")
+                else:
+                    today_score_message.addstr(f"Your score is with {self.player_score} points at {today_place}{today_place_ending} place.")
+                today_score_message.refresh(0, 0, 21, 23, 24, 77)
+
             if month_place:
                 last_entry = ''
                 if self.this_month_high_score[19][2]:
@@ -349,9 +405,13 @@ class PlayerObject:
                 month_title_score_message.refresh(0, 0, 25, 25, 25, 25+len(month_title)-1)
                 month_score_message = curses.newpad(6, 55)
                 month_score_message.erase()
-                month_score_message.addstr(f"Your score is {self.player_score - month_points} points higher than\n"
-                                           f"{month_name}'s score at {month_place}{month_place_ending} place from "
-                                           f"20{month_date}.\n{last_entry}")
+                if month_name:
+                    month_score_message.addstr(f"Your score is {self.player_score - month_points} points higher than\n"
+                                               f"{month_name}'s score at {month_place}{month_place_ending} place from "
+                                               f"20{month_date}.\n{last_entry}")
+                else:
+                    month_score_message.addstr(
+                        f"Your score is with {self.player_score} points at {month_place}{month_place_ending} place.")
                 month_score_message.refresh(0, 0, 26, 23, 29, 77)
 
             if all_place:
@@ -364,9 +424,13 @@ class PlayerObject:
                 all_title_score_message.refresh(0, 0, 30, 21, 30, 79)
                 all_score_message = curses.newpad(6, 55)
                 all_score_message.erase()
-                all_score_message.addstr(f"Your score is {self.player_score - all_points} points higher than\n"
-                                           f"{all_name}'s score at {all_place}{all_place_ending} place from "
-                                           f"20{all_date}.\n{last_entry}")
+                if all_name:
+                    all_score_message.addstr(f"Your score is {self.player_score - all_points} points higher than\n"
+                                               f"{all_name}'s score at {all_place}{all_place_ending} place from "
+                                               f"20{all_date}.\n{last_entry}")
+                else:
+                    all_score_message.addstr(
+                        f"Your score is with {self.player_score} points at {all_place}{all_place_ending} place.")
                 all_score_message.refresh(0, 0, 31, 23, 34, 77)
 
     def ask_player_name(self, screen):
@@ -465,6 +529,25 @@ class PlayerObject:
         highlight_text_2.erase()
         highlight_text_2.addstr(f"2", HIGHLIGHT)
         highlight_text_2.refresh(0, 0, 41, 31, 41, 31)
+
+        if self.all_time_high_score_new_entry:
+            self.all_time_high_score.insert(0, [self.player_name, self.score_date, self.player_score])
+            self.all_time_high_score = self.all_time_high_score[:20]
+            spreadsheet.update_high_score_list('all_time_high_score', self.all_time_high_score)
+            self.all_time_high_score_new_entry = False
+
+        if self.this_month_high_score_new_entry:
+            self.this_month_high_score.insert(0, [self.player_name, self.score_date, self.player_score])
+            self.this_month_high_score = self.this_month_high_score[:20]
+            spreadsheet.update_high_score_list(self.file_name_date, self.this_month_high_score)
+            self.this_month_high_score_new_entry = False
+
+        if self.today_high_score_new_entry:
+            self.today_high_score.insert(0, [self.player_name, self.score_date, self.player_score])
+            self.today_high_score = self.today_high_score[:20]
+            spreadsheet.update_high_score_list(self.file_name_day_date, self.today_high_score)
+            self.today_high_score_new_entry = False
+
 
     def reset_player(self):
         """
