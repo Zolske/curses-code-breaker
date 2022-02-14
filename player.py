@@ -523,19 +523,19 @@ class PlayerObject:
         highlight_text_2.refresh(0, 0, 41, 31, 41, 31)
 
         if self.all_time_high_score_new_entry:
-            self.all_time_high_score.insert(0, [self.player_name, self.score_date, self.player_score])
+            self.all_time_high_score.insert(0, [self.player_name, self.score_date, self.player_score, self.current_position[0]+1, self.player_time_seconds_total])
             self.all_time_high_score = self.all_time_high_score[:20]
             spreadsheet.update_high_score_list('all_time_high_score', self.all_time_high_score)
             self.all_time_high_score_new_entry = False
 
         if self.this_month_high_score_new_entry:
-            self.this_month_high_score.insert(0, [self.player_name, self.score_date, self.player_score])
+            self.this_month_high_score.insert(0, [self.player_name, self.score_date, self.player_score, self.current_position[0]+1, self.player_time_seconds_total])
             self.this_month_high_score = self.this_month_high_score[:20]
             spreadsheet.update_high_score_list(self.file_name_date, self.this_month_high_score)
             self.this_month_high_score_new_entry = False
 
         if self.today_high_score_new_entry:
-            self.today_high_score.insert(0, [self.player_name, self.score_date, self.player_score])
+            self.today_high_score.insert(0, [self.player_name, self.score_date, self.player_score, self.current_position[0]+1, self.player_time_seconds_total])
             self.today_high_score = self.today_high_score[:20]
             spreadsheet.update_high_score_list(self.file_name_day_date, self.today_high_score)
             self.today_high_score_new_entry = False

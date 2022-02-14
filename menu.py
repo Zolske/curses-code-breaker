@@ -18,7 +18,7 @@ class Game:
         #  alignment "0123456789a123456789b123456789c123456789d123456789e123456789f123456789g123456789h"
         self.line = ["                                                                                ", #00
                      "    ╓━TIME━━╥━SCORE━╖   ╭┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈╮  ", #01
-                     "    ║ 00:00 ║ 00000 ║   ╞1═EXIT╡ ╞2═RESTART╡ ╞3═SETTINGS╡ ╞4═HELP╡ ╞5═ARCHIVE╡  ", #02
+                     "    ║ 00:00 ║  1800 ║   ╞1═EXIT╡ ╞2═RESTART╡ ╞3═SETTINGS╡ ╞4═HELP╡ ╞5═ARCHIVE╡  ", #02
                      "╔═╤═╬═══╦═══╬═══╦═══╣   ╰┈┈┈┈┈┈╯ ╰┈┈┈┈┈┈┈┈┈╯ ╰┈┈┈┈┈┈┈┈┈┈╯ ╰┈┈┈┈┈┈╯ ╰┈┈┈┈┈┈┈┈┈╯  ", #03
                      "║ ┃ ║1  ║   ║   ║   ║                              __                           ", #04
                      "╟━╋━╢   ║   ║   ║   ║           _____  ____   ____/ / ___                       ", #05
@@ -132,7 +132,10 @@ class Game:
                                                [[0, 0, 24, 51, 24, 63], [0, 0, 24, 65, 24, 72], [0, 0, 24, 74, 24, 78]],
                                                [[0, 0, 26, 51, 26, 63], [0, 0, 26, 65, 26, 72], [0, 0, 26, 74, 26, 78]],
                                                [[0, 0, 28, 51, 28, 63], [0, 0, 28, 65, 28, 72], [0, 0, 28, 74, 28, 78]], ]
+
         self.new_line_character = True
+        self.menu_mode = False
+        self.archive_list = 0
         # spreadsheet
         self.all_time_high_score = []
         self.this_month_high_score = []
@@ -247,7 +250,6 @@ class Game:
                     text_score_pad.addstr(str(self.this_month_high_score[score_entry][score_values]))
                 text_score_pad.refresh(*self.position_this_month_high_score[score_entry][score_values])
 
-
     def start_game(self, screen):
         """
         Prints the background on the screen and sets the color. Gets the google spreadsheet data.
@@ -265,9 +267,67 @@ class Game:
         self.all_time_high_score = spreadsheet.get_all_time_high_score()
         self.this_month_high_score = spreadsheet.get_this_month_high_score(self.file_name_date)
         self.today_high_score = spreadsheet.get_today_high_score(self.file_name_day_date)
+        self.menu_mode = False
         screen.refresh()
         self.set_colors()
         screen.refresh()
         self.set_score()
         screen.refresh()
 
+    def archive_menu(self, high_score_list):
+        self.menu_mode = 'archive'
+        background_archive = curses.newpad(40, 60)
+        background_archive.erase()
+        background_archive.addstr(f"╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
+                                  f"┃ Welcome, here you can check the high score lists.       ┃\n"
+                                  f"┃ (Every time you open the 'ARCHIVE' the list is updated.)┃\n"
+                                  f"┃ > Press LEFT-SHIFT & LEFT or RIGHT ARROW key to change  ┃\n"
+                                  f"┃   between high score lists.                             ┃\n"
+                                  f"┃ > Press LEFT-SHIFT & UP or DOWN ARROW key to scroll.    ┃\n"
+                                  f"┃                                                         ┃\n"
+                                  f"┃                                                         ┃\n"
+                                  f"┃                                                         ┃\n"
+                                  f"┃                                                         ┃\n"
+                                  f"┃                                                         ┃\n"
+                                  f"┃╔═══════════════════════════════════════════════════════╗┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃╠═════╦═══════════════╦══════════╦══════╦═════╦═════════╣┃\n"
+                                  f"┃║Place║Name           ║Date      ║SCORE ║Lines║Time in s║┃\n"
+                                  f"┃╠═════╬═══════════════╬══════════╬══════╬═════╬═════════╣┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃║     ║               ║          ║      ║     ║         ║┃\n"
+                                  f"┃╚═════╩═══════════════╩══════════╩══════╩═════╩═════════╝┃\n"
+                                  f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
+        background_archive.refresh(0, 0, 4, 21, 43, 79)
+        score_data = curses.newpad(40, 165)
+        score_data_string = ''
+        for index in range(20):
+            score_data_string += f"{str(index+1).rjust(4)} ║ {str(self.today_high_score[index][0]).ljust(14)}║20{str(self.today_high_score[index][1]).rjust(8)}║{str(self.today_high_score[index][2]).rjust(5)} ║{str(self.today_high_score[index][3]).rjust(4)} ║{str(self.today_high_score[index][4]).rjust(8)} "
+            score_data_string += f"{str(index+1).rjust(4)} ║ {str(self.this_month_high_score[index][0]).ljust(14)}║20{str(self.this_month_high_score[index][1]).rjust(8)}║{str(self.this_month_high_score[index][2]).rjust(5)} ║{str(self.this_month_high_score[index][3]).rjust(4)} ║{str(self.this_month_high_score[index][4]).rjust(8)} "
+            score_data_string += f"{str(index+1).rjust(4)} ║ {str(self.all_time_high_score[index][0]).ljust(14)}║20{str(self.all_time_high_score[index][1]).rjust(8)}║{str(self.all_time_high_score[index][2]).rjust(5)} ║{str(self.all_time_high_score[index][3]).rjust(4)} ║{str(self.all_time_high_score[index][4]).rjust(8)} "
+        score_data.erase()
+        score_data.addstr(score_data_string)
+        score_data.refresh(0, high_score_list, 22, 23, 41, 77)
+
+        #background_archive.refresh(0, 0, 4, 21, 4, 27)
+        # -> the 'DAILY HIGH SCORE' (only today's score) -> the 'MONTHLY HIGH SCORE' (only this month score)  -> the 'ALL TIME HIGH SCORE' (the best ever scores)

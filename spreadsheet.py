@@ -33,12 +33,12 @@ def get_this_month_high_score(file_name_date):
     except:
         # if not exist, then it is created
         #print(f">No 'google sheet' <{file_name_date}> found with this month's high score list ...") # must be commented out for heroku
-        this_month_high_score_worksheet = SHEET.add_worksheet(title=file_name_date, rows="20", cols="3")
+        this_month_high_score_worksheet = SHEET.add_worksheet(title=file_name_date, rows="20", cols="5")
         # the column for the score (3th from left, column C) must have an integer, assigns 0 to all 20 columns
         for index in range(1, 21):
             cell = f"C{index}"
             this_month_high_score_worksheet.update(cell, 0)
-            #print(f">New 'google sheet' this month's date <{file_name_date}> , 20 rows, 3 columns, created ...") # must be commented out for heroku
+            #print(f">New 'google sheet' this month's date <{file_name_date}> , 20 rows, 5 columns, created ...") # must be commented out for heroku
     # converts the date in a list of list row [[cell], [cell], [cell]]
     data = this_month_high_score_worksheet.get_all_values()
     # convert the score and date string type into integer
@@ -125,12 +125,12 @@ def get_today_high_score(file_name_day_date):
         old_high_score_id = SHEET.worksheet(old_high_score_title)
         SHEET.del_worksheet(old_high_score_id)
         #print(f">Delete old 'google sheet' {old_high_score_title} with old day high score list ...") # must be commented out for heroku
-        today_high_score_worksheet = SHEET.add_worksheet(title=file_name_day_date, rows="20", cols="3")
+        today_high_score_worksheet = SHEET.add_worksheet(title=file_name_day_date, rows="20", cols="5")
         # the column for the score (3th from left, column C) must have an integer, assigns 0 to all 20 columns
         for index in range(1, 21):
             cell = f"C{index}"
             today_high_score_worksheet.update(cell, 0)
-        #print(f">New 'google sheet' with today date <{file_name_day_date}> , 20 rows, 3 columns, created ...") # must be commented out for heroku
+        #print(f">New 'google sheet' with today date <{file_name_day_date}> , 20 rows, 5 columns, created ...") # must be commented out for heroku
     # # converts the date in a list of list row [[cell], [cell], [cell]]
     data = today_high_score_worksheet.get_all_values()
     # convert the score and date string type into integer
@@ -168,7 +168,7 @@ def get_google_sheet_titles_day_oldest():
 def update_high_score_list(score_list, new_high_score):
     # print(f">Update high score list <{score_list}>") # must be commented out for heroku
     old_google_sheet = SHEET.worksheet(score_list)
-    old_google_sheet.update('A1:C20', new_high_score)
+    old_google_sheet.update('A1:E20', new_high_score)
 
 #print(f"Oldest google sheet date title {type(get_google_sheet_titles_day_oldest())}")
 #print(f"todays date {type(get_today_year_day_num())}")

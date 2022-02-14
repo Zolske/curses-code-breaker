@@ -87,6 +87,27 @@ def player_move():
     elif user_arrow_input == '2':  # resets the game if the user presses '2'
         game_menu.start_game(screen)
         player_object.reset_player()
+    if user_arrow_input == '5':  # opens archive page
+        player_object.play_game = False
+        #print('user pressed 5')
+        game_menu.archive_menu(game_menu.archive_list)
+
+    if game_menu.menu_mode == 'archive':
+        if user_arrow_input == 'KEY_RIGHT':
+            if game_menu.archive_list == 0 or game_menu.archive_list == 55:
+                game_menu.archive_list += 55
+                game_menu.archive_menu(game_menu.archive_list)
+            elif game_menu.archive_list == 110:
+                game_menu.archive_list = 0
+                game_menu.archive_menu(game_menu.archive_list)
+        elif user_arrow_input == 'KEY_LEFT':
+            if game_menu.archive_list == 55 or game_menu.archive_list == 110:
+                game_menu.archive_list -= 55
+                game_menu.archive_menu(game_menu.archive_list)
+            elif game_menu.archive_list == 0:
+                game_menu.archive_list = 110
+                game_menu.archive_menu(game_menu.archive_list)
+
     # saves the color of the current location according to the color_mark_map in the player object
     current_color = player_object.color_mark_map[player_object.current_position[0]][player_object.current_position[1]]
     # adds 1 to the index value of the color_order, can be used on the equivalent curses.color_pair()
