@@ -211,7 +211,7 @@ game_menu.start_game(screen)
 # create the player_object which contains data for current position, secret code, player code
 player_object = player.PlayerObject(score_date, file_name_date, new_line_character, today_month, today_year, today_day_name, file_name_day_date)
 # generates the secret code
-player_object.generate_secret_random_number()
+#player_object.generate_secret_random_number()
 
 timer_thread = threading.Thread(target=timer)  # allows the timer to run in the background
 timer_thread.start()  # starts the timer thread on the side

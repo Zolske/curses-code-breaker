@@ -360,12 +360,13 @@ class PlayerObject:
             score_message_title.erase()
             score_message_title.addstr(f"{self.player_score} points")
             score_message_title.refresh(0, 0, 15, 39, 15, 49)
-            score_message = curses.newpad(3, 60)
+            score_message = curses.newpad(4, 60)
             score_message.erase()
-            score_message.addstr(f"Your score calculation:\n{self.current_position[0]} (lines left) x 200 = {self.current_position[0]*200},\n"
+            score_message.addstr(f"The secret code was: {self.secret_code[0]} {self.secret_code[1]} {self.secret_code[2]} {self.secret_code[3]}.\n"
+                                 f"Your score calculation:\n{self.current_position[0]} (lines left) x 200 = {self.current_position[0]*200},\n"
                                  f"{self.current_position[0]*200} - {self.player_time_seconds_total}s (total time) "
                                  f"= {self.current_position[0]*200 - self.player_time_seconds_total} (your score)")
-            score_message.refresh(0, 0, 17, 23, 20, 77)
+            score_message.refresh(0, 0, 16, 23, 20, 77)
 
             if today_place:
                 last_entry = ''
@@ -438,7 +439,7 @@ class PlayerObject:
             new_score_has_name.clear()
             new_score_has_name.addstr(f"╭━━━INSTRUCTIONS━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
                                       f"┃ We found the name                                       ┃\n"
-                                      f"┃ Is it your name or would you like to change it?         ┃\n"
+                                      f"┃ Do you want to change the name for the high score entry?┃\n"
                                       f"┃ > Press 'y' for yes, if you want to change it.          ┃\n"
                                       f"┃   or                                                    ┃\n"
                                       f"┃ > Press any other key, if you want to keep it.          ┃\n"
@@ -569,7 +570,6 @@ class PlayerObject:
         self.player_time_minutes = 0
         self.play_game = True
         self.set_new_high_score = False
-        # TODO comment out if no random secret code to be generated, the default for testing is 'RED' for times
-        self.generate_secret_random_number()
+        #self.generate_secret_random_number()
 
 
