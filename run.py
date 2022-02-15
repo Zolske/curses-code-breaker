@@ -12,7 +12,7 @@ SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
     "https://www.googleapis.com/auth/drive"
-    ]
+]
 
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
@@ -154,9 +154,7 @@ def player_move():
 
 
 def timer():
-    seconds_text = '00'
     seconds_int = 0
-    minutes_text = '00'
     minutes_int = 0
     player_score = 1800
     while True:
@@ -199,17 +197,20 @@ def timer():
 
 # create the game_menu object which contains data for displaying elements on the screen
 game_menu = menu.Game(today_year, today_month, file_name_date, today_day_name, today_date_num, file_name_day_date)
-# code instituteds browser terminal will raise an error which will switch the new_line_character in the Game object to False,
-# the start_game() method in the Game object will print the background without the \n character which otherwise would raise an error
+# code institutes browser terminal will raise an error which will switch the new_line_character in the Game object
+# to False,
+# the start_game() method in the Game object will print the background without the \n character which otherwise would
+# raise an error
 try:
     curses.curs_set(0)
-except:
+except ValueError:
     game_menu.new_line_character = False
     new_line_character = False
 # prints the background to the screen and sets the colors
 game_menu.start_game(screen)
 # create the player_object which contains data for current position, secret code, player code
-player_object = player.PlayerObject(score_date, file_name_date, new_line_character, today_month, today_year, today_day_name, file_name_day_date)
+player_object = player.PlayerObject(score_date, file_name_date, new_line_character, today_month, today_year,
+                                    today_day_name, file_name_day_date)
 # generates the secret code
 player_object.generate_secret_random_number()
 
@@ -219,7 +220,6 @@ while True:  # runs a loop till the user presses 'q' to get out
     if player_move():
         player_object.stop_time = True
         break
-
 
 curses.nocbreak()
 screen.keypad(False)

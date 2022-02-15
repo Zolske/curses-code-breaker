@@ -2,12 +2,11 @@ import random
 import curses
 from curses.textpad import Textbox
 import spreadsheet
-import time
-import menu
 
 
 class PlayerObject:
-    def __init__(self, score_date, file_name_date, new_line_character, today_month, today_year, today_day_name, file_name_day_date):
+    def __init__(self, score_date, file_name_date, new_line_character, today_month, today_year, today_day_name,
+                 file_name_day_date):
         # gets overwritten when secret_code is generated, secret_code generator can be commented out for testing
         self.player_name = ''
         self.secret_code = ['RED', 'RED', 'RED', 'RED']
@@ -105,14 +104,17 @@ class PlayerObject:
         # change color
         elif arrow_key == 'KEY_UP' and self.play_game:
             if index_color_order == 0:  # if current color is at the color index 0
-                self.color_mark_map[self.current_position[0]][self.current_position[1]] = 'YELLOW'  # then change to yellow
+                # then change to yellow
+                self.color_mark_map[self.current_position[0]][self.current_position[1]] = 'YELLOW'
             else:
-                self.color_mark_map[self.current_position[0]][self.current_position[1]] = self.color_order[index_color_order -1]  # otherwise, change to left color
+                self.color_mark_map[self.current_position[0]][self.current_position[1]] = \
+                    self.color_order[index_color_order -1]  # otherwise, change to left color
         elif arrow_key == 'KEY_DOWN' and self.play_game:
             if index_color_order == 3:  # if current color is at the color index 3
                 self.color_mark_map[self.current_position[0]][self.current_position[1]] = 'RED'  # then change to red
             else:
-                self.color_mark_map[self.current_position[0]][self.current_position[1]] = self.color_order[index_color_order +1]  # otherwise, change to right color
+                self.color_mark_map[self.current_position[0]][self.current_position[1]] = \
+                    self.color_order[index_color_order +1]  # otherwise, change to right color
         elif arrow_key == '#' and self.play_game:
             if self.color_mark_map[self.current_position[0]].count('BLACK') == 0:  # only if there is no 'black' fields
                 self.update_player_code()  # update before current position is changed
@@ -126,7 +128,8 @@ class PlayerObject:
                     self.color_mark_map[self.current_position[0]][0] = 'RED'  # set the new field in the new row to red
 
         return self.set_new_high_score
-        #return [self.current_position, self.color_mark_map[self.current_position[0]][self.current_position[1]]]  # [current-position-row, current-position-field]['color-at-current-position']
+        # return [self.current_position, self.color_mark_map[self.current_position[0]][self.current_position[1]]]
+        # [current-position-row, current-position-field]['color-at-current-position']
 
     def generate_secret_random_number(self):
         """
@@ -150,18 +153,21 @@ class PlayerObject:
         match_color_position = 0
         has_color = 0
         for position in range(4):  # loops 4 times because there are no more than 4 values
-            if self.secret_code[position] == self.player_code[position]:  # checks if the element match at the exact same index
+            if self.secret_code[position] == self.player_code[position]:
+                # checks if the element match at the exact same index
                 match_color_position += 1  # only if they match exactly, the match_color_position variable gets updated
         for position in range(4):  # loops 4 times because there are no more than 4 values
             try:
-                copy_secret_code.index(self.player_code[position])  # checks if on of the player element matches the secret_code
-            except:  # if there is no match, an error is raised which is 'passed'
+                copy_secret_code.index(self.player_code[position])
+                # checks if on of the player element matches the secret_code
+            except ValueError:  # if there is no match, an error is raised which is 'passed'
                 pass
             else:
                 has_color += 1  # increments the has_color variable because there was a match
-                copy_secret_code.remove(self.player_code[position])  # the already found element needs to be removed from the copied secred code list
-
-        self.has_color = has_color - match_color_position  # has_color is always bigger or the same as match_color_position
+                # the already found element needs to be removed from the copied secred code list
+                copy_secret_code.remove(self.player_code[position])
+        # has_color is always bigger or the same as match_color_position
+        self.has_color = has_color - match_color_position
         self.match_color_position = match_color_position
 
     def update_code_feedback_message(self):
@@ -180,34 +186,43 @@ class PlayerObject:
         """
         curses.init_pair(6, curses.COLOR_MAGENTA, curses.COLOR_BLACK)  # defines the color scheme of the marker
         FEEDB = curses.color_pair(6)  # color variable which is used when the pad is refreshed
-        feedback_marker_pad = curses.newpad(1, 3)  # creates the pad for the feedback marker 1 row x max 3 cells if needed
+        feedback_marker_pad = curses.newpad(1, 3)
+        # creates the pad for the feedback marker 1 row x max 3 cells if needed
         match_count = self.match_color_position  # how many times the color and position matches
         color_count = self.has_color  # how many times the color is correct but not the position
         field = 0  # starts on 0 and gets incremented everytime if the while loop runs, should not go over 3
 
         while match_count > 0:  # only loops if there is a matching color and position
             feedback_marker_pad.erase()  # is needed to avoid errors
-            feedback_marker_pad.addstr(self.content_feedback, FEEDB)  # uses the content from content_feedback property and color variable FEEDB
-            feedback_marker_pad.refresh(*self.position_feedback[self.current_position[0]][field])  # sets the marker depending on the value of current position and the field (no more then 3)
+            feedback_marker_pad.addstr(self.content_feedback, FEEDB)
+            # uses the content from content_feedback property and color variable FEEDB
+            feedback_marker_pad.refresh(*self.position_feedback[self.current_position[0]][field])
+            # sets the marker depending on the value of current position and the field (no more then 3)
 
-            match_count -= 1  # subtracts the match_count because it has already been printed once and to avoid endless loop
+            # subtracts the match_count because it has already been printed once and to avoid endless loop
+            match_count -= 1
             field += 1  # increments the field so on the next loop the position changes (can not be over 3)
 
         while color_count > 0:  # only loops if there is a matching color but not the right position
             feedback_marker_pad.erase()  # is needed to avoid errors
-            feedback_marker_pad.addstr(self.content_feedback, FEEDB)  # uses the content from content_feedback property and color variable FEEDB
-            feedback_marker_pad.refresh(*self.position_feedback_half[self.current_position[0]][field])  # sets the marker depending on the value of current position and the field (no more then 3)
-
-            color_count -= 1  # subtracts the match_count because it has already been printed once and to avoid endless loop
+            # uses the content from content_feedback property and color variable FEEDB
+            feedback_marker_pad.addstr(self.content_feedback, FEEDB)
+            # sets the marker depending on the value of current position and the field (no more then 3)
+            feedback_marker_pad.refresh(*self.position_feedback_half[self.current_position[0]][field])
+            # subtracts the match_count because it has already been printed once and to avoid endless loop
+            color_count -= 1
             field += 1  # increments the field so on the next loop the position changes (can not be over 3)
 
-        # should be always set even if there are no matches, is for the feedback code box to make it more clrear but not esential
+        # should be always set even if there are no matches,
+        # is for the feedback code box to make it more clear but not essential
         feedback_marker_pad.erase()  # is needed to avoid errors
-        feedback_marker_pad.addstr(self.content_feedback, FEEDB)  # uses the content from content_feedback property and color variable FEEDB
+        feedback_marker_pad.addstr(self.content_feedback, FEEDB)
+        # uses the content from content_feedback property and color variable FEEDB
         feedback_marker_pad.refresh(*self.position_feedback[10][0])  # adds a marker in the code feedback section
 
         feedback_marker_pad.erase()  # is needed to avoid errors
-        feedback_marker_pad.addstr(self.content_feedback, FEEDB)  # uses the content from content_feedback property and color variable FEEDB
+        # uses the content from content_feedback property and color variable FEEDB
+        feedback_marker_pad.addstr(self.content_feedback, FEEDB)
         feedback_marker_pad.refresh(*self.position_feedback_half[10][0])  # adds a marker in the code feedback section
 
     def is_the_game_over(self):
@@ -265,9 +280,9 @@ class PlayerObject:
         # calls the function from 'spreadsheet.py' which gets the google sheet data for the all_time_high_score list
         # (starting from the top of the list (is sorted by highest score first)
         self.all_time_high_score = spreadsheet.get_all_time_high_score()
-        # loops through the google spread sheet list and compares the score with the player score
+        # loops through the Google spreadsheet list and compares the score with the player score
         for index in range(len(self.all_time_high_score)):
-            # if the player score is higher the google sheet list, than the loop stops
+            # if the player score is higher the Google sheet list, than the loop stops
             if self.player_score > self.all_time_high_score[index][2]:
                 all_place = index + 1
                 all_points = self.all_time_high_score[index][2]
@@ -285,10 +300,10 @@ class PlayerObject:
                     all_place_ending = 'th'
                 break
 
-        # calls the function from 'spreadsheet.py' which gets the google sheet data for this_month_time_high_score list
+        # calls the function from 'spreadsheet.py' which gets the Google sheet data for this_month_time_high_score list
         # (starting from the top of the list (is sorted by highest score first)
         self.this_month_high_score = spreadsheet.get_this_month_high_score(self.file_name_date)
-        # loops through the google spread sheet list and compares the score with the player score
+        # loops through the Google spreadsheet list and compares the score with the player score
         for index in range(len(self.this_month_high_score)):
             # if the player score is higher the google sheet list, than the loop stops
             if self.player_score > self.this_month_high_score[index][2]:
@@ -308,10 +323,10 @@ class PlayerObject:
                     month_place_ending = 'th'
                 break
 
-        # calls the function from 'spreadsheet.py' which gets the google sheet data for today_high_score list
+        # calls the function from 'spreadsheet.py' which gets the Google sheet data for today_high_score list
         # (starting from the top of the list (is sorted by highest score first)
         self.today_high_score = spreadsheet.get_today_high_score(self.file_name_day_date)
-        # loops through the google spread sheet list and compares the score with the player score
+        # loops through the Google spreadsheet list and compares the score with the player score
         for index in range(len(self.today_high_score)):
             # if the player score is higher the google sheet list, than the loop stops
             if self.player_score > self.today_high_score[index][2]:

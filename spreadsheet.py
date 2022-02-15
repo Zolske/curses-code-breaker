@@ -29,12 +29,15 @@ def get_this_month_high_score(file_name_date):
     try:
         # saves the date of the worksheet if it exists
         this_month_high_score_worksheet = SHEET.worksheet(file_name_date)
-        #print(f">Found 'google sheet' <{file_name_date}> which is this month's high score list ...") # must be commented out for heroku
-    except:
+        # print(f">Found 'google sheet' <{file_name_date}> which is this month's high score list ...")
+        # must be commented out for heroku
+    except ValueError:
         # if not exist, then it is created
-        #print(f">No 'google sheet' <{file_name_date}> found with this month's high score list ...") # must be commented out for heroku
+        # print(f">No 'google sheet' <{file_name_date}> found with this month's high score list ...")
+        # must be commented out for heroku
         this_month_high_score_worksheet = SHEET.add_worksheet(title=file_name_date, rows="20", cols="5")
-        # the column for the score (3th from left and the last, column C and E) must have an integer, assigns 0 to all 20 columns
+        # the column for the score (3th from left and the last, column C and E) must have an integer,
+        # assigns 0 to all 20 columns
         list_template = [[]]
         for index in range(20):
             list_template.insert(index, ['', '', 0, 0, 0])
@@ -64,7 +67,6 @@ def get_all_time_high_score():
     for index in range(len(data)):
         data[index][2] = int(data[index][2])  # only the 3th column of each row
     data.sort(key=lambda x: x[2], reverse=True)  # sort the highest score to the beginning
-    #print(f">Found 'google sheet' <all_time_high_score> ...") # must be commented out for heroku
     return data[:20]  # returns only the first 20 entries, should be only 20 any way
 
 
@@ -87,7 +89,8 @@ def get_today_month_year():
     file_name_date = f"{year_today}_{month_today}"  # 2022_02
     file_name_day_date = f"({year_today_short}{day_number_today})"  # (YYDDD) E.g 22044, year 2022, day of the year 044,
     # (2022.02.13)
-    date_list = [[year_today], [month_word_today], [score_date], [file_name_date], [today_day_name], [today_date_num], [file_name_day_date]]
+    date_list = [[year_today], [month_word_today], [score_date], [file_name_date], [today_day_name], [today_date_num],
+                 [file_name_day_date]]
     return date_list
 
 
@@ -104,16 +107,20 @@ def get_today_high_score(file_name_day_date):
     try:
         # saves the date of the worksheet if it exists
         today_high_score_worksheet = SHEET.worksheet(file_name_day_date)
-        #print(f">Found 'google sheet' <{file_name_day_date}> which is today's high score list ...") # must be commented out for heroku
-    except:
+        # print(f">Found 'google sheet' <{file_name_day_date}> which is today's high score list ...")
+        # must be commented out for heroku
+    except ValueError:
         # if not exist, then it is created
-        #print(f">No 'google sheet' <{file_name_day_date}> found with today's high score list ...") # must be commented out for heroku
+        # print(f">No 'google sheet' <{file_name_day_date}> found with today's high score list ...")
+        # must be commented out for heroku
         old_high_score_title = get_google_sheet_titles_day_oldest()
         old_high_score_id = SHEET.worksheet(old_high_score_title)
         SHEET.del_worksheet(old_high_score_id)
-        #print(f">Delete old 'google sheet' {old_high_score_title} with old day high score list ...") # must be commented out for heroku
+        # print(f">Delete old 'google sheet' {old_high_score_title} with old day high score list ...")
+        # must be commented out for heroku
         today_high_score_worksheet = SHEET.add_worksheet(title=file_name_day_date, rows="20", cols="5")
-        # the column for the score (3th from left and the last, column C and E) must have an integer, assigns 0 to all 20 columns
+        # the column for the score (3th from left and the last, column C and E) must have an integer,
+        # assigns 0 to all 20 columns
         list_template = [[]]
         for index in range(20):
             list_template.insert(index, ['', '', 0, 0, 0])
@@ -157,7 +164,3 @@ def update_high_score_list(score_list, new_high_score):
     # print(f">Update high score list <{score_list}>") # must be commented out for heroku
     old_google_sheet = SHEET.worksheet(score_list)
     old_google_sheet.update('A1:E20', new_high_score)
-
-#print(f"Oldest google sheet date title {type(get_google_sheet_titles_day_oldest())}")
-#print(f"todays date {type(get_today_year_day_num())}")
-#print(get_today_high_score(get_today_year_day_num()))
