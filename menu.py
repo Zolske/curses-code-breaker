@@ -136,6 +136,7 @@ class Game:
         self.new_line_character = True
         self.menu_mode = False
         self.archive_list = 0
+        self.help_scroll = 0
         # spreadsheet
         self.all_time_high_score = []
         self.this_month_high_score = []
@@ -275,7 +276,10 @@ class Game:
         screen.refresh()
 
     def archive_menu(self, high_score_list):
+        curses.init_pair(7, curses.COLOR_BLUE, curses.COLOR_YELLOW)
+        HIGHLIGHT = curses.color_pair(7)
         self.menu_mode = 'archive'
+        self.switch_main_menu_off('archive')
         background_archive = curses.newpad(40, 60)
         background_archive.erase()
         background_archive.addstr(f"╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
@@ -311,7 +315,7 @@ class Game:
                                   f"┃║     ║               ║          ║      ║     ║         ║┃\n"
                                   f"┃╚═════╩═══════════════╩══════════╩══════╩═════╩═════════╝┃\n"
                                   f"┠━━━INSTRUCTIONS━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┤\n"
-                                  f"┃> Use the left ← & right → arrow keys to switch between  ┃\n"
+                                  f"┃> Use the LEFT ← & RIGHT → ARROW keys to switch between  ┃\n"
                                   f"┃  the 3 high score lists.                                ┃\n"
                                   f"┃                                                         ┃\n"
                                   f"┃> Press 2, to (re)start a new game and to get back to    ┃\n"
@@ -319,6 +323,25 @@ class Game:
                                   f"┃  the high score lists get updated.)                     ┃\n"
                                   f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
         background_archive.refresh(0, 0, 4, 21, 43, 79)
+        text_highlight_pad = curses.newpad(1, 10)
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("ARCHIVE",  HIGHLIGHT | curses.A_REVERSE)
+        text_highlight_pad.refresh(0, 0, 4, 25, 4, 31)
+        # text high lights
+        inst_text_highlight = curses.newpad(1, 2)
+        inst_text_highlight.erase()
+        inst_text_highlight.addstr("←", HIGHLIGHT)
+        inst_text_highlight.refresh(0, 0, 37, 37, 37, 38)
+        inst_text_highlight.erase()
+        inst_text_highlight.addstr("→", HIGHLIGHT)
+        inst_text_highlight.refresh(0, 0, 37, 47, 37, 48)
+        inst_text_highlight.erase()
+        inst_text_highlight.addstr("2", HIGHLIGHT)
+        inst_text_highlight.refresh(0, 0, 40, 30, 40, 30)
+
+        self.high_score_list_text(high_score_list)
+
+    def high_score_list_text(self, high_score_list):
         # high score list data
         score_data = curses.newpad(40, 165)
         score_data_string = ''
@@ -357,5 +380,194 @@ class Game:
         score_data_title.addstr(score_data_title_string)
         score_data_title.refresh(0, high_score_list, 6, 23, 11, 77)
 
-        #background_archive.refresh(0, 0, 4, 21, 4, 27)
-        # -> the 'DAILY HIGH SCORE' (only today's score) -> the 'MONTHLY HIGH SCORE' (only this month score)  -> the 'ALL TIME HIGH SCORE' (the best ever scores)
+    def help_menu(self):
+        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_RED)
+        curses.init_pair(7, curses.COLOR_BLUE, curses.COLOR_YELLOW)
+        curses.init_pair(8, curses.COLOR_WHITE, curses.COLOR_BLACK)
+        RED = curses.color_pair(1)
+        HIGHLIGHT = curses.color_pair(7)
+        ORIGINAL = curses.color_pair(8)
+        self.menu_mode = 'help'
+        self.switch_main_menu_off('help')
+        background_help = curses.newpad(40, 60)
+        background_help.erase()
+        background_help.addstr(f"╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
+                               f"┃╔═══════════════════════════════════════════════════════╗┃\n"
+                               f"┃║Help Menu                                              ║┃\n"
+                               f"┃╟━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╢┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃║                                                       ║┃\n"
+                               f"┃╚═══════════════════════════════════════════════════════╝┃\n"
+                               f"┠━━━INSTRUCTIONS━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┤\n"
+                               f"┃> Use the UP ↑ & DOWN ↓ ARROW keys to scroll the page.   ┃\n"
+                               f"┃                                                         ┃\n"
+                               f"┃> Press 2, to (re)start a new game and to get back to    ┃\n"
+                               f"┃  the main menu.                                         ┃\n"
+                               f"┃                                                         ┃\n"
+                               f"┃                                                         ┃\n"
+                               f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
+        background_help.refresh(0, 0, 4, 21, 43, 79)
+        text_highlight_pad = curses.newpad(1, 10)
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("4═HELP", ORIGINAL)
+        text_highlight_pad.refresh(0, 0, 2, 59, 2, 64)
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("HELP",  HIGHLIGHT | curses.A_REVERSE)
+        text_highlight_pad.refresh(0, 0, 4, 25, 4, 28)
+        self.help_text()
+        # text high lights
+        inst_text_highlight = curses.newpad(1, 2)
+        inst_text_highlight.erase()
+        inst_text_highlight.addstr("↑", HIGHLIGHT)
+        inst_text_highlight.refresh(0, 0, 37, 35, 37, 36)
+        inst_text_highlight.erase()
+        inst_text_highlight.addstr("↓", HIGHLIGHT)
+        inst_text_highlight.refresh(0, 0, 37, 44, 37, 45)
+        inst_text_highlight.erase()
+        inst_text_highlight.addstr("2", HIGHLIGHT)
+        inst_text_highlight.refresh(0, 0, 39, 30, 39, 30)
+
+    def help_text(self):
+        help_content = curses.newpad(270, 53)
+        help_content.erase()
+        help_content.addstr(f'GAMEPLAY & RULES\n'
+                            f'\nEverytime the game (re)starts, a new secret code is\n'
+                            f'generated.\n'
+                            f'The secret code has four colors which can be any of\n'
+                            f'the four colors (RED, GREEN, BLUE, YELLOW).\n'
+                            f'The player wins the game when he finds out the\n'
+                            f'secret code and loses when he has no more lines\n'
+                            f'left to play.\n'
+                            f'\nOnly after four colors have been set in one line, the'
+                            f'code can be confirmed with the hash key.\n'
+                            f'(see INSTRUCTIONS field on the bottom right\n'
+                            f'when playing)\n'
+                            f'\nThe Player receives then a feedback about his code.\n'
+                            f'(see CODE FEEDBACK field in the middle right\n'
+                            f'when playing)\n'
+                            f'\n-> code is correct ...\n'
+                            f'└> in color and position\n'
+                            f'(only if the right color is at the right position)\n'
+                            f'└> only in color but not position ...\n'
+                            f'(not counting any correct color-positions but only\n'
+                            f'additional correct colors)\n\n'
+                            f'\nFor example:\n'
+                            f'> secret code (RED, BLUE, YELLOW, YELLOW)\n'
+                            f'> player code (GREEN, RED, YELLOW, GREEN)\n'
+                            f'-> feedback:\n'
+                            f'└> in color and position 1\n'
+                            f'(because only the 3th YELLOW matches exactly in\n'
+                            f'position and color with the secret code)\n'
+                            f'└> only in color but not position 1\n'
+                            f'(because only RED is a correct color, GREEN is not a\n'
+                            f'secret color and YELLOW has already been\n'
+                            f'accounted for in correct_position)\n'
+                            f'\n> NOTE: The purple marker on the right side of\n'
+                            f'the board are not related to the order in which a\n'
+                            f'color matches the secret code.\n'
+                            f'-----------------------------------------------------'
+                            f'\nPOINT CALCULATION\n'
+                            f'\nThe score is calculated as follows:\n'
+                            f'> Lines left times 200 - time in seconds played.\n\n'
+                            f'\nFor example:\n'
+                            f'> 6 (lines left) times 200 = 1200\n'
+                            f'> 1200 - 360s (total time played in seconds) = 840\n'
+                            f'> the player gets 840 points\n'
+                            f'\n> NOTE: The maximum amount of points is 1799.\n'
+                            f'You would need to get the code right at the\n'
+                            f'first try (9 lines left, 1800 points) and\n'
+                            f'submit it within 1 second (1800 - 1s).\n'
+                            f'You would have a very luck day and should\n'
+                            f'continue to play lotto before your luck ends ;) .\n'
+                            f'\n> NOTE: At some point there is more time played then\n'
+                            f'you would get for the lines in which case you still\n'
+                            f'can get the code right but you don\'t get any points.\n'
+                            f'(e.g. 9 line left times 200 = 1800 - time 1800\n'
+                            f'seconds (30 min) = 0 points)\n'
+                            f'-----------------------------------------------------\n'
+                            f'HIGH SCORE LISTS\n\n'
+                            f'If your score is higher then any of the 20 scores\n'
+                            f'from the high score list, then it will make an entry\n'
+                            f'into the list. You will be asked for your name or\n'
+                            f'you can change the name if you have already been\n'
+                            f'given a name.\n'
+                            f'Your name, the date when you scored, your score,\n'
+                            f'how many lines left and your total time in seconds\n'
+                            f'is then saved into a google spreed sheet.\n'
+                            f'\n> NOTE: On the main page, only the top 6 of the\n'
+                            f'DAILY and MONTHLY score list are shown without\n'
+                            f'all the data. See ARCHIVE (press \'5\') for the\n'
+                            f'complete view of the high score lists.\n'
+                            f'\n-> DAILY high score:\n'
+                            f'For every day there is a new DAILY high score list.\n'
+                            f'The list from before yesterday gets overwritten to\n'
+                            f'save space in the google spread sheet.\n'
+                            f'\n> NOTE: There should be no conflict when players\n'
+                            f'from different time zones write into DAILY lists.\n'
+                            f'\n-> MONTHLY high score:\n'
+                            f'For every month there is a new MONTHLY high score\n'
+                            f'list. The old months are not deleted and still\n'
+                            f'exist in the google spread sheet, but they are\n'
+                            f'not accessible from within the game.\n'
+                            f'\n-> ALL TIME high score:\n'
+                            f'Contains the highest scores ever scored in the game.\n'
+                            f'With every new entry the list gets more difficult to\n'
+                            f'enter (some high scores could be also luck by\n'
+                            f'getting the code right early).\n'
+                            f'\n> NOTE: all the high score lists have a maximum of\n'
+                            f'20 entries, the lowest score falls out of the list.')
+        help_content.refresh(self.help_scroll, 0, 8, 24, 34, 76)
+
+    def switch_main_menu_off(self, menu):
+        curses.init_pair(7, curses.COLOR_BLUE, curses.COLOR_YELLOW)
+        curses.init_pair(8, curses.COLOR_WHITE, curses.COLOR_BLACK)
+        HIGHLIGHT = curses.color_pair(7)
+        ORIGINAL = curses.color_pair(8)
+
+        text_highlight_pad = curses.newpad(1, 10)
+        text_highlight_pad.erase()
+
+        if menu == 'archive':
+            text_highlight_pad.addstr("5═ARCHIVE", ORIGINAL)
+            text_highlight_pad.refresh(0, 0, 2, 68, 2, 76)
+            text_highlight_pad.erase()
+            text_highlight_pad.addstr("HELP", HIGHLIGHT | curses.A_REVERSE)
+            text_highlight_pad.refresh(0, 0, 2, 61, 2, 64)
+            text_highlight_pad.erase()
+            text_highlight_pad.addstr("4", HIGHLIGHT)
+            text_highlight_pad.refresh(0, 0, 2, 59, 2, 59)
+
+        if menu == 'help':
+            text_highlight_pad.addstr("4═HELP", ORIGINAL)
+            text_highlight_pad.refresh(0, 0, 2, 59, 2, 64)
+            text_highlight_pad.erase()
+            text_highlight_pad.addstr("ARCHIVE", HIGHLIGHT | curses.A_REVERSE)
+            text_highlight_pad.refresh(0, 0, 2, 70, 2, 76)
+            text_highlight_pad.erase()
+            text_highlight_pad.addstr("5", HIGHLIGHT)
+            text_highlight_pad.refresh(0, 0, 2, 68, 2, 68)

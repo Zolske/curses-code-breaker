@@ -89,24 +89,40 @@ def player_move():
         player_object.reset_player()
     if user_arrow_input == '5':  # opens archive page
         player_object.play_game = False
-        #print('user pressed 5')
         game_menu.archive_menu(game_menu.archive_list)
 
     if game_menu.menu_mode == 'archive':
         if user_arrow_input == 'KEY_RIGHT':
             if game_menu.archive_list == 0 or game_menu.archive_list == 55:
                 game_menu.archive_list += 55
-                game_menu.archive_menu(game_menu.archive_list)
+                game_menu.high_score_list_text(game_menu.archive_list)
             elif game_menu.archive_list == 110:
                 game_menu.archive_list = 0
-                game_menu.archive_menu(game_menu.archive_list)
+                game_menu.high_score_list_text(game_menu.archive_list)
         elif user_arrow_input == 'KEY_LEFT':
             if game_menu.archive_list == 55 or game_menu.archive_list == 110:
                 game_menu.archive_list -= 55
-                game_menu.archive_menu(game_menu.archive_list)
+                game_menu.high_score_list_text(game_menu.archive_list)
             elif game_menu.archive_list == 0:
                 game_menu.archive_list = 110
-                game_menu.archive_menu(game_menu.archive_list)
+                game_menu.high_score_list_text(game_menu.archive_list)
+
+    if user_arrow_input == '4':  # opens help page
+        player_object.play_game = False
+        game_menu.help_menu()
+
+    if game_menu.menu_mode == 'help':
+        if user_arrow_input == 'KEY_DOWN':
+            if game_menu.help_scroll < 85:
+                game_menu.help_scroll += 5
+                game_menu.help_text()
+        elif user_arrow_input == 'KEY_UP':
+            if game_menu.help_scroll > 5:
+                game_menu.help_scroll -= 5
+                game_menu.help_text()
+            else:
+                game_menu.help_scroll = 0
+                game_menu.help_text()
 
     # saves the color of the current location according to the color_mark_map in the player object
     current_color = player_object.color_mark_map[player_object.current_position[0]][player_object.current_position[1]]
