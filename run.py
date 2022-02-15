@@ -12,6 +12,7 @@ import time
 import gspread
 from google.oauth2.service_account import Credentials
 import webbrowser
+import subprocess
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -131,7 +132,8 @@ def player_move():
 
     if game_menu.menu_mode == 'contact':
         if user_arrow_input == '6':
-            webbrowser.open_new_tab('https://github.com/Zolske?tab=repositories')
+            subprocess.run(["python", "-m", "webbrowser", "-t", "https://www.python.org"])
+            #webbrowser.open_new_tab('https://github.com/Zolske?tab=repositories')
         elif user_arrow_input == '7':
             webbrowser.open_new_tab('https://www.linkedin.com/in/zolt%C3%A1n-kepes-b1922b1bb/')
         elif user_arrow_input == '8':
