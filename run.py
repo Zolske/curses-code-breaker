@@ -132,7 +132,8 @@ def player_move():
 
     if game_menu.menu_mode == 'contact':
         if user_arrow_input == '6':
-            subprocess.call(["python", "-m", "webbrowser", "-t", "https://www.python.org"])
+            webbrowser.get("google-chrome").open("elearning.wsldp.com/python3/")
+            #subprocess.call(["python", "-m", "webbrowser", "-t", "https://www.python.org"])
             #webbrowser.open_new_tab('https://github.com/Zolske?tab=repositories')
         elif user_arrow_input == '7':
             webbrowser.open_new_tab('https://www.linkedin.com/in/zolt%C3%A1n-kepes-b1922b1bb/')
