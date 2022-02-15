@@ -1,8 +1,4 @@
-# Your code goes here.
-# You can delete these comments, but do not change the name of this file
-# Write your code to expect a terminal of 80 characters wide and 24 rows high
 import curses
-from curses import wrapper
 import menu
 import player
 import spreadsheet
@@ -11,8 +7,6 @@ import threading
 import time
 import gspread
 from google.oauth2.service_account import Credentials
-import webbrowser
-import subprocess
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -24,16 +18,6 @@ CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('code_breaker_global_high_score')
-
-#global_high_score = SHEET.worksheet('global_high_score')
-
-#data = global_high_score.get_all_values()
-
-#print(data)
-
-
-
-#def main(screen):
 
 screen = curses.initscr()
 curses.noecho()
@@ -82,8 +66,6 @@ def player_move():
     """
     # waits for the user to press a key on the keyboard
     user_arrow_input = screen.getkey()
-    # if the user presses 'q' the function exits and returns 'q',
-    # this will exit the program because it will break the loop and there is nothing left to do for the program
     if user_arrow_input == '1':  # ends the program if user presses '1'
         return True
     elif user_arrow_input == '2':  # resets the game if the user presses '2'
@@ -130,23 +112,6 @@ def player_move():
         player_object.play_game = False
         game_menu.contact_menu()
 
-    if game_menu.menu_mode == 'contact':
-        if user_arrow_input == '6':
-            url = 'https://pythonexamples.org'
-            webbrowser.register('chrome',
-                                None,
-                                webbrowser.BackgroundBrowser(
-                                    "C://Program Files (x86)//Google//Chrome//Application//chrome.exe"))
-            webbrowser.get('chrome').open_new(url)
-            #webbrowser.get("google-chrome").open("elearning.wsldp.com/python3/")
-            #subprocess.call(["python", "-m", "webbrowser", "-t", "https://www.python.org"])
-            #webbrowser.open_new_tab('https://github.com/Zolske?tab=repositories')
-        elif user_arrow_input == '7':
-            webbrowser.open_new_tab('https://www.linkedin.com/in/zolt%C3%A1n-kepes-b1922b1bb/')
-        elif user_arrow_input == '8':
-            webbrowser.open_new_tab('https://5pence.net/')
-        elif user_arrow_input == '9':
-            webbrowser.open_new_tab('https://codeinstitute.net/full-stack-software-development-diploma/?utm_term=code%20institute&utm_campaign=CI+-+UK+-+Search+-+Brand&utm_source=adwords&utm_medium=ppc&hsa_acc=8983321581&hsa_cam=1578649861&hsa_grp=62188641240&hsa_ad=581813982401&hsa_src=g&hsa_tgt=kwd-319867646331&hsa_kw=code%20institute&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gclid=Cj0KCQiAu62QBhC7ARIsALXijXS82i_FU8oA28gDGT4mSWd52A6nbFDtXMboSHkFEkNw4wo5T9S1_jgaApJcEALw_wcB')
     # saves the color of the current location according to the color_mark_map in the player object
     current_color = player_object.color_mark_map[player_object.current_position[0]][player_object.current_position[1]]
     # adds 1 to the index value of the color_order, can be used on the equivalent curses.color_pair()
@@ -210,7 +175,6 @@ def timer():
             player_score = player_object.current_position[0] * 200 - (minutes_int * 60 + seconds_int)
         else:
             player_score = 0
-       # player_score = player_score.zfill(5)
         if player_object.reset_time:
             player_object.reset_time = False
             seconds_int = 0
@@ -223,7 +187,6 @@ def timer():
             timer_window.erase()
             timer_window.addstr(f"{minutes_text}:{seconds_text}")
             timer_window.refresh(0, 0, 2, 6, 2, 11)
-            #screen.refresh()
             player_object.player_time_seconds_total = (minutes_int * 60) + seconds_int
             player_object.player_time_seconds = seconds_int
             player_object.player_time_minutes = minutes_int
@@ -244,14 +207,9 @@ except:
     game_menu.new_line_character = False
     new_line_character = False
 # prints the background to the screen and sets the colors
-#game_menu.this_month_high_score = spreadsheet.get_this_month_high_score()
-#game_menu.all_time_high_score = spreadsheet.get_all_time_high_score()
-
-
 game_menu.start_game(screen)
 # create the player_object which contains data for current position, secret code, player code
 player_object = player.PlayerObject(score_date, file_name_date, new_line_character, today_month, today_year, today_day_name, file_name_day_date)
-#TODO comment out if no random secret code to be generated, the default for testing is 'RED' for times
 # generates the secret code
 player_object.generate_secret_random_number()
 
@@ -263,7 +221,6 @@ while True:  # runs a loop till the user presses 'q' to get out
         break
 
 
-# wrapper(main)
 curses.nocbreak()
 screen.keypad(False)
 curses.echo()

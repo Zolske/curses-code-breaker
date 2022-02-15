@@ -569,17 +569,17 @@ class Game:
                                   f"┃║ and the team of the Code Institute for their support. ║┃\n"
                                   f"┃║                                                       ║┃\n"
                                   f"┃║ Feel free to contact me (zoltan.the.kepes@gmail.com)  ║┃\n"
-                                  f"┃║ or to see more of my work. Have a good day and enjoy. ║┃\n"
+                                  f"┃║ Have a good day and enjoy.                            ║┃\n"
                                   f"┃║ Zoltán Kepes                                          ║┃\n"
                                   f"┃║                                                       ║┃\n"
                                   f"┃║                                                       ║┃\n"
-                                  f"┃║ > press 6, to have a look on my gitHub account        ║┃\n"
                                   f"┃║                                                       ║┃\n"
-                                  f"┃║ > press 7, to see my linkedin profile                 ║┃\n"
                                   f"┃║                                                       ║┃\n"
-                                  f"┃║ > press 8, to have a look at Spencer's website        ║┃\n"
                                   f"┃║                                                       ║┃\n"
-                                  f"┃║ > press 9, to visit the Code Institute website        ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║                                                       ║┃\n"
                                   f"┃║                                                       ║┃\n"
                                   f"┃║                                                       ║┃\n"
                                   f"┃║                                                       ║┃\n"
@@ -587,11 +587,11 @@ class Game:
                                   f"┃║                                                       ║┃\n"
                                   f"┃╚═══════════════════════════════════════════════════════╝┃\n"
                                   f"┠━━━INSTRUCTIONS━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┤\n"
-                                  f"┃> You can open the links to the websites by pressing the ┃\n"
-                                  f"┃  corresponding number on your keyboard.                 ┃\n"
-                                  f"┃                                                         ┃\n"
                                   f"┃> Press 2, to (re)start a new game and to get back to    ┃\n"
                                   f"┃  the main menu.                                         ┃\n"
+                                  f"┃                                                         ┃\n"
+                                  f"┃                                                         ┃\n"
+                                  f"┃                                                         ┃\n"
                                   f"┃                                                         ┃\n"
                                   f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
         background_contact.refresh(0, 0, 4, 21, 43, 79)
@@ -602,20 +602,8 @@ class Game:
         text_highlight_pad.refresh(0, 0, 4, 25, 4, 31)
         inst_text_highlight = curses.newpad(1, 2)
         inst_text_highlight.erase()
-        inst_text_highlight.addstr("6", HIGHLIGHT)
-        inst_text_highlight.refresh(0, 0, 23, 32, 23, 32)
-        inst_text_highlight.erase()
-        inst_text_highlight.addstr("7", HIGHLIGHT)
-        inst_text_highlight.refresh(0, 0, 25, 32, 25, 32)
-        inst_text_highlight.erase()
-        inst_text_highlight.addstr("8", HIGHLIGHT)
-        inst_text_highlight.refresh(0, 0, 27, 32, 27, 32)
-        inst_text_highlight.erase()
-        inst_text_highlight.addstr("9", HIGHLIGHT)
-        inst_text_highlight.refresh(0, 0, 29, 32, 29, 32)
-        inst_text_highlight.erase()
         inst_text_highlight.addstr("2", HIGHLIGHT)
-        inst_text_highlight.refresh(0, 0, 40, 30, 40, 30)
+        inst_text_highlight.refresh(0, 0, 37, 30, 37, 30)
 
     def switch_main_menu_off(self, menu):
         curses.init_pair(7, curses.COLOR_BLUE, curses.COLOR_YELLOW)
