@@ -43,7 +43,7 @@ A score is calculated based on how many of the 10 lines are still free and how l
 
 - intuitive game and menu navigation (only arrow keys, some numbers and the '#' key are needed)  
 
-  ![intuitive navigation](assets/images/visiual_feedback.gif)  
+  ![intuitive navigation](assets/images/seting_code.gif)  
 
 - 'curses' is used for a terminal-independent screen-painting and keyboard-handling facility for text-based terminals, which makes the terminal app more appealing
 - detailed feedback:
