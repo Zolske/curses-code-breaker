@@ -31,7 +31,7 @@ def get_this_month_high_score(file_name_date):
         this_month_high_score_worksheet = SHEET.worksheet(file_name_date)
         # print(f">Found 'google sheet' <{file_name_date}> which is this month's high score list ...")
         # must be commented out for heroku
-    except ValueError:
+    except:  # take out ValueError, browser terminal error
         # if not exist, then it is created
         # print(f">No 'google sheet' <{file_name_date}> found with this month's high score list ...")
         # must be commented out for heroku
@@ -109,7 +109,7 @@ def get_today_high_score(file_name_day_date):
         today_high_score_worksheet = SHEET.worksheet(file_name_day_date)
         # print(f">Found 'google sheet' <{file_name_day_date}> which is today's high score list ...")
         # must be commented out for heroku
-    except ValueError:
+    except:  # take out ValueError, browser terminal error
         # if not exist, then it is created
         # print(f">No 'google sheet' <{file_name_day_date}> found with today's high score list ...")
         # must be commented out for heroku

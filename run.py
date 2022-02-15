@@ -203,7 +203,7 @@ game_menu = menu.Game(today_year, today_month, file_name_date, today_day_name, t
 # raise an error
 try:
     curses.curs_set(0)
-except ValueError:
+except:  # take out ValueError, browser terminal error
     game_menu.new_line_character = False
     new_line_character = False
 # prints the background to the screen and sets the colors

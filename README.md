@@ -22,8 +22,10 @@ A score is calculated based on how many of the 10 lines are still free and how l
 ## Features
 ### Existing Features  
 - random secret code generation
-- 3 different high scores for the user to write his points in
-  ![high scores](assets/images/high_score.gif)
+- 3 different high scores for the user to write his points in  
+
+  ![high scores](assets/images/high_score.gif)  
+
   - every high score list has a maximum of 20 entries, the lowest falls out
   - the high score data is saved in a Google spreadsheet, every player writes to the same high score
   - the high scores get updated and can be viewed within the game
@@ -34,19 +36,27 @@ A score is calculated based on how many of the 10 lines are still free and how l
     - for every month there is a new high score which is kept in the Google sheet database but is not accessible for the users
   - ALL TIME high score:
     - the best ever saved scores in the game
-- a live timer counting the time the player has played and points in real time
-  ![live counter](assets/images/timer_point.gif)
+- a live timer counting the time the player has played and points in real time  
   (is done over "Multithreading & Multiprocessing in Python3")
-- intuitive game and menu navigation (only arrow keys, some numbers and the '#' key are needed)
-  ![intuitive navigation](assets/images/visiual_feedback.gif)
+
+  ![live counter](assets/images/timer_point.gif)  
+
+- intuitive game and menu navigation (only arrow keys, some numbers and the '#' key are needed)  
+
+  ![intuitive navigation](assets/images/visiual_feedback.gif)  
+
 - 'curses' is used for a terminal-independent screen-painting and keyboard-handling facility for text-based terminals, which makes the terminal app more appealing
 - detailed feedback:
-  - code feedback (in which line, how many color and position or only color is correct)
-  ![code feedback](assets/images/code_feedback_1.gif)
+  - code feedback (in which line, how many color and position or only color is correct)  
+  
+  ![code feedback](assets/images/code_feedback_1.gif)  
+
   - score feed back, detailed point calculation (how many lines where left, how long has the user played)
   - high score feedback (who has fallen out, what date was the score set, how many lines and time in seconds)
-  - visual feedback, what options are available and in which menu the user is through text highlighting
-  ![menu navigation](assets/images/menu_navigation.gif)
+  - visual feedback, what options are available and in which menu the user is through text highlighting  
+  
+  ![menu navigation](assets/images/menu_navigation.gif)  
+
 ### Future Features  
 - 'curses' could be used to animate the 'code breaker' logo
 - more code documentation (comments and a control flow graph diagram)
