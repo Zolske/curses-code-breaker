@@ -346,6 +346,11 @@ class Game:
         score_data = curses.newpad(40, 165)
         score_data_string = ''
         for index in range(20):
+            # print(f" index1 {self.today_high_score[0][0]}")
+            # print(f" index2 {self.today_high_score[0][1]}")
+            # print(f" index3 {self.today_high_score[0][2]}")
+            # print(f" index4 {self.today_high_score[0][3]}")
+            #print(self.today_high_score[0][4])
             score_data_string += f"{str(index+1).rjust(4)} ║ {str(self.today_high_score[index][0]).ljust(14)}║20{str(self.today_high_score[index][1]).rjust(8)}║{str(self.today_high_score[index][2]).rjust(5)} ║{str(self.today_high_score[index][3]).rjust(4)} ║{str(self.today_high_score[index][4]).rjust(8)} "
             score_data_string += f"{str(index+1).rjust(4)} ║ {str(self.this_month_high_score[index][0]).ljust(14)}║20{str(self.this_month_high_score[index][1]).rjust(8)}║{str(self.this_month_high_score[index][2]).rjust(5)} ║{str(self.this_month_high_score[index][3]).rjust(4)} ║{str(self.this_month_high_score[index][4]).rjust(8)} "
             score_data_string += f"{str(index+1).rjust(4)} ║ {str(self.all_time_high_score[index][0]).ljust(14)}║20{str(self.all_time_high_score[index][1]).rjust(8)}║{str(self.all_time_high_score[index][2]).rjust(5)} ║{str(self.all_time_high_score[index][3]).rjust(4)} ║{str(self.all_time_high_score[index][4]).rjust(8)} "
