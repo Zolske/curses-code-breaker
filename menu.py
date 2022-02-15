@@ -279,17 +279,10 @@ class Game:
         background_archive = curses.newpad(40, 60)
         background_archive.erase()
         background_archive.addstr(f"╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
-                                  f"┃ Welcome, here you can check the high score lists.       ┃\n"
-                                  f"┃ (Every time you open the 'ARCHIVE' the list is updated.)┃\n"
-                                  f"┃ > Press LEFT-SHIFT & LEFT or RIGHT ARROW key to change  ┃\n"
-                                  f"┃   between high score lists.                             ┃\n"
-                                  f"┃ > Press LEFT-SHIFT & UP or DOWN ARROW key to scroll.    ┃\n"
-                                  f"┃                                                         ┃\n"
-                                  f"┃                                                         ┃\n"
-                                  f"┃                                                         ┃\n"
-                                  f"┃                                                         ┃\n"
-                                  f"┃                                                         ┃\n"
                                   f"┃╔═══════════════════════════════════════════════════════╗┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃╟                                                       ╢┃\n"
+                                  f"┃║                                                       ║┃\n"
                                   f"┃║                                                       ║┃\n"
                                   f"┃║                                                       ║┃\n"
                                   f"┃║                                                       ║┃\n"
@@ -317,8 +310,16 @@ class Game:
                                   f"┃║     ║               ║          ║      ║     ║         ║┃\n"
                                   f"┃║     ║               ║          ║      ║     ║         ║┃\n"
                                   f"┃╚═════╩═══════════════╩══════════╩══════╩═════╩═════════╝┃\n"
+                                  f"┠━━━INSTRUCTIONS━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┤\n"
+                                  f"┃> Use the left ← & right → arrow keys to switch between  ┃\n"
+                                  f"┃  the 3 high score lists.                                ┃\n"
+                                  f"┃                                                         ┃\n"
+                                  f"┃> Press 2, to (re)start a new game and to get back to    ┃\n"
+                                  f"┃  the main menu. (Every time you restart the game,       ┃\n"
+                                  f"┃  the high score lists get updated.)                     ┃\n"
                                   f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
         background_archive.refresh(0, 0, 4, 21, 43, 79)
+        # high score list data
         score_data = curses.newpad(40, 165)
         score_data_string = ''
         for index in range(20):
@@ -327,7 +328,34 @@ class Game:
             score_data_string += f"{str(index+1).rjust(4)} ║ {str(self.all_time_high_score[index][0]).ljust(14)}║20{str(self.all_time_high_score[index][1]).rjust(8)}║{str(self.all_time_high_score[index][2]).rjust(5)} ║{str(self.all_time_high_score[index][3]).rjust(4)} ║{str(self.all_time_high_score[index][4]).rjust(8)} "
         score_data.erase()
         score_data.addstr(score_data_string)
-        score_data.refresh(0, high_score_list, 22, 23, 41, 77)
+        score_data.refresh(0, high_score_list, 15, 23, 34, 77)
+        # high score list title and description
+        score_data_title = curses.newpad(7, 165)
+        score_data_title_string = ''
+        # title
+        score_data_title_string += f"DAILY HIGH SCORE : {self.today_day_name.upper()} {self.today_month.upper()} {self.today_year.upper()}".ljust(55)
+        score_data_title_string += f"MONTHLY  HIGH SCORE : {self.today_month.upper()} {self.today_year.upper()}".ljust(55)
+        score_data_title_string += f"ALL TIME HIGH SCORE".ljust(55)
+        score_data_title_string += f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".ljust(165)
+        # text line 1
+        score_data_title_string += f" Every day a new DAILY high score is created.".ljust(55)
+        score_data_title_string += f" Every MONTHLY high score is backed up in the google".ljust(55)
+        score_data_title_string += f" As with the other high score lists, the ALL TIME list".ljust(55)
+        # text line 2
+        score_data_title_string += f" (The list before yesterday gets deleted. To avoid".ljust(55)
+        score_data_title_string += f" sheet. But once the month has past the player can".ljust(55)
+        score_data_title_string += f" contains only the top 20. Every new entry pushes the".ljust(55)
+        # text line 3
+        score_data_title_string += f" complications when another player from another".ljust(55)
+        score_data_title_string += f" not accesses it any longer from the game (only the".ljust(55)
+        score_data_title_string += f" last entry out from the list. ALL TIME gets never".ljust(55)
+        # text line 4
+        score_data_title_string += f" timezone tries to access the list.)".ljust(55)
+        score_data_title_string += f" current month).".ljust(55)
+        score_data_title_string += f" deleted, only updated.".ljust(55)
+        score_data_title.erase()
+        score_data_title.addstr(score_data_title_string)
+        score_data_title.refresh(0, high_score_list, 6, 23, 11, 77)
 
         #background_archive.refresh(0, 0, 4, 21, 4, 27)
         # -> the 'DAILY HIGH SCORE' (only today's score) -> the 'MONTHLY HIGH SCORE' (only this month score)  -> the 'ALL TIME HIGH SCORE' (the best ever scores)
