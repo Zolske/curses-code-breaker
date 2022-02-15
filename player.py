@@ -371,7 +371,7 @@ class PlayerObject:
                 last_entry = ''
                 if self.today_high_score[19][2]:
                     last_entry = f"Unfortunate for {self.today_high_score[19][0]}'s score from 20{self.today_high_score[19][1]},\nhis\her score has fallen out of the list."
-                today_title = f"NEW {self.today_month.upper()} HIGH SCORE"
+                today_title = f"NEW {self.today_day_name.upper()} HIGH SCORE"
                 today_title_score_message = curses.newpad(1, 60)
                 today_title_score_message.erase()
                 today_title_score_message.addstr(today_title)
