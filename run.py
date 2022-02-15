@@ -11,6 +11,7 @@ import threading
 import time
 import gspread
 from google.oauth2.service_account import Credentials
+import webbrowser
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -87,7 +88,7 @@ def player_move():
     elif user_arrow_input == '2':  # resets the game if the user presses '2'
         game_menu.start_game(screen)
         player_object.reset_player()
-    if user_arrow_input == '5':  # opens archive page
+    elif user_arrow_input == '5':  # opens archive page
         player_object.play_game = False
         game_menu.archive_menu(game_menu.archive_list)
 
@@ -124,6 +125,19 @@ def player_move():
                 game_menu.help_scroll = 0
                 game_menu.help_text()
 
+    if user_arrow_input == '3':  # opens contact page
+        player_object.play_game = False
+        game_menu.contact_menu()
+
+    if game_menu.menu_mode == 'contact':
+        if user_arrow_input == '6':
+            webbrowser.open_new_tab('https://github.com/Zolske?tab=repositories')
+        elif user_arrow_input == '7':
+            webbrowser.open_new_tab('https://www.linkedin.com/in/zolt%C3%A1n-kepes-b1922b1bb/')
+        elif user_arrow_input == '8':
+            webbrowser.open_new_tab('https://5pence.net/')
+        elif user_arrow_input == '9':
+            webbrowser.open_new_tab('https://codeinstitute.net/full-stack-software-development-diploma/?utm_term=code%20institute&utm_campaign=CI+-+UK+-+Search+-+Brand&utm_source=adwords&utm_medium=ppc&hsa_acc=8983321581&hsa_cam=1578649861&hsa_grp=62188641240&hsa_ad=581813982401&hsa_src=g&hsa_tgt=kwd-319867646331&hsa_kw=code%20institute&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gclid=Cj0KCQiAu62QBhC7ARIsALXijXS82i_FU8oA28gDGT4mSWd52A6nbFDtXMboSHkFEkNw4wo5T9S1_jgaApJcEALw_wcB')
     # saves the color of the current location according to the color_mark_map in the player object
     current_color = player_object.color_mark_map[player_object.current_position[0]][player_object.current_position[1]]
     # adds 1 to the index value of the color_order, can be used on the equivalent curses.color_pair()
@@ -230,7 +244,7 @@ game_menu.start_game(screen)
 player_object = player.PlayerObject(score_date, file_name_date, new_line_character, today_month, today_year, today_day_name, file_name_day_date)
 #TODO comment out if no random secret code to be generated, the default for testing is 'RED' for times
 # generates the secret code
-# player_object.generate_secret_random_number()
+player_object.generate_secret_random_number()
 
 timer_thread = threading.Thread(target=timer)  # allows the timer to run in the background
 timer_thread.start()  # starts the timer thread on the side

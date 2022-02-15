@@ -570,6 +570,6 @@ class PlayerObject:
         self.play_game = True
         self.set_new_high_score = False
         # TODO comment out if no random secret code to be generated, the default for testing is 'RED' for times
-        # self.generate_secret_random_number()
+        self.generate_secret_random_number()
 
 

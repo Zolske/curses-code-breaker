@@ -18,7 +18,7 @@ class Game:
         #  alignment "0123456789a123456789b123456789c123456789d123456789e123456789f123456789g123456789h"
         self.line = ["                                                                                ", #00
                      "    ╓━TIME━━╥━SCORE━╖   ╭┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈╮ ╭┈┈┈┈┈┈┈┈┈╮  ", #01
-                     "    ║ 00:00 ║  1800 ║   ╞1═EXIT╡ ╞2═RESTART╡ ╞3═SETTINGS╡ ╞4═HELP╡ ╞5═ARCHIVE╡  ", #02
+                     "    ║ 00:00 ║  1800 ║   ╞1═EXIT╡ ╞2═RESTART╡ ╞3═CONTACT═╡ ╞4═HELP╡ ╞5═ARCHIVE╡  ", #02
                      "╔═╤═╬═══╦═══╬═══╦═══╣   ╰┈┈┈┈┈┈╯ ╰┈┈┈┈┈┈┈┈┈╯ ╰┈┈┈┈┈┈┈┈┈┈╯ ╰┈┈┈┈┈┈╯ ╰┈┈┈┈┈┈┈┈┈╯  ", #03
                      "║ ┃ ║1  ║   ║   ║   ║                              __                           ", #04
                      "╟━╋━╢   ║   ║   ║   ║           _____  ____   ____/ / ___                       ", #05
@@ -176,8 +176,8 @@ class Game:
         text_highlight_pad.addstr("3", HIGHLIGHT)
         text_highlight_pad.refresh(0, 0, 2, 46, 2, 46)
         text_highlight_pad.erase()
-        text_highlight_pad.addstr("SETTINGS", HIGHLIGHT | curses.A_REVERSE)
-        text_highlight_pad.refresh(0, 0, 2, 48, 2, 55)
+        text_highlight_pad.addstr("CONTACT", HIGHLIGHT | curses.A_REVERSE)
+        text_highlight_pad.refresh(0, 0, 2, 48, 2, 54)
         text_highlight_pad.erase()
         text_highlight_pad.addstr("4", HIGHLIGHT)
         text_highlight_pad.refresh(0, 0, 2, 59, 2, 59)
@@ -543,6 +543,80 @@ class Game:
                             f'20 entries, the lowest score falls out of the list.')
         help_content.refresh(self.help_scroll, 0, 8, 24, 34, 76)
 
+    def contact_menu(self):
+        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_RED)
+        curses.init_pair(7, curses.COLOR_BLUE, curses.COLOR_YELLOW)
+        curses.init_pair(8, curses.COLOR_WHITE, curses.COLOR_BLACK)
+        RED = curses.color_pair(1)
+        HIGHLIGHT = curses.color_pair(7)
+        ORIGINAL = curses.color_pair(8)
+        self.menu_mode = 'contact'
+        self.switch_main_menu_off('contact')
+        background_contact = curses.newpad(40, 60)
+        background_contact.erase()
+        background_contact.addstr(f"╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
+                                  f"┃╔═══════════════════════════════════════════════════════╗┃\n"
+                                  f"┃║Contact Menu                                           ║┃\n"
+                                  f"┃╟━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╢┃\n"
+                                  f"┃║ MESSAGE FROM THE PROGRAMMER                           ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║ I hope that you like my little program and that       ║┃\n"
+                                  f"┃║ you will share it with your friends.                  ║┃\n"
+                                  f"┃║ It would be amazing to see new high scores popping    ║┃\n"
+                                  f"┃║ up.                                                   ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║ A special Thank you to my mentor Spencer Barriball &  ║┃\n"
+                                  f"┃║ and the team of the Code Institute for their support. ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║ Feel free to contact me (zoltan.the.kepes@gmail.com)  ║┃\n"
+                                  f"┃║ or to see more of my work. Have a good day and enjoy. ║┃\n"
+                                  f"┃║ Zoltán Kepes                                          ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║ > press 6, to have a look on my gitHub account        ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║ > press 7, to see my linkedin profile                 ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║ > press 8, to have a look at Spencer's website        ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║ > press 9, to visit the Code Institute website        ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃║                                                       ║┃\n"
+                                  f"┃╚═══════════════════════════════════════════════════════╝┃\n"
+                                  f"┠━━━INSTRUCTIONS━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┤\n"
+                                  f"┃> You can open the links to the websites by pressing the ┃\n"
+                                  f"┃  corresponding number on your keyboard.                 ┃\n"
+                                  f"┃                                                         ┃\n"
+                                  f"┃> Press 2, to (re)start a new game and to get back to    ┃\n"
+                                  f"┃  the main menu.                                         ┃\n"
+                                  f"┃                                                         ┃\n"
+                                  f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯")
+        background_contact.refresh(0, 0, 4, 21, 43, 79)
+        # text high lights
+        text_highlight_pad = curses.newpad(1, 10)
+        text_highlight_pad.erase()
+        text_highlight_pad.addstr("CONTACT",  HIGHLIGHT | curses.A_REVERSE)
+        text_highlight_pad.refresh(0, 0, 4, 25, 4, 31)
+        inst_text_highlight = curses.newpad(1, 2)
+        inst_text_highlight.erase()
+        inst_text_highlight.addstr("6", HIGHLIGHT)
+        inst_text_highlight.refresh(0, 0, 23, 32, 23, 32)
+        inst_text_highlight.erase()
+        inst_text_highlight.addstr("7", HIGHLIGHT)
+        inst_text_highlight.refresh(0, 0, 25, 32, 25, 32)
+        inst_text_highlight.erase()
+        inst_text_highlight.addstr("8", HIGHLIGHT)
+        inst_text_highlight.refresh(0, 0, 27, 32, 27, 32)
+        inst_text_highlight.erase()
+        inst_text_highlight.addstr("9", HIGHLIGHT)
+        inst_text_highlight.refresh(0, 0, 29, 32, 29, 32)
+        inst_text_highlight.erase()
+        inst_text_highlight.addstr("2", HIGHLIGHT)
+        inst_text_highlight.refresh(0, 0, 40, 30, 40, 30)
+
     def switch_main_menu_off(self, menu):
         curses.init_pair(7, curses.COLOR_BLUE, curses.COLOR_YELLOW)
         curses.init_pair(8, curses.COLOR_WHITE, curses.COLOR_BLACK)
@@ -561,6 +635,12 @@ class Game:
             text_highlight_pad.erase()
             text_highlight_pad.addstr("4", HIGHLIGHT)
             text_highlight_pad.refresh(0, 0, 2, 59, 2, 59)
+            text_highlight_pad.erase()
+            text_highlight_pad.addstr("CONTACT", HIGHLIGHT | curses.A_REVERSE)
+            text_highlight_pad.refresh(0, 0, 2, 48, 2, 54)
+            text_highlight_pad.erase()
+            text_highlight_pad.addstr("3", HIGHLIGHT)
+            text_highlight_pad.refresh(0, 0, 2, 46, 2, 46)
 
         if menu == 'help':
             text_highlight_pad.addstr("4═HELP", ORIGINAL)
@@ -571,3 +651,25 @@ class Game:
             text_highlight_pad.erase()
             text_highlight_pad.addstr("5", HIGHLIGHT)
             text_highlight_pad.refresh(0, 0, 2, 68, 2, 68)
+            text_highlight_pad.erase()
+            text_highlight_pad.addstr("CONTACT", HIGHLIGHT | curses.A_REVERSE)
+            text_highlight_pad.refresh(0, 0, 2, 48, 2, 54)
+            text_highlight_pad.erase()
+            text_highlight_pad.addstr("3", HIGHLIGHT)
+            text_highlight_pad.refresh(0, 0, 2, 46, 2, 46)
+
+        if menu == 'contact':
+            text_highlight_pad.addstr("3═CONTACT", ORIGINAL)
+            text_highlight_pad.refresh(0, 0, 2, 46, 2, 54)
+            text_highlight_pad.erase()
+            text_highlight_pad.addstr("ARCHIVE", HIGHLIGHT | curses.A_REVERSE)
+            text_highlight_pad.refresh(0, 0, 2, 70, 2, 76)
+            text_highlight_pad.erase()
+            text_highlight_pad.addstr("5", HIGHLIGHT)
+            text_highlight_pad.refresh(0, 0, 2, 68, 2, 68)
+            text_highlight_pad.erase()
+            text_highlight_pad.addstr("HELP", HIGHLIGHT | curses.A_REVERSE)
+            text_highlight_pad.refresh(0, 0, 2, 61, 2, 64)
+            text_highlight_pad.erase()
+            text_highlight_pad.addstr("4", HIGHLIGHT)
+            text_highlight_pad.refresh(0, 0, 2, 59, 2, 59)
