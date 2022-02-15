@@ -570,6 +570,6 @@ class PlayerObject:
         self.player_time_minutes = 0
         self.play_game = True
         self.set_new_high_score = False
-        #self.generate_secret_random_number()
+        self.generate_secret_random_number()
 
 
