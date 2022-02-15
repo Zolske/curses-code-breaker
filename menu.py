@@ -571,7 +571,7 @@ class Game:
                                   f"┃║ up.                                                   ║┃\n"
                                   f"┃║                                                       ║┃\n"
                                   f"┃║ A special Thank you to my mentor Spencer Barriball &  ║┃\n"
-                                  f"┃║ and the team of the Code Institute for their support. ║┃\n"
+                                  f"┃║ and to the Code Institute team for their support.     ║┃\n"
                                   f"┃║                                                       ║┃\n"
                                   f"┃║ Feel free to contact me (zoltan.the.kepes@gmail.com)  ║┃\n"
                                   f"┃║ Have a good day and enjoy.                            ║┃\n"
