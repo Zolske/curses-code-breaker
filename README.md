@@ -70,7 +70,8 @@ A score is calculated based on how many of the 10 lines are still free and how l
 - the code is mainly object-oriented, grouped in classes
 - lists have been used to store coordinates which are needed to 'draw' on the screen
 - the score data is stored in lists of lists which are updated or created from and to Google sheet
-- regular expression have been used to read the file name from the Google sheet
+- regular expression have been used to read the file name from the Google sheet  
+![control flow graph](assets/images/Code Breaker control flow graph.jpg)
 ---
 ## Testing
 - The app was constantly tested in the terminal during development and over heroku. 
