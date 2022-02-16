@@ -63,6 +63,7 @@ def user_input():
 def player_move():
     """
     Processes the user key input.
+    :return: returns True if the user presses the '1' key which will break the loop and end the program
     """
     # waits for the user to press a key on the keyboard
     user_arrow_input = screen.getkey()
@@ -154,6 +155,13 @@ def player_move():
 
 
 def timer():
+    """
+    Increases the seconds and decreases the score in an 1-second interval
+    (score is recalculated depending on how many lines are left).
+    The loop can be broken when the player_object.stop_time is set to True.
+    The time and points can be reset when player_object.reset_time is set to True
+
+    """
     seconds_int = 0
     minutes_int = 0
     player_score = 1800
@@ -203,9 +211,9 @@ game_menu = menu.Game(today_year, today_month, file_name_date, today_day_name, t
 # raise an error
 try:
     curses.curs_set(0)
-except:  # take out ValueError, browser terminal error
-    game_menu.new_line_character = False
-    new_line_character = False
+except:  # making the exception more specific e.g. ValueError, curses the browser-terminal to rais an error!!!!
+    game_menu.new_line_character = False  # this line is not needed for the terminal but for the browser-terminal !!!
+    new_line_character = False  # this line is not needed for the terminal but for the browser-terminal !!!
 # prints the background to the screen and sets the colors
 game_menu.start_game(screen)
 # create the player_object which contains data for current position, secret code, player code
@@ -216,7 +224,7 @@ player_object.generate_secret_random_number()
 
 timer_thread = threading.Thread(target=timer)  # allows the timer to run in the background
 timer_thread.start()  # starts the timer thread on the side
-while True:  # runs a loop till the user presses 'q' to get out
+while True:  # runs a loop till the user presses '1' to get out
     if player_move():
         player_object.stop_time = True
         break

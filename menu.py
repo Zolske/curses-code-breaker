@@ -1,3 +1,8 @@
+"""
+This module contains the methods and attributes to print (or paint) over the screen.
+There a code lines which are to long, but I do not want to introduce bugs by shorten them because the strings need to
+have a defined length and the lists are more readable win this way with their comments !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+"""
 import curses
 import spreadsheet
 import gspread
@@ -15,6 +20,9 @@ SHEET = GSPREAD_CLIENT.open('code_breaker_global_high_score')
 
 
 class Game:
+    """
+    Contains the methods and arguments needed to print the different menus.
+    """
     def __init__(self, today_year, today_month, file_name_date, today_day_name, today_date_num, file_name_day_date):
         #  alignment "0123456789a123456789b123456789c123456789d123456789e123456789f123456789g123456789h"
         self.line = ["                                                                                ",  # 00
@@ -63,7 +71,9 @@ class Game:
                      "╚═╧═╩═══╩═══╩═══╩═══╝╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯"   # 43
          # alignment "123456789a123456789b123456789c123456789d123456789e123456789f123456789g123456789h"
                      ]
-        self.content_marker = "    ↑  ↑ \n   ← →←↲→\n    ↓  ↓ "  # content of the pad / player-marker
+        # content of the pad / player-marker
+        self.content_marker = "    ↑  ↑ \n   ← →←↲→\n    ↓  ↓ "
+        # data for the marker position
         self.position_marker = [[[0, 0, 4, 5, 6, 7], [0, 0, 4, 9, 6, 11], [0, 0, 4, 13, 6, 15], [0, 0, 4, 17, 6, 19]],  # turn / row 1 / index 0
                                 [[0, 0, 8, 5, 10, 7], [0, 0, 8, 9, 10, 11], [0, 0, 8, 13, 10, 15], [0, 0, 8, 17, 10, 19]],  # turn / row 2 / index 1
                                 [[0, 0, 12, 5, 14, 7], [0, 0, 12, 9, 14, 11], [0, 0, 12, 13, 14, 15], [0, 0, 12, 17, 14, 19]],  # turn / row 3 / index 2
@@ -75,6 +85,7 @@ class Game:
                                 [[0, 0, 36, 5, 38, 7], [0, 0, 36, 9, 38, 11], [0, 0, 36, 13, 38, 15], [0, 0, 36, 17, 38, 19]],  # turn / row 9 / index 8
                                 [[0, 0, 40, 5, 42, 7], [0, 0, 40, 9, 42, 11], [0, 0, 40, 13, 42, 15], [0, 0, 40, 17, 42, 19]],  # turn / row 10 / index 9
                                 ]
+        # data for the marker position when selected
         self.position_select = [[[0, 3, 4, 5, 6, 7], [0, 3, 4, 9, 6, 11], [0, 3, 4, 13, 6, 15], [0, 3, 4, 17, 6, 19]],  # turn / row 1 / index 0
                                 [[0, 3, 8, 5, 10, 7], [0, 3, 8, 9, 10, 11], [0, 3, 8, 13, 10, 15], [0, 3, 8, 17, 10, 19]],  # turn / row 2 / index 1
                                 [[0, 3, 12, 5, 14, 7], [0, 3, 12, 9, 14, 11], [0, 3, 12, 13, 14, 15], [0, 3, 12, 17, 14, 19]],  # turn / row 3 / index 2
@@ -86,6 +97,7 @@ class Game:
                                 [[0, 3, 36, 5, 38, 7], [0, 3, 36, 9, 38, 11], [0, 3, 36, 13, 38, 15], [0, 3, 36, 17, 38, 19]],  # turn / row 9 / index 8
                                 [[0, 3, 40, 5, 42, 7], [0, 3, 40, 9, 42, 11], [0, 3, 40, 13, 42, 15], [0, 3, 40, 17, 42, 19]],  # turn / row 10 / index 9
                                 ]
+        # for future feature, marker can show additional symbol only when entire line has markers
         self.position_enter = [[[0, 6, 4, 5, 6, 7], [0, 6, 4, 9, 6, 11], [0, 6, 4, 13, 6, 15], [0, 6, 4, 17, 6, 19]],  # turn / row 1 / index 0
                                 [[0, 6, 8, 5, 10, 7], [0, 6, 8, 9, 10, 11], [0, 6, 8, 13, 10, 15], [0, 6, 8, 17, 10, 19]],  # turn / row 2 / index 1
                                 [[0, 6, 12, 5, 14, 7], [0, 6, 12, 9, 14, 11], [0, 6, 12, 13, 14, 15], [0, 6, 12, 17, 14, 19]],  # turn / row 3 / index 2
@@ -97,7 +109,9 @@ class Game:
                                 [[0, 6, 36, 5, 38, 7], [0, 6, 36, 9, 38, 11], [0, 6, 36, 13, 38, 15], [0, 6, 36, 17, 38, 19]],  # turn / row 9 / index 8
                                 [[0, 6, 40, 5, 42, 7], [0, 6, 40, 9, 42, 11], [0, 6, 40, 13, 42, 15], [0, 6, 40, 17, 42, 19]],  # turn / row 10 / index 9
                                 ]
-        self.content_feedback = "█▂"  # content for feedback
+        # content for feedback marker
+        self.content_feedback = "█▂"
+        # position of the full feedback marker (color and position is correct)
         self.position_feedback = [[[0, 0, 4, 1, 4, 1], [0, 0, 4, 3, 4, 3], [0, 0, 6, 1, 6, 1], [0, 0, 6, 3, 6, 3]],  # turn / row 1 / index 0
                                   [[0, 0, 8, 1, 8, 1], [0, 0, 8, 3, 8, 3], [0, 0, 10, 1, 10, 1], [0, 0, 10, 3, 10, 3]],  # turn / row 2 / index 1
                                   [[0, 0, 12, 1, 12, 1], [0, 0, 12, 3, 12, 3], [0, 0, 14, 1, 14, 1], [0, 0, 14, 3, 14, 3]],  # turn / row 3 / index 2
@@ -110,6 +124,7 @@ class Game:
                                   [[0, 0, 40, 1, 40, 1], [0, 0, 40, 3, 40, 3], [0, 0, 42, 1, 42, 1], [0, 0, 42, 3, 42, 3]],  # turn / row 10 / index 9
                                   [[0, 0, 32, 46, 32, 46]],  # position in code feedback text out put
                                   ]
+        # position of the half feedback marker (color and position is correct)
         self.position_feedback_half = [[[0, 1, 4, 1, 4, 1], [0, 1, 4, 3, 4, 3], [0, 1, 6, 1, 6, 1], [0, 1, 6, 3, 6, 3]],  # turn / row 1 / index 0
                                   [[0, 1, 8, 1, 8, 1], [0, 1, 8, 3, 8, 3], [0, 1, 10, 1, 10, 1], [0, 1, 10, 3, 10, 3]],  # turn / row 2 / index 1
                                   [[0, 1, 12, 1, 12, 1], [0, 1, 12, 3, 12, 3], [0, 1, 14, 1, 14, 1], [0, 1, 14, 3, 14, 3]],  # turn / row 3 / index 2
@@ -121,33 +136,35 @@ class Game:
                                   [[0, 1, 36, 1, 36, 1], [0, 1, 36, 3, 36, 3], [0, 1, 38, 1, 38, 1], [0, 1, 38, 3, 38, 3]],  # turn / row 9 / index 8
                                   [[0, 1, 40, 1, 40, 1], [0, 1, 40, 3, 40, 3], [0, 1, 42, 1, 42, 1], [0, 1, 42, 3, 42, 3]],  # turn / row 10 / index 9
                                   ]
+        # position to place the top 6 TODAY'S high scores on the main page
         self.position_today_high_score = [[[0, 0, 18, 22, 18, 34], [0, 0, 18, 36, 18, 43], [0, 0, 18, 45, 18, 49]], # [max 13], [max 8], [max 5]
                                              [[0, 0, 20, 22, 20, 34], [0, 0, 20, 36, 20, 43], [0, 0, 20, 45, 20, 49]],
                                              [[0, 0, 22, 22, 22, 34], [0, 0, 22, 36, 22, 43], [0, 0, 22, 45, 22, 49]],
                                              [[0, 0, 24, 22, 24, 34], [0, 0, 24, 36, 24, 43], [0, 0, 24, 45, 24, 49]],
                                              [[0, 0, 26, 22, 26, 34], [0, 0, 26, 36, 26, 43], [0, 0, 26, 45, 26, 49]],
                                              [[0, 0, 28, 22, 28, 34], [0, 0, 28, 36, 28, 43], [0, 0, 28, 45, 28, 49]], ]
-        self.position_this_month_high_score = [[[0, 0, 18, 51, 18, 63], [0, 0, 18, 65, 18, 72], [0, 0, 18, 74, 18, 78]],   # [max 13], [max 8], [max 5]
+        # position to place the top 6 MONTHLY high scores on the main page
+        self.position_this_month_high_score = [[[0, 0, 18, 51, 18, 63], [0, 0, 18, 65, 18, 72], [0, 0, 18, 74, 18, 78]],  # [max 13], [max 8], [max 5]
                                                [[0, 0, 20, 51, 20, 63], [0, 0, 20, 65, 20, 72], [0, 0, 20, 74, 20, 78]],
                                                [[0, 0, 22, 51, 22, 63], [0, 0, 22, 65, 22, 72], [0, 0, 22, 74, 22, 78]],
                                                [[0, 0, 24, 51, 24, 63], [0, 0, 24, 65, 24, 72], [0, 0, 24, 74, 24, 78]],
                                                [[0, 0, 26, 51, 26, 63], [0, 0, 26, 65, 26, 72], [0, 0, 26, 74, 26, 78]],
                                                [[0, 0, 28, 51, 28, 63], [0, 0, 28, 65, 28, 72], [0, 0, 28, 74, 28, 78]], ]
 
-        self.new_line_character = True
-        self.menu_mode = False
-        self.archive_list = 0
-        self.help_scroll = 0
+        self.new_line_character = True  # is needed to switch between terminal and browser-terminal app
+        self.menu_mode = False  # is changed depending on which menu the user enters (main, contact, help, archive)
+        self.archive_list = 0  # is change through user input and allows the user to sideways scroll the high score
+        self.help_scroll = 0  # is change through user input and allows the user to scroll the help menu
         # spreadsheet
-        self.all_time_high_score = []
-        self.this_month_high_score = []
-        self.today_high_score = []
-        self.today_year = today_year
-        self.today_month = today_month
-        self.file_name_date = file_name_date
-        self.file_name_day_date = file_name_day_date
-        self.today_day_name = today_day_name
-        self.today_date_num = today_date_num
+        self.all_time_high_score = []  # contains the data for the "all time" high score
+        self.this_month_high_score = []  # contains the data for the "monthly" high score
+        self.today_high_score = []  # contains the data for the "today's" high score
+        self.today_year = today_year  # contains data which year is now
+        self.today_month = today_month  # contains data which month is now
+        self.file_name_date = file_name_date  # contains the exact file name how this month is saved in Google sheet
+        self.file_name_day_date = file_name_day_date  # contains the exact file name how today is saved in Google sheet
+        self.today_day_name = today_day_name  # contains the today as a word e.g. Wednesday
+        self.today_date_num = today_date_num  # contains today's date as number
 
     def set_colors(self):
         """
@@ -215,6 +232,9 @@ class Game:
         marker.refresh(0, 3, 40, 5, 42, 7)
 
     def set_score(self):
+        """
+        Prints the top 6 scores of the monthly and daly high score to the main page
+        """
         # for this month's high score
         this_month_str = f"{self.today_month.upper()}━{self.today_year}━HIGHSCORE"
         text_score_pad = curses.newpad(1, 30)
@@ -254,11 +274,12 @@ class Game:
 
     def start_game(self, screen):
         """
-        Prints the background on the screen and sets the color. Gets the google spreadsheet data.
+        Prints the background on the screen and sets the color.
+        Updates the Google spreadsheet data to the high score attributes
         :param screen:  needs the curses window object
         """
         screen.clear()
-        # prints the main game menu on the screen, add '\n' to the loop for terminal but remove it for heroku
+        # prints the main game menu on the screen, add '\n' to the loop for terminal but remove it browser-terminal
         if self.new_line_character:
             for position in range(44):
                 screen.addstr(f"{self.line[position]}\n")
@@ -277,10 +298,15 @@ class Game:
         screen.refresh()
 
     def archive_menu(self, high_score_list):
+        """
+        Prints the background for the archive menu.
+        :param high_score_list: is the user key input to scroll the high score list sideways.
+        is passed to the high_score_list_text method which prints the high score data
+        """
         curses.init_pair(7, curses.COLOR_BLUE, curses.COLOR_YELLOW)
         HIGHLIGHT = curses.color_pair(7)
-        self.menu_mode = 'archive'
-        self.switch_main_menu_off('archive')
+        self.menu_mode = 'archive'  # sets a flag that the archive menu is active, arrow and hush keys work different
+        self.switch_main_menu_off('archive')  # changes the text highlight in the nav bar
         background_archive = curses.newpad(40, 60)
         background_archive.erase()
         background_archive.addstr(f"╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
@@ -340,13 +366,19 @@ class Game:
         inst_text_highlight.addstr("2", HIGHLIGHT)
         inst_text_highlight.refresh(0, 0, 40, 30, 40, 30)
 
+        # calls the method to print the high score date to the screen and processes the user key input
         self.high_score_list_text(high_score_list)
 
     def high_score_list_text(self, high_score_list):
+        """
+        Prints the high score date over the archive background
+        :param high_score_list: user input to control sideways scrolling
+        """
         # high score list data
         score_data = curses.newpad(40, 165)
         score_data_string = ''
         for index in range(20):
+            # line is to long but the string needs to have an exact length, I don't want to introduce bugs
             score_data_string += f"{str(index+1).rjust(4)} ║ {str(self.today_high_score[index][0]).ljust(14)}║20{str(self.today_high_score[index][1]).rjust(8)}║{str(self.today_high_score[index][2]).rjust(5)} ║{str(self.today_high_score[index][3]).rjust(4)} ║{str(self.today_high_score[index][4]).rjust(8)} "
             score_data_string += f"{str(index+1).rjust(4)} ║ {str(self.this_month_high_score[index][0]).ljust(14)}║20{str(self.this_month_high_score[index][1]).rjust(8)}║{str(self.this_month_high_score[index][2]).rjust(5)} ║{str(self.this_month_high_score[index][3]).rjust(4)} ║{str(self.this_month_high_score[index][4]).rjust(8)} "
             score_data_string += f"{str(index+1).rjust(4)} ║ {str(self.all_time_high_score[index][0]).ljust(14)}║20{str(self.all_time_high_score[index][1]).rjust(8)}║{str(self.all_time_high_score[index][2]).rjust(5)} ║{str(self.all_time_high_score[index][3]).rjust(4)} ║{str(self.all_time_high_score[index][4]).rjust(8)} "
@@ -382,14 +414,15 @@ class Game:
         score_data_title.refresh(0, high_score_list, 6, 23, 11, 77)
 
     def help_menu(self):
-        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_RED)
+        """
+        Prints the background for the help menu.
+        """
         curses.init_pair(7, curses.COLOR_BLUE, curses.COLOR_YELLOW)
         curses.init_pair(8, curses.COLOR_WHITE, curses.COLOR_BLACK)
-        RED = curses.color_pair(1)
         HIGHLIGHT = curses.color_pair(7)
         ORIGINAL = curses.color_pair(8)
-        self.menu_mode = 'help'
-        self.switch_main_menu_off('help')
+        self.menu_mode = 'help'   # sets a flag that the help menu is active, arrow keys work different
+        self.switch_main_menu_off('help')  # changes the text highlight in the nav bar
         background_help = curses.newpad(40, 60)
         background_help.erase()
         background_help.addstr(f"╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
@@ -454,6 +487,9 @@ class Game:
         inst_text_highlight.refresh(0, 0, 39, 30, 39, 30)
 
     def help_text(self):
+        """
+        Prints the text to the background of the help menu.
+        """
         help_content = curses.newpad(270, 53)
         help_content.erase()
         help_content.addstr(f'GAMEPLAY & RULES\n'
@@ -542,17 +578,26 @@ class Game:
                             f'getting the code right early).\n'
                             f'\n> NOTE: all the high score lists have a maximum of\n'
                             f'20 entries, the lowest score falls out of the list.')
+        # another variation of the user input controlling the position of the pad,
+        # the attribute self.help_scroll gets updated in the run.py module and the method is called again instead
+        # of calling the method with the user input,
+        # the first two coordinates determine which part of the pad is shown (row top left, colum top left)
+        # the 3rd and 4th coordinates determent the starting coordinates on the screen for the pad
+        # the 5th and 6th coordinates determent the end coordinates on the screen for the pad
         help_content.refresh(self.help_scroll, 0, 8, 24, 34, 76)
 
     def contact_menu(self):
+        """
+        Prints the background of the contact menu.
+        """
         curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_RED)
         curses.init_pair(7, curses.COLOR_BLUE, curses.COLOR_YELLOW)
         curses.init_pair(8, curses.COLOR_WHITE, curses.COLOR_BLACK)
         RED = curses.color_pair(1)
         HIGHLIGHT = curses.color_pair(7)
         ORIGINAL = curses.color_pair(8)
-        self.menu_mode = 'contact'
-        self.switch_main_menu_off('contact')
+        self.menu_mode = 'contact'  # sets a flag that the help menu is contact, arrow keys work different
+        self.switch_main_menu_off('contact')  # changes the text highlight in the nav bar
         background_contact = curses.newpad(40, 60)
         background_contact.erase()
         background_contact.addstr(f"╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮\n"
@@ -607,6 +652,10 @@ class Game:
         inst_text_highlight.refresh(0, 0, 37, 30, 37, 30)
 
     def switch_main_menu_off(self, menu):
+        """
+        Turns the text highlight for the menu in the main nav bar off and the other once on again
+        :param menu: specify which menus text highlight to be turned off
+        """
         curses.init_pair(7, curses.COLOR_BLUE, curses.COLOR_YELLOW)
         curses.init_pair(8, curses.COLOR_WHITE, curses.COLOR_BLACK)
         HIGHLIGHT = curses.color_pair(7)

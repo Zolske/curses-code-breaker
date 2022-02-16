@@ -1,3 +1,8 @@
+"""
+This module contains the methods and attributes for the player.
+There a code lines which are to long, but I do not want to introduce bugs by shorten them because the strings need to
+have a defined length and the lists are more readable win this way with their comments !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+"""
 import random
 import curses
 from curses.textpad import Textbox
@@ -5,15 +10,28 @@ import spreadsheet
 
 
 class PlayerObject:
+    """
+    Contains the methods and attributes for the player (time, score, marker position, name, ...)
+    """
     def __init__(self, score_date, file_name_date, new_line_character, today_month, today_year, today_day_name,
                  file_name_day_date):
-        # gets overwritten when secret_code is generated, secret_code generator can be commented out for testing
+        # name of the player which can be entered when a new high score is set
+        # or changed if the game was only restarted
         self.player_name = ''
+        # gets overwritten when secret_code is generated, secret_code generator can be commented out for testing
         self.secret_code = ['RED', 'RED', 'RED', 'RED']
+        # holds the player code after he has confirmed it with the '#' key
         self.player_code = [],
+        # holds the score
         self.player_score = 0
+        # tracks the current position on the game board
+        # 1st element is the line starting at 9 for line 10 because of the 0 index is 1
+        # 2nd element is one of the 4 fields, 3 is the last on the right
         self.current_position = [9, 0]  # row 10, first left, current position of the marker
-        self.color_order = ['RED', 'GREEN', 'BLUE', 'YELLOW', 'BLACK']  # is important to cycle true the colors
+        # is important to cycle true the colors in the correct order
+        self.color_order = ['RED', 'GREEN', 'BLUE', 'YELLOW', 'BLACK']
+        # represents the game board, the player changes it line for lin and after each confirmed entry ('#' key)
+        # it is compared to the secret code
         self.color_mark_map = [['BLACK', 'BLACK', 'BLACK', 'BLACK'],  # turn / row 1 / index 0
                                 ['BLACK', 'BLACK', 'BLACK', 'BLACK'],  # turn / row 2 / index 1
                                 ['BLACK', 'BLACK', 'BLACK', 'BLACK'],  # turn / row 3 / index 2
@@ -24,7 +42,9 @@ class PlayerObject:
                                 ['BLACK', 'BLACK', 'BLACK', 'BLACK'],  # turn / row 8 / index 7
                                 ['BLACK', 'BLACK', 'BLACK', 'BLACK'],  # turn / row 9 / index 8
                                 ['RED', 'BLACK', 'BLACK', 'BLACK']]  # turn / row 10 / index 9 / do not set ',' on the end!
-        self.content_feedback = "█▂"  # content for feedback
+        # content for feedback marker
+        self.content_feedback = "█▂"
+        # coordinates for the full feedback marker (color and position is correct)
         self.position_feedback = [[[0, 0, 4, 1, 4, 1], [0, 0, 4, 3, 4, 3], [0, 0, 6, 1, 6, 1], [0, 0, 6, 3, 6, 3]],  # turn / row 1 / index 0
                                   [[0, 0, 8, 1, 8, 1], [0, 0, 8, 3, 8, 3], [0, 0, 10, 1, 10, 1], [0, 0, 10, 3, 10, 3]],  # turn / row 2 / index 1
                                   [[0, 0, 12, 1, 12, 1], [0, 0, 12, 3, 12, 3], [0, 0, 14, 1, 14, 1], [0, 0, 14, 3, 14, 3]],  # turn / row 3 / index 2
@@ -37,6 +57,7 @@ class PlayerObject:
                                   [[0, 0, 40, 1, 40, 1], [0, 0, 40, 3, 40, 3], [0, 0, 42, 1, 42, 1], [0, 0, 42, 3, 42, 3]],  # turn / row 10 / index 9
                                   [[0, 0, 32, 46, 32, 46]],  # position in code feedback text out put
                                   ]
+        # coordinates for the half feedback marker (only color is correct)
         self.position_feedback_half = [[[0, 1, 4, 1, 4, 1], [0, 1, 4, 3, 4, 3], [0, 1, 6, 1, 6, 1], [0, 1, 6, 3, 6, 3]],  # turn / row 1 / index 0
                                   [[0, 1, 8, 1, 8, 1], [0, 1, 8, 3, 8, 3], [0, 1, 10, 1, 10, 1], [0, 1, 10, 3, 10, 3]],  # turn / row 2 / index 1
                                   [[0, 1, 12, 1, 12, 1], [0, 1, 12, 3, 12, 3], [0, 1, 14, 1, 14, 1], [0, 1, 14, 3, 14, 3]],  # turn / row 3 / index 2
@@ -49,36 +70,61 @@ class PlayerObject:
                                   [[0, 1, 40, 1, 40, 1], [0, 1, 40, 3, 40, 3], [0, 1, 42, 1, 42, 1], [0, 1, 42, 3, 42, 3]],  # turn / row 10 / index 9
                                   [[0, 1, 33, 58, 33, 58]],  # position in code feedback text out put
                                   ]
+        # holds the value of how many colors are correct (not counting the once which are also correct in position)
         self.has_color = 0
+        # holds the value of how many colors and positions are correct
+        # (if the value is 4 then the player code matches the secret code)
         self.match_color_position = 0
+        # works as flag to signal that the player code matches the secret code
         self.player_code_matches_secret_code = False
-        self.stop_time = False  # use to end the timer, loop breaks
-        self.reset_time = False  # use to reset the in game display and its values
-        self.update_timer = True  # use to pause the in game display update and the value update
+        # use to end the timer, loop breaks
+        self.stop_time = False
+        # use to reset the in game display and its values
+        self.reset_time = False
+        # use to pause the in game display update and the value update
+        self.update_timer = True
+        # how long the player has played in seconds total (minutes converted into seconds)
         self.player_time_seconds_total = 0
+        # how long the player has played only seconds without minutes
         self.player_time_seconds = 0
+        # how long the player has played only minutes without seconds
         self.player_time_minutes = 0
+        # contains the data for the "all time" high score [position][name,date,score,lines_left,time_in_s]
         self.all_time_high_score = []
+        # becomes true if player entry is higher than one of the 20 "all time" entries
         self.all_time_high_score_new_entry = False
+        # contains the data for the "monthly" high score [position][name,date,score,lines_left,time_in_s]
         self.this_month_high_score = []
+        # becomes true if player entry is higher than one of the 20 "month" entries
         self.this_month_high_score_new_entry = False
+        # contains the data for the "today" high score [position][name,date,score,lines_left,time_in_s]
         self.today_high_score = []
+        # becomes true if player entry is higher than one of the 20 "today" entries
         self.today_high_score_new_entry = False
+        # today's date in the formate how it is needed to appear in the high score list
         self.score_date = score_date
+        # today's month in the format how it is needed to access the correct Google spreadsheet
         self.file_name_date = file_name_date
+        # today's month in the format e.g. 'february'
         self.today_month = today_month
+        # today's year in the
         self.today_year = today_year
+        # today as a word e.g. 'monday'
         self.today_day_name = today_day_name
+        # today in the correct format so the correct Google spreadsheet can be accessed
         self.file_name_day_date = file_name_day_date
-        self.play_game = True  # turn on the number options on the keyboard
+        # turn on the number options on the keyboard
+        self.play_game = True
+        # is needed to switch between terminal app format and browser-terminal app
         self.new_line_character = new_line_character
+        # works as flag signal that a new high score has been set
         self.set_new_high_score = False
 
     def arrow_input(self, arrow_key):
-        # TODO tidy up code
         """
-        Changes the current position in self.current_position or
+        Changes the current position in self.current_position and
         the color of self.color_mark_map.
+        Is the main method which calls the other methods depending on the user input and attributes.
         :param arrow_key: 'KEY_LEFT' 'KEY_RIGHT' 'KEY_UP' 'KEY_DOWN'
         :return: [current-position-row, current-position-field][current-position-color]
         """
@@ -555,7 +601,6 @@ class PlayerObject:
             self.today_high_score = self.today_high_score[:20]
             spreadsheet.update_high_score_list(self.file_name_day_date, self.today_high_score)
             self.today_high_score_new_entry = False
-
 
     def reset_player(self):
         """
